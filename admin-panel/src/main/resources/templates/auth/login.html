@@ -103,7 +103,7 @@
 
                 </h2>
 
-                <form>
+                <form th:action="@{/login}" method="post">
 
                     <div class="mb-3">
 
@@ -122,10 +122,10 @@
                             </span>
 
                             <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Enter Username">
-
+                                type="text"
+                                name="username"
+                                class="form-control"
+                                placeholder="Enter Username">
                         </div>
 
                     </div>
@@ -149,6 +149,7 @@
                             <input
                                 id="password"
                                 type="password"
+                                name="password"
                                 class="form-control"
                                 placeholder="Enter Password">
 

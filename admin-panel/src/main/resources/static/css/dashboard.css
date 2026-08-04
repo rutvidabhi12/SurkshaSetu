@@ -1,0 +1,49 @@
+.main-content{
+
+    margin-left:270px;
+
+    margin-top:70px;
+
+    padding:30px;
+
+    background:#F5F6FA;
+
+    min-height:100vh;
+
+}
+
+.dashboard-card{
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.dashboard-card h5{
+
+    color:#777;
+
+}
+
+.dashboard-card h2{
+
+    margin-top:15px;
+
+    color:#5F473B;
+
+    font-weight:700;
+
+}
