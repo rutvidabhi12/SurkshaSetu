@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             Toast toast = new Toast(MainActivity.this);
             TextView toastText = new TextView(MainActivity.this);
 
-            toastText.setText("✓  Login successful");
+            toastText.setText("✓  Login successfull");
             toastText.setTextColor(Color.WHITE);
             toastText.setTextSize(14);
             toastText.setGravity(Gravity.CENTER);
