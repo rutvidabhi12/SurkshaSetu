@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
             android.widget.Toast.makeText(
                     MainActivity.this,
-                    "Login successful",
+                    "Login successfull",
                     android.widget.Toast.LENGTH_SHORT
             ).show();
         });
