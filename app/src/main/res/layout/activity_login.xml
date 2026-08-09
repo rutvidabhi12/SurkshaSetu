@@ -237,38 +237,47 @@
             <!-- Username -->
 
             <com.google.android.material.textfield.TextInputLayout
+
                 android:id="@+id/tilUsername"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="55dp"
                 android:layout_marginTop="6dp"
+                android:hint="User ID / Email"
+                android:importantForAutofill="noExcludeDescendants"
                 app:boxBackgroundMode="outline"
-                app:boxCornerRadiusBottomEnd="15dp"
-                app:boxCornerRadiusBottomStart="15dp"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxStrokeColor="#0A2E6D"
+                app:hintTextColor="#777777"
                 app:startIconDrawable="@drawable/ic_person">
 
                 <com.google.android.material.textfield.TextInputEditText
+
                     android:id="@+id/etUsername"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="User ID / Email"
+                    android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:textSize="14sp" />
+                    android:textColor="#222222"
+                    android:textSize="14sp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:importantForAutofill="no"
+                    android:autofillHints="" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <!-- Password -->
 
             <com.google.android.material.textfield.TextInputLayout
+
                 android:id="@+id/tilPassword"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="55dp"
                 android:layout_marginTop="6dp"
+                android:hint="Password"
                 app:boxBackgroundMode="outline"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxStrokeColor="#0A2E6D"
+                app:hintTextColor="#777777"
                 app:boxCornerRadiusBottomEnd="15dp"
                 app:boxCornerRadiusBottomStart="15dp"
                 app:boxCornerRadiusTopEnd="15dp"
@@ -279,14 +288,16 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Password"
+                    android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:textSize="14sp" />
+                    android:textColor="#222222"
+                    android:textSize="14sp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:importantForAutofill="no"
+                    android:autofillHints="" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+           </com.google.android.material.textfield.TextInputLayout>
 
 
             <!-- Forgot Password -->
