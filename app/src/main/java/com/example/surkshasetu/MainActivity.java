@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
             toastText.setText("✓  Login successfull");
             toastText.setTextColor(Color.WHITE);
-            toastText.setTextSize(14);
+            toastText.setTextSize(16);
             toastText.setGravity(Gravity.CENTER);
             toastText.setTypeface(null, Typeface.BOLD);
 
