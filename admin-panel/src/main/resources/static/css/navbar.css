@@ -1,0 +1,79 @@
+/* ==========================
+   TOP NAVBAR
+========================== */
+
+.top-navbar {
+
+    position: fixed;
+
+    top: 0;
+    left: 270px;
+    right: 0;
+
+    height: 70px;
+
+    background: #ffffff;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 30px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+
+    z-index: 1000;
+
+}
+
+.page-title {
+
+    font-size: 30px;
+    font-weight: 700;
+    color: #222;
+
+}
+
+.nav-right {
+
+    display: flex;
+    align-items: center;
+    gap: 25px;
+
+}
+
+.icon-btn {
+
+    border: none;
+    background: transparent;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+}
+
+.admin-profile {
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+}
+
+.admin-profile img {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+    object-fit: cover;
+
+}
+
+.admin-profile span {
+
+    font-size: 16px;
+    font-weight: 600;
+
+}

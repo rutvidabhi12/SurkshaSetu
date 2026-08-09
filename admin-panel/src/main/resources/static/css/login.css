@@ -1,0 +1,355 @@
+/* =====================================
+   SurkshaSetu Admin Panel
+   Login Page
+====================================== */
+
+/* ===== Login Page ===== */
+
+.login-page{
+    min-height:100vh;
+}
+
+/* ===== Left Panel ===== */
+
+.left-panel{
+
+    background:
+            linear-gradient(rgba(68,49,37,.82),
+            rgba(68,49,37,.82)),
+            url("/images/campus.jpeg");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.overlay{
+
+    width:100%;
+    height:100%;
+
+    padding:80px;
+
+    color:#ffffff;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+}
+
+.logo{
+
+    width:140px;
+    margin-bottom:35px;
+
+    filter:drop-shadow(0 8px 15px rgba(0,0,0,.35));
+
+}
+
+.overlay h1{
+
+    font-size:64px;
+    font-weight:700;
+
+    margin-bottom:10px;
+
+}
+
+.overlay span{
+
+    color:#D9B26F;
+
+}
+
+.tagline{
+
+    font-size:24px;
+
+    line-height:1.8;
+
+    max-width:550px;
+
+    margin-top:20px;
+    margin-bottom:70px;
+
+}
+
+/* ===== Feature Icons ===== */
+
+.feature-list{
+
+    display:flex;
+
+    gap:60px;
+
+}
+
+.feature-list div{
+
+    text-align:center;
+
+    font-size:18px;
+
+}
+
+.feature-list i{
+
+    display:block;
+
+    font-size:36px;
+
+    margin-bottom:12px;
+
+    color:#D9B26F;
+
+}
+
+/* ===== Right Side ===== */
+
+.login-section{
+
+    background:#F8F3EA;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+/* ===== Login Card ===== */
+
+.login-card{
+
+    width:460px;
+
+    background:rgba(255,255,255,.95);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:24px;
+
+    padding:50px;
+
+    box-shadow:0 25px 70px rgba(0,0,0,.15);
+
+    animation:fadeIn .8s ease;
+
+}
+
+/* ===== Animation ===== */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ===== Welcome ===== */
+
+.welcome{
+
+    color:#B1782D;
+
+    letter-spacing:3px;
+
+    font-weight:600;
+
+    font-size:14px;
+
+    margin-bottom:8px;
+
+}
+
+.login-card h2{
+
+    font-size:54px;
+
+    font-weight:700;
+
+    margin-bottom:40px;
+
+}
+
+/* ===== Labels ===== */
+
+.login-card label{
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+}
+
+/* ===== Inputs ===== */
+
+.input-group{
+
+    margin-bottom:10px;
+
+}
+
+.input-group-text{
+
+    background:#ffffff;
+
+    border-right:none;
+
+}
+
+.form-control{
+
+    height:58px;
+
+    border-left:none;
+
+    font-size:16px;
+
+}
+
+.form-control:focus{
+
+    border-color:#B1782D;
+
+    box-shadow:0 0 10px rgba(177,120,45,.35);
+
+}
+
+/* ===== Remember ===== */
+
+.form-check-label{
+
+    font-weight:500;
+
+}
+
+/* ===== Forgot Password ===== */
+
+.login-card a{
+
+    color:#A66B1D;
+
+    text-decoration:none;
+
+    font-weight:500;
+
+}
+
+.login-card a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* ===== Button ===== */
+
+.login-btn{
+
+    width:100%;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+135deg,
+#5F473B,
+#7A5B4B);
+
+    color:#ffffff;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.login-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 12px 25px rgba(0,0,0,.25);
+
+    color:#ffffff;
+
+}
+
+/* ===== Responsive ===== */
+
+@media(max-width:992px){
+
+    .left-panel{
+
+        display:none;
+
+    }
+
+    .login-section{
+
+        width:100%;
+
+    }
+
+    .login-card{
+
+        width:92%;
+
+        margin:40px auto;
+
+        padding:35px;
+
+    }
+
+    .login-card h2{
+
+        font-size:40px;
+
+    }
+
+}
+
+@media(max-width:576px){
+
+    .login-card{
+
+        padding:25px;
+
+    }
+
+    .login-card h2{
+
+        font-size:34px;
+
+    }
+
+    .welcome{
+
+        letter-spacing:2px;
+
+    }
+
+}
