@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{layout/base :: layout(~{::section})}">
+
+
+<section>
+
+    <!-- ========================= -->
+    <!-- Success: Add -->
+    <!-- ========================= -->
+
+    <div th:if="${param.success}">
+
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Department Added Successfully',
+                confirmButtonText: 'OK'
+            });
+        </script>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Success: Update -->
+    <!-- ========================= -->
+
+    <div th:if="${param.updated}">
+
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Department Updated Successfully',
+                confirmButtonText: 'OK'
+            });
+        </script>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Success: Delete -->
+    <!-- ========================= -->
+
+    <div th:if="${param.deleted}">
+
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Department Deleted Successfully',
+                confirmButtonText: 'OK'
+            });
+        </script>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Page Header -->
+    <!-- ========================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="page-title mb-1">
+                Department Management
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage all departments from one place.
+            </p>
+
+        </div>
+
+        <div>
+            <a th:href="@{/students}"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-2"></i>
+
+            Home
+
+        </a>
+
+        <a th:href="@{/departments/add}"
+           class="btn btn-success">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Add Department
+
+        </a>
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Search -->
+    <!-- ========================= -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-lg-4 ms-auto">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-search"></i>
+
+                        </span>
+
+                        <input type="text"
+                            id="departmentSearch"
+                            class="form-control"
+                            placeholder="Search Department...">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Department Table -->
+    <!-- ========================= -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-success">
+
+                    <tr>
+
+                        <th width="80">#</th>
+
+                        <th>Department Name</th>
+
+                        <th>Department Code</th>
+
+                        <th>Status</th>
+
+                        <th width="180">Action</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody id="departmentTableBody">
+
+                    <!-- No Data -->
+
+                    <tr th:if="${#lists.isEmpty(departments)}">
+
+                        <td colspan="5"
+                            class="text-center py-5">
+
+                            <i class="bi bi-building fs-1 text-secondary"></i>
+
+                            <h5 class="mt-3">
+                                No Department Found
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                Click "Add Department" to create your first department.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- Department List -->
+
+                    <tr th:each="department, stat : ${departments}">
+
+                        <td th:text="${stat.count}">
+                        </td>
+
+                        <td th:text="${department.departmentName}">
+                        </td>
+
+                        <td th:text="${department.departmentCode}">
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success"
+                                  th:if="${department.active}">
+
+                                Active
+
+                            </span>
+
+                            <span class="badge bg-danger"
+                                  th:unless="${department.active}">
+
+                                Inactive
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <!-- Edit -->
+
+                            <a th:href="@{/departments/edit/{id}(id=${department.id})}"
+                               class="btn btn-warning btn-sm"
+                               title="Edit Department">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </a>
+
+
+                            <!-- Delete -->
+
+                            <a th:href="@{/departments/delete/{id}(id=${department.id})}"
+                               class="btn btn-danger btn-sm"
+                               title="Delete Department"
+                               onclick="return confirm('Delete this department?')">
+
+                                <i class="bi bi-trash"></i>
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Pagination -->
+    <!-- ========================= -->
+
+    <div class="d-flex justify-content-end mt-4">
+
+        <nav>
+
+            <ul class="pagination">
+
+                <li class="page-item disabled">
+
+                    <a class="page-link" href="#">
+                        Previous
+                    </a>
+
+                </li>
+
+                <li class="page-item active">
+
+                    <a class="page-link" href="#">
+                        1
+                    </a>
+
+                </li>
+
+                <li class="page-item disabled">
+
+                    <a class="page-link" href="#">
+                        Next
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+</section>
+
+</div>
+<script th:src="@{/js/department.js}"></script>
+</html>

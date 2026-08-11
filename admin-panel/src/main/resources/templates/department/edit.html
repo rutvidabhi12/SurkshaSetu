@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{layout/base :: layout(~{::section})}">
+
+<section>
+
+    <!-- ========================= -->
+    <!-- Error Popup -->
+    <!-- ========================= -->
+
+    <div th:if="${error}">
+
+        <script th:inline="javascript">
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: [[${error}]],
+                confirmButtonText: 'OK'
+            });
+
+        </script>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Page Header -->
+    <!-- ========================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="page-title mb-1">
+                Edit Department
+            </h2>
+
+            <p class="text-muted mb-0">
+                Update department information.
+            </p>
+
+        </div>
+
+
+        <!-- Back -->
+
+        <a th:href="@{/departments}"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-2"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Edit Form -->
+    <!-- ========================= -->
+
+    <form th:action="@{/departments/update}"
+          th:object="${department}"
+          method="post">
+
+        <!-- Hidden ID -->
+
+        <input type="hidden"
+               th:field="*{id}">
+
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <div class="row g-4">
+
+
+                    <!-- Department Name -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Department Name
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               th:field="*{departmentName}"
+                               placeholder="Enter Department Name"
+                               required>
+
+                    </div>
+
+
+                    <!-- Department Code -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Department Code
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               th:field="*{departmentCode}"
+                               placeholder="Enter Department Code"
+                               required>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select class="form-select"
+                                th:field="*{active}">
+
+                            <option th:value="true">
+                                Active
+                            </option>
+
+                            <option th:value="false">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- Footer -->
+            <!-- ========================= -->
+
+            <div class="card-footer text-end">
+
+                <a th:href="@{/departments}"
+                   class="btn btn-secondary">
+
+                    Cancel
+
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary ms-2">
+
+                    <i class="bi bi-check-circle me-2"></i>
+
+                    Update Department
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</section>
+
+</div>
+
+</html>

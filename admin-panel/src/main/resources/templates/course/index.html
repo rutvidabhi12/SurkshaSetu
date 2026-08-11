@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{layout/base :: layout(~{::section})}">
+
+<section>
+
+    <!-- ========================= -->
+    <!-- Success Popup -->
+    <!-- ========================= -->
+
+    <div th:if="${param.success}">
+
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Course Added Successfully',
+                confirmButtonText: 'OK'
+            });
+        </script>
+
+    </div>
+
+    <div th:if="${param.updated}">
+
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Course Updated Successfully',
+                confirmButtonText: 'OK'
+            });
+        </script>
+
+    </div>
+
+    <div th:if="${param.deleted}">
+
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Course Deleted Successfully',
+                confirmButtonText: 'OK'
+            });
+        </script>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Page Header -->
+    <!-- ========================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="page-title mb-1">
+                Course Management
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage all courses from one place.
+            </p>
+
+        </div>
+
+        <div>
+            <a th:href="@{/students}"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-2"></i>
+
+            Home
+
+        </a>
+
+        <a th:href="@{/courses/add}"
+           class="btn btn-success">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Add Course
+
+        </a>
+
+    </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- Filter / Search -->
+    <!-- ========================= -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <div class="row g-3 align-items-end">
+
+                <!-- Department -->
+
+                <div class="col-lg-4">
+
+                    <label class="form-label fw-semibold">
+                        Department
+                    </label>
+
+                    <select class="form-select">
+
+                        <option value="">
+                            All Departments
+                        </option>
+
+                        <option th:each="department : ${departments}"
+                                th:value="${department.id}"
+                                th:text="${department.departmentName}">
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Search -->
+
+                <div class="col-lg-5">
+
+                    <label class="form-label fw-semibold">
+                        Search
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-search"></i>
+
+                        </span>
+
+                        <input type="text"
+                            id="courseSearch"
+                            class="form-control"
+                            placeholder="Search Course...">
+
+                    </div>
+
+                </div>
+
+
+                <!-- Filter Button -->
+
+                <div class="col-lg-3">
+
+                    <button type="button"
+                            class="btn btn-primary w-100">
+
+                        <i class="bi bi-funnel-fill me-2"></i>
+
+                        Apply Filter
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Course Table -->
+    <!-- ========================= -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-success">
+
+                    <tr>
+
+                        <th width="70">
+                            #
+                        </th>
+
+                        <th>
+                            Course Name
+                        </th>
+
+                        <th>
+                            Department
+                        </th>
+
+                        <th>
+                            Total Semester
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th width="150">
+                            Action
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody id="courseTableBody">
+
+                    <!-- No Data -->
+
+                    <tr th:if="${#lists.isEmpty(courses)}">
+
+                        <td colspan="6"
+                            class="text-center py-5">
+
+                            <i class="bi bi-book fs-1 text-secondary"></i>
+
+                            <h5 class="mt-3">
+                                No Course Found
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                Click "Add Course" to create your first course.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- Course List -->
+
+                    <tr th:each="course, stat : ${courses}">
+
+                        <td th:text="${stat.count}">
+                        </td>
+
+
+                        <td th:text="${course.courseName}">
+                        </td>
+
+
+                        <td th:text="${course.department.departmentName}">
+                        </td>
+
+
+                        <td>
+
+                            <span th:text="${course.totalSemester}">
+                            </span>
+
+                            Semesters
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="badge bg-success"
+                                  th:if="${course.status == 'Active'}">
+
+                                Active
+
+                            </span>
+
+                            <span class="badge bg-danger"
+                                  th:unless="${course.status == 'Active'}">
+
+                                Inactive
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <!-- Edit -->
+
+                            <a th:href="@{/courses/edit/{id}(id=${course.id})}"
+                               class="btn btn-warning btn-sm"
+                               title="Edit Course">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </a>
+
+
+                            <!-- Delete -->
+
+                            <a th:href="@{/courses/delete/{id}(id=${course.id})}"
+                               class="btn btn-danger btn-sm"
+                               title="Delete Course"
+                               onclick="return confirm('Delete this course?')">
+
+                                <i class="bi bi-trash"></i>
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Pagination -->
+    <!-- ========================= -->
+
+    <div class="d-flex justify-content-end mt-4">
+
+        <nav>
+
+            <ul class="pagination">
+
+                <li class="page-item disabled">
+
+                    <a class="page-link" href="#">
+                        Previous
+                    </a>
+
+                </li>
+
+                <li class="page-item active">
+
+                    <a class="page-link" href="#">
+                        1
+                    </a>
+
+                </li>
+
+                <li class="page-item disabled">
+
+                    <a class="page-link" href="#">
+                        Next
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+</section>
+
+</div>
+
+<script th:src="@{/js/course.js}"></script>
+
+</html>

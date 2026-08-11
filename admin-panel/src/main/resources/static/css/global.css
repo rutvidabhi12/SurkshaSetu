@@ -68,3 +68,12 @@ img{
     border-radius:18px;
 
 }
+
+/* Main Content */
+
+.main-content {
+    margin-left: 280px;
+    margin-top: 70px;
+    padding: 20px 30px 30px 30px;
+    min-height: calc(100vh - 70px);
+}

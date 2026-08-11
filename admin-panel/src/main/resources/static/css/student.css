@@ -1,0 +1,53 @@
+.page-title{
+
+    font-size:30px;
+    font-weight:700;
+    color:#5F473B;
+
+}
+
+.filter-card{
+
+    border:none;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.filter-card .card-body{
+
+    padding:30px;
+
+}
+
+.form-select{
+
+    height:48px;
+
+    border-radius:10px;
+
+}
+
+.main-content {
+
+    margin-left: 270px;
+
+    padding: 20px 30px 30px 30px;
+
+    background: #F5F6FA;
+
+    min-height: 100vh;
+}
+
+.filter-card{
+
+    margin-top: 20px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
