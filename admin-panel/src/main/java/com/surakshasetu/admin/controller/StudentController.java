@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import com.surakshasetu.admin.service.SemesterService;
 
 import com.surakshasetu.admin.entity.Student;
 import com.surakshasetu.admin.service.CourseService;
 import com.surakshasetu.admin.service.DepartmentService;
-import com.surakshasetu.admin.service.SemesterService;
 import com.surakshasetu.admin.service.StudentExcelService;
 import com.surakshasetu.admin.service.StudentService;
 
@@ -29,53 +29,83 @@ public class StudentController {
     private final CourseService courseService;
     private final SemesterService semesterService;
 
-    public StudentController(StudentExcelService studentExcelService,
-                         StudentService studentService,
-                         DepartmentService departmentService,
-                         CourseService courseService,
-                         SemesterService semesterService) {
+    public StudentController(
+            StudentExcelService studentExcelService,
+            StudentService studentService,
+            DepartmentService departmentService,
+            CourseService courseService,
+            SemesterService semesterService) {
 
-    this.studentExcelService = studentExcelService;
-    this.studentService = studentService;
-    this.departmentService = departmentService;
-    this.courseService = courseService;
-    this.semesterService = semesterService;
-}
+        this.studentExcelService = studentExcelService;
+        this.studentService = studentService;
+        this.departmentService = departmentService;
+        this.courseService = courseService;
+        this.semesterService = semesterService;
+    }
+
+    // =========================================
+    // Student Page
+    // =========================================
 
     @GetMapping("/students")
     public String studentPage(Model model) {
 
-        model.addAttribute("students", studentService.getAllStudents());
+        model.addAttribute(
+                "students",
+                studentService.getAllStudents()
+        );
 
-        model.addAttribute("departments", departmentService.getAllDepartments());
+        model.addAttribute(
+                "departments",
+                departmentService.getAllDepartments()
+        );
 
-        model.addAttribute("courses", courseService.getAllCourses());
+        model.addAttribute(
+                "courses",
+                courseService.getAllCourses()
+        );
 
-        model.addAttribute("semesters", semesterService.getAllSemesters());
+        model.addAttribute(
+                "semesters",
+                semesterService.getAllSemesters()
+        );
 
         return "student/index";
     }
 
+    // =========================================
+    // Download Excel Template
+    // =========================================
+
     @GetMapping("/students/template")
     public ResponseEntity<ByteArrayResource> downloadTemplate() {
 
-        ByteArrayResource resource = studentExcelService.downloadTemplate();
+        ByteArrayResource resource =
+                studentExcelService.downloadTemplate();
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=student_template.xlsx")
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=student_template.xlsx"
+                )
+                .contentType(
+                        MediaType.APPLICATION_OCTET_STREAM
+                )
                 .body(resource);
     }
+
+    // =========================================
+    // Upload Excel
+    // =========================================
 
     @PostMapping("/students/upload")
     public String uploadExcel(
             @RequestParam("file") MultipartFile file,
             @RequestParam("departmentId") Long departmentId,
-            @RequestParam("courseId") Long courseId,
-            @RequestParam("semesterId") Long semesterId) {
+            @RequestParam("courseId") Long courseId) {
 
         if (file.isEmpty()) {
+
             return "redirect:/students?error=Please select an Excel file";
         }
 
@@ -84,8 +114,7 @@ public class StudentController {
             studentExcelService.importStudents(
                     file,
                     departmentId,
-                    courseId,
-                    semesterId
+                    courseId
             );
 
             return "redirect:/students?success";
@@ -100,34 +129,60 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/students/view/{id}")
-    public String viewStudent(@PathVariable Long id, Model model) {
+    // =========================================
+    // View Student
+    // =========================================
 
-        model.addAttribute("student",
-                studentService.getStudentById(id));
+    @GetMapping("/students/view/{id}")
+    public String viewStudent(
+            @PathVariable Long id,
+            Model model) {
+
+        model.addAttribute(
+                "student",
+                studentService.getStudentById(id)
+        );
 
         return "student/view";
     }
 
-    @GetMapping("/students/edit/{id}")
-    public String editStudent(@PathVariable Long id, Model model) {
+    // =========================================
+    // Edit Student
+    // =========================================
 
-        model.addAttribute("student",
-                studentService.getStudentById(id));
+    @GetMapping("/students/edit/{id}")
+    public String editStudent(
+            @PathVariable Long id,
+            Model model) {
+
+        model.addAttribute(
+                "student",
+                studentService.getStudentById(id)
+        );
 
         return "student/edit";
     }
 
+    // =========================================
+    // Update Student
+    // =========================================
+
     @PostMapping("/students/update")
-    public String updateStudent(@ModelAttribute Student student) {
+    public String updateStudent(
+            @ModelAttribute Student student) {
 
         studentService.saveStudent(student);
 
         return "redirect:/students";
     }
 
+    // =========================================
+    // Delete Student
+    // =========================================
+
     @GetMapping("/students/delete/{id}")
-    public String deleteStudent(@PathVariable Long id) {
+    public String deleteStudent(
+            @PathVariable Long id) {
 
         studentService.deleteStudent(id);
 

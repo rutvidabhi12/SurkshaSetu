@@ -1,7 +1,6 @@
 package com.surakshasetu.admin.service.impl;
 
 import java.io.ByteArrayOutputStream;
-import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,17 +30,20 @@ public class StudentExcelServiceImpl implements StudentExcelService {
     private final DepartmentService departmentService;
     private final CourseService courseService;
     private final SemesterService semesterService;
+    private final PasswordEncoder passwordEncoder;
 
     public StudentExcelServiceImpl(
             StudentService studentService,
             DepartmentService departmentService,
             CourseService courseService,
-            SemesterService semesterService) {
+            SemesterService semesterService,
+            PasswordEncoder passwordEncoder) {
 
         this.studentService = studentService;
         this.departmentService = departmentService;
         this.courseService = courseService;
         this.semesterService = semesterService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -56,12 +59,14 @@ public class StudentExcelServiceImpl implements StudentExcelService {
 
             header.createCell(0).setCellValue("Enrollment No");
             header.createCell(1).setCellValue("First Name");
-            header.createCell(2).setCellValue("Last Name");
-            header.createCell(3).setCellValue("Gender");
-            header.createCell(4).setCellValue("Mobile");
-            header.createCell(5).setCellValue("Email");
+            header.createCell(2).setCellValue("Middle Name");
+            header.createCell(3).setCellValue("Last Name");
+            header.createCell(4).setCellValue("Gender");
+            header.createCell(5).setCellValue("Mobile");
+            header.createCell(6).setCellValue("Email");
+            header.createCell(7).setCellValue("Semester");
 
-            for (int i = 0; i <= 5; i++) {
+            for (int i = 0; i <= 7; i++) {
                 sheet.autoSizeColumn(i);
             }
 
@@ -69,7 +74,6 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                     new ByteArrayOutputStream();
 
             workbook.write(out);
-
             workbook.close();
 
             return new ByteArrayResource(
@@ -87,8 +91,7 @@ public class StudentExcelServiceImpl implements StudentExcelService {
     public void importStudents(
             MultipartFile file,
             Long departmentId,
-            Long courseId,
-            Long semesterId) {
+            Long courseId) {
 
         try {
 
@@ -104,7 +107,6 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                                             "Selected Department not found.")
                             );
 
-
             // =========================================
             // Get Course
             // =========================================
@@ -119,21 +121,18 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                         "Selected Course not found.");
             }
 
-
             // =========================================
-            // Get Semester
+            // Validate Course belongs to Department
             // =========================================
 
-            Semester semester =
-                    semesterService
-                            .getSemesterById(semesterId);
-
-            if (semester == null) {
+            if (course.getDepartment() == null
+                    || !course.getDepartment()
+                            .getId()
+                            .equals(department.getId())) {
 
                 throw new RuntimeException(
-                        "Selected Semester not found.");
+                        "Selected Course does not belong to selected Department.");
             }
-
 
             // =========================================
             // Open Excel
@@ -149,7 +148,6 @@ public class StudentExcelServiceImpl implements StudentExcelService {
             DataFormatter formatter =
                     new DataFormatter();
 
-
             // =========================================
             // Store Excel Values
             // =========================================
@@ -159,7 +157,6 @@ public class StudentExcelServiceImpl implements StudentExcelService {
 
             Set<String> excelEnrollments =
                     new HashSet<>();
-
 
             // =========================================
             // First Pass
@@ -178,7 +175,6 @@ public class StudentExcelServiceImpl implements StudentExcelService {
 
                 int excelRowNumber = i + 1;
 
-
                 // =====================================
                 // Read Excel Data
                 // =====================================
@@ -191,22 +187,29 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                         formatter.formatCellValue(
                                 row.getCell(1)).trim();
 
-                String lastName =
+                String middleName =
                         formatter.formatCellValue(
                                 row.getCell(2)).trim();
 
-                String gender =
+                String lastName =
                         formatter.formatCellValue(
                                 row.getCell(3)).trim();
 
-                String mobile =
+                String gender =
                         formatter.formatCellValue(
                                 row.getCell(4)).trim();
 
-                String email =
+                String mobile =
                         formatter.formatCellValue(
                                 row.getCell(5)).trim();
 
+                String email =
+                        formatter.formatCellValue(
+                                row.getCell(6)).trim();
+
+                String semesterValue =
+                        formatter.formatCellValue(
+                                row.getCell(7)).trim();
 
                 // =====================================
                 // Skip Empty Row
@@ -214,14 +217,15 @@ public class StudentExcelServiceImpl implements StudentExcelService {
 
                 if (enrollmentNo.isEmpty()
                         && firstName.isEmpty()
+                        && middleName.isEmpty()
                         && lastName.isEmpty()
                         && gender.isEmpty()
                         && mobile.isEmpty()
-                        && email.isEmpty()) {
+                        && email.isEmpty()
+                        && semesterValue.isEmpty()) {
 
                     continue;
                 }
-
 
                 // =====================================
                 // Required Field Validation
@@ -275,6 +279,60 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                             + ": Email is required.");
                 }
 
+                if (semesterValue.isEmpty()) {
+
+                    throw new RuntimeException(
+                            "Excel Row "
+                            + excelRowNumber
+                            + ": Semester is required.");
+                }
+
+                // =====================================
+                // Validate Semester Number
+                // =====================================
+
+                int semesterNumber;
+
+                try {
+
+                    semesterNumber =
+                            Integer.parseInt(
+                                    semesterValue);
+
+                } catch (NumberFormatException e) {
+
+                    throw new RuntimeException(
+                            "Excel Row "
+                            + excelRowNumber
+                            + ": Semester must be a number.");
+                }
+
+                if (semesterNumber < 1) {
+
+                    throw new RuntimeException(
+                            "Excel Row "
+                            + excelRowNumber
+                            + ": Invalid Semester.");
+                }
+
+                // =====================================
+                // Check Semester exists for Course
+                // =====================================
+
+                Semester semester =semesterService.getSemesterByCourseIdAndSemesterNumber(
+                                        course.getId(),
+                                        semesterNumber)
+                                .orElse(null);
+
+                if (semester == null) {
+
+                    throw new RuntimeException(
+                            "Excel Row "
+                            + excelRowNumber
+                            + ": Semester "
+                            + semesterNumber
+                            + " does not exist for selected course.");
+                }
 
                 // =====================================
                 // Duplicate Email Inside Excel
@@ -291,7 +349,6 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                             + "' is duplicated in Excel.");
                 }
 
-
                 // =====================================
                 // Duplicate Enrollment Inside Excel
                 // =====================================
@@ -307,13 +364,11 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                             + "' is duplicated in Excel.");
                 }
 
-
                 // =====================================
                 // Duplicate Email in Database
                 // =====================================
 
-                if (studentService
-                        .existsByEmail(email)) {
+                if (studentService.existsByEmail(email)) {
 
                     throw new RuntimeException(
                             "Excel Row "
@@ -323,14 +378,11 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                             + "' already exists in database.");
                 }
 
-
                 // =====================================
                 // Duplicate Enrollment in Database
                 // =====================================
 
-                if (studentService
-                        .existsByEnrollmentNo(
-                                enrollmentNo)) {
+                if (studentService.existsByEnrollmentNo(enrollmentNo)) {
 
                     throw new RuntimeException(
                             "Excel Row "
@@ -340,7 +392,6 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                             + "' already exists in database.");
                 }
             }
-
 
             // =========================================
             // Second Pass
@@ -359,7 +410,6 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                     continue;
                 }
 
-
                 String enrollmentNo =
                         formatter.formatCellValue(
                                 row.getCell(0)).trim();
@@ -368,45 +418,78 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                         formatter.formatCellValue(
                                 row.getCell(1)).trim();
 
-                String lastName =
+                String middleName =
                         formatter.formatCellValue(
                                 row.getCell(2)).trim();
 
-                String gender =
+                String lastName =
                         formatter.formatCellValue(
                                 row.getCell(3)).trim();
 
-                String mobile =
+                String gender =
                         formatter.formatCellValue(
                                 row.getCell(4)).trim();
 
-                String email =
+                String mobile =
                         formatter.formatCellValue(
                                 row.getCell(5)).trim();
 
+                String email =
+                        formatter.formatCellValue(
+                                row.getCell(6)).trim();
 
+                String semesterValue =
+                        formatter.formatCellValue(
+                                row.getCell(7)).trim();
+
+                // =====================================
                 // Skip Empty Row
+                // =====================================
 
                 if (enrollmentNo.isEmpty()
                         && firstName.isEmpty()
+                        && middleName.isEmpty()
                         && lastName.isEmpty()
                         && gender.isEmpty()
                         && mobile.isEmpty()
-                        && email.isEmpty()) {
+                        && email.isEmpty()
+                        && semesterValue.isEmpty()) {
 
                     continue;
                 }
 
+                int semesterNumber =
+                        Integer.parseInt(
+                                semesterValue);
+
+                // =====================================
+                // Get Semester
+                // =====================================
+
+                Semester semester =
+                        semesterService
+                                .getSemesterByCourseIdAndSemesterNumber(
+                                        course.getId(),
+                                        semesterNumber)
+                                .orElseThrow(() ->
+                                        new RuntimeException(
+                                                "Semester "
+                                                + semesterNumber
+                                                + " not found for course."
+                                        )
+                                );
 
                 // =====================================
                 // Automatic Password
                 // =====================================
 
-                String password =
+                String plainPassword =
                         enrollmentNo
-                        + "@"
-                        + Year.now().getValue();
+                        + "@2026";
 
+                String encryptedPassword =
+                        passwordEncoder.encode(
+                                plainPassword);
 
                 // =====================================
                 // Create Student
@@ -430,6 +513,9 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                 student.setFirstName(
                         firstName);
 
+                student.setMiddleName(
+                        middleName);
+
                 student.setLastName(
                         lastName);
 
@@ -443,10 +529,9 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                         email);
 
                 student.setPassword(
-                        password);
+                        encryptedPassword);
 
                 student.setActive(true);
-
 
                 // =====================================
                 // Save Student
@@ -458,9 +543,7 @@ public class StudentExcelServiceImpl implements StudentExcelService {
                 importedCount++;
             }
 
-
             workbook.close();
-
 
             System.out.println(
                     "Students Imported Successfully : "

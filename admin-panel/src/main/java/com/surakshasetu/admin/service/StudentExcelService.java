@@ -9,7 +9,6 @@ public interface StudentExcelService {
 
     void importStudents(MultipartFile file,
                         Long departmentId,
-                        Long courseId,
-                        Long semesterId);
+                        Long courseId);
 
 }

@@ -1,6 +1,7 @@
 package com.surakshasetu.admin.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.surakshasetu.admin.entity.Semester;
 
@@ -16,4 +17,8 @@ public interface SemesterService {
 
     void deleteSemester(Long id);
 
+    Optional<Semester> getSemesterByCourseIdAndSemesterNumber(
+            Long courseId,
+            Integer semesterNumber
+    );
 }

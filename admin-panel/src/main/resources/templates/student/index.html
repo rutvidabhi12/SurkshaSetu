@@ -1,734 +1,1754 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<div th:replace="~{layout/base :: layout(~{::section})}">
 
-    <meta charset="UTF-8">
+<section>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ===================================================== -->
 
-    <title>Student Management</title>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+        <div>
 
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-          rel="stylesheet">
+            <h2 class="page-title mb-1">
+                Student Management
+            </h2>
 
-    <!-- CSS -->
-    <link rel="stylesheet" th:href="@{/css/global.css}">
-    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
-    <link rel="stylesheet" th:href="@{/css/navbar.css}">
-    <link rel="stylesheet" th:href="@{/css/student.css}">
-
-    <script th:src="@{/js/student.js}"></script>
-
-</head>
-
-<body>
-
-<!-- =========================
-     Sidebar
-========================= -->
-
-<div th:replace="~{layout/sidebar :: sidebar}"></div>
-
-
-<!-- =========================
-     Navbar
-========================= -->
-
-<div th:replace="~{layout/navbar :: navbar}"></div>
-
-
-<!-- =========================
-     Main Content
-========================= -->
-
-<div class="main-content">
-
-    <div class="container-fluid">
-
-
-        <!-- =========================
-             Success Popup
-        ========================= -->
-
-        <div th:if="${param.success}">
-
-            <script>
-                window.addEventListener("load", function () {
-
-                    Swal.fire({
-                        icon: "success",
-                        title: "Import Successful",
-                        text: "Students imported successfully.",
-                        confirmButtonText: "OK"
-                    });
-
-                });
-            </script>
+            <p class="text-muted mb-0">
+                Manage students using Excel Import
+            </p>
 
         </div>
-
-
-        <!-- =========================
-             Error Popup
-        ========================= -->
-
-        <div th:if="${param.error}">
-
-            <script th:inline="javascript">
-
-                window.addEventListener("load", function () {
-
-                    Swal.fire({
-                        icon: "error",
-                        title: "Import Failed",
-                        text: [[${param.error}]],
-                        confirmButtonText: "OK"
-                    });
-
-                });
-
-            </script>
-
-        </div>
-
-
-        <!-- =========================
-             Page Header
-        ========================= -->
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-
-            <div>
-
-                <h2 class="page-title mb-1">
-                    Student Management
-                </h2>
-
-                <p class="text-muted mb-0">
-                    Manage students using Excel Import
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-             Student Import Form
-        ========================= -->
-
-        <form th:action="@{/students/upload}"
-              method="post"
-              enctype="multipart/form-data"
-              id="studentImportForm">
-
-
-            <!-- =========================
-                 Filter Card
-            ========================= -->
-
-            <div class="card filter-card mb-4">
-
-                <div class="card-body">
-
-                    <div class="row g-3 align-items-end">
-
-
-                        <!-- Department -->
-
-                        <div class="col-lg-3">
-
-                            <div class="d-flex justify-content-between mb-2">
-
-                                <label class="form-label fw-semibold mb-0">
-                                    Department
-                                </label>
-
-                                <a th:href="@{/departments/add}"
-                                   class="btn btn-success btn-sm">
-
-                                    <i class="bi bi-plus-circle"></i>
-
-                                </a>
-
-                            </div>
-
-                            <select class="form-select"
-                                    name="departmentId"
-                                    id="departmentId"
-                                    required>
-
-                                <option value="">
-                                    Select Department
-                                </option>
-
-                                <option th:each="department : ${departments}"
-                                        th:value="${department.id}"
-                                        th:text="${department.departmentName}">
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Course -->
-
-                        <div class="col-lg-3">
-
-                            <div class="d-flex justify-content-between mb-2">
-
-                                <label class="form-label fw-semibold mb-0">
-                                    Course
-                                </label>
-
-                                <a th:href="@{/courses/add}"
-                                   class="btn btn-success btn-sm">
-
-                                    <i class="bi bi-plus-circle"></i>
-
-                                </a>
-
-                            </div>
-
-                            <select class="form-select"
-                                    name="courseId"
-                                    id="courseId"
-                                    required>
-
-                                <option value="">
-                                    Select Course
-                                </option>
-
-                                <option th:each="course : ${courses}"
-                                        th:value="${course.id}"
-                                        th:text="${course.courseName}">
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Semester -->
-
-                        <div class="col-lg-3">
-
-                            <div class="d-flex justify-content-between mb-2">
-
-                                <label class="form-label fw-semibold mb-0">
-                                    Semester
-                                </label>
-
-                                <a th:href="@{/semesters/add}"
-                                   class="btn btn-success btn-sm">
-
-                                    <i class="bi bi-plus-circle"></i>
-
-                                </a>
-
-                            </div>
-
-                            <select class="form-select"
-                                    name="semesterId"
-                                    id="semesterId"
-                                    required>
-
-                                <option value="">
-                                    Select Semester
-                                </option>
-
-                                <option th:each="semester : ${semesters}"
-                                        th:value="${semester.id}"
-                                        th:text="${semester.semesterName}">
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Upload Excel -->
-
-                        <div class="col-lg-3">
-
-                            <label class="form-label d-block">
-                                &nbsp;
-                            </label>
-
-                            <button type="button"
-                                    class="btn btn-primary w-100"
-                                    onclick="document.getElementById('excelFile').click()">
-
-                                <i class="bi bi-upload me-2"></i>
-
-                                Upload Excel
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- =========================
-                 Excel Actions
-            ========================= -->
-
-            <div class="card mb-4">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-
-
-                        <!-- Left -->
-
-                        <div>
-
-                            <!-- Download Template -->
-
-                            <a th:href="@{/students/template}"
-                               class="btn btn-success me-2">
-
-                                <i class="bi bi-download me-2"></i>
-
-                                Download Template
-
-                            </a>
-
-
-                            <!-- Hidden Excel Input -->
-
-                            <input type="file"
-                                   id="excelFile"
-                                   name="file"
-                                   accept=".xlsx,.xls"
-                                   hidden>
-
-
-                            <!-- Selected File -->
-
-                            <span id="selectedFileName"
-                                  class="text-muted ms-2">
-
-                            </span>
-
-                        </div>
-
-
-                        <!-- Right -->
-
-                        <div>
-
-                            <!-- Import Students -->
-
-                            <button type="submit"
-                                    class="btn btn-primary">
-
-                                <i class="bi bi-database-fill-check me-2"></i>
-
-                                Import Students
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </form>
-
-
-        <!-- =========================
-             Student List Header
-        ========================= -->
-
-        <div class="card mb-4">
-
-            <div class="card-body">
-
-                <div class="d-flex justify-content-between align-items-center">
-
-                    <h5 class="mb-0">
-                        Student List
-                    </h5>
-
-                    <span class="badge bg-success fs-6">
-
-                        Total Students :
-
-                        <span th:text="${#lists.size(students)}">
-                            0
-                        </span>
-
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-             Search
-        ========================= -->
-
-        <div class="card mb-4">
-
-            <div class="card-body">
-
-                <div class="row">
-
-                    <div class="col-lg-4 ms-auto">
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-
-                                <i class="bi bi-search"></i>
-
-                            </span>
-
-                            <input type="text"
-                                id="studentSearch"
-                                class="form-control"
-                                placeholder="Search Student...">
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-             Student Table
-        ========================= -->
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="table-responsive">
-
-                    <table id="studentTable" class="table table-hover align-middle">
-
-                        <thead class="table-dark">
-
-                        <tr>
-
-                            <th width="70">
-                                Photo
-                            </th>
-
-                            <th>
-                                Enrollment No
-                            </th>
-
-                            <th>
-                                Student Name
-                            </th>
-
-                            <th>
-                                Gender
-                            </th>
-
-                            <th>
-                                Mobile
-                            </th>
-
-                            <th>
-                                Email
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                            <th width="180">
-                                Action
-                            </th>
-
-                        </tr>
-
-                        </thead>
-
-
-                        <tbody id="studentTableBody">
-
-
-                        <!-- No Students -->
-
-                        <tr th:if="${#lists.isEmpty(students)}">
-
-                            <td colspan="8"
-                                class="text-center py-5">
-
-                                <i class="bi bi-people-fill fs-1 text-secondary"></i>
-
-                                <h5 class="mt-3">
-                                    No Students Found
-                                </h5>
-
-                                <p class="text-muted mb-0">
-                                    Upload an Excel file to import students.
-                                </p>
-
-                            </td>
-
-                        </tr>
-
-
-                        <!-- Student List -->
-
-                        <tr th:each="student : ${students}">
-
-
-                            <!-- Photo -->
-
-                            <td>
-
-                                <img th:if="${student.photo != null}"
-                                     th:src="@{'/uploads/' + ${student.photo}}"
-                                     width="45"
-                                     height="45"
-                                     class="rounded-circle">
-
-                                <i th:if="${student.photo == null}"
-                                   class="bi bi-person-circle fs-2">
-                                </i>
-
-                            </td>
-
-
-                            <!-- Enrollment -->
-
-                            <td th:text="${student.enrollmentNo}">
-                            </td>
-
-
-                            <!-- Name -->
-
-                            <td>
-
-                                <span th:text="${student.firstName}">
-                                </span>
-
-                                <span th:text="${student.lastName}">
-                                </span>
-
-                            </td>
-
-
-                            <!-- Gender -->
-
-                            <td th:text="${student.gender}">
-                            </td>
-
-
-                            <!-- Mobile -->
-
-                            <td th:text="${student.mobile}">
-                            </td>
-
-
-                            <!-- Email -->
-
-                            <td th:text="${student.email}">
-                            </td>
-
-
-                            <!-- Status -->
-
-                            <td>
-
-                                <span class="badge bg-success"
-                                      th:if="${student.active}">
-
-                                    Active
-
-                                </span>
-
-                                <span class="badge bg-danger"
-                                      th:unless="${student.active}">
-
-                                    Inactive
-
-                                </span>
-
-                            </td>
-
-
-                            <!-- Actions -->
-
-                            <td>
-
-                                <!-- View -->
-
-                                <a th:href="@{/students/view/{id}(id=${student.id})}"
-                                   class="btn btn-sm btn-info text-white">
-
-                                    <i class="bi bi-eye"></i>
-
-                                </a>
-
-
-                                <!-- Edit -->
-
-                                <a th:href="@{/students/edit/{id}(id=${student.id})}"
-                                   class="btn btn-sm btn-warning">
-
-                                    <i class="bi bi-pencil-square"></i>
-
-                                </a>
-
-
-                                <!-- Delete -->
-
-                                <a th:href="@{/students/delete/{id}(id=${student.id})}"
-                                   class="btn btn-sm btn-danger"
-                                   onclick="return confirm('Are you sure you want to delete this student?')">
-
-                                    <i class="bi bi-trash"></i>
-
-                                </a>
-
-                            </td>
-
-                        </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-             Pagination
-        ========================= -->
-
-        <div class="d-flex justify-content-end mt-4">
-
-            <nav>
-
-                <ul class="pagination">
-
-                    <li class="page-item disabled">
-
-                        <a class="page-link"
-                           href="#">
-
-                            Previous
-
-                        </a>
-
-                    </li>
-
-
-                    <li class="page-item active">
-
-                        <a class="page-link"
-                           href="#">
-
-                            1
-
-                        </a>
-
-                    </li>
-
-
-                    <li class="page-item disabled">
-
-                        <a class="page-link"
-                           href="#">
-
-                            Next
-
-                        </a>
-
-                    </li>
-
-                </ul>
-
-            </nav>
-
-        </div>
-
 
     </div>
+
+
+    <!-- ===================================================== -->
+    <!-- DEPARTMENT / COURSE / EXCEL CARD -->
+    <!-- ===================================================== -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row g-3 align-items-end">
+
+<!-- Department -->
+
+<div class="col-lg-3 col-md-6">
+
+    <div class="d-flex align-items-center mb-2">
+
+        <label class="form-label fw-semibold mb-0">
+            Department
+        </label>
+
+        <a th:href="@{/departments/add}"
+        class="btn btn-success ms-auto add-btn"
+        title="Add Department">
+
+            <i class="bi bi-plus-lg"></i>
+
+        </a>
+
+    </div>
+
+    <select id="mainDepartment"
+            class="form-select">
+
+        <option value="">
+            Select Department
+        </option>
+
+        <option th:each="department : ${departments}"
+                th:value="${department.id}"
+                th:text="${department.departmentName}">
+        </option>
+
+    </select>
 
 </div>
 
 
-<!-- =========================
-     Bootstrap JS
-========================= -->
+<!-- Course -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<div class="col-lg-3 col-md-6">
+
+    <div class="d-flex align-items-center mb-2">
+
+        <label class="form-label fw-semibold mb-0">
+            Course
+        </label>
+
+        <a th:href="@{/courses/add}"
+           class="btn btn-success ms-auto add-btn"
+           title="Add Course">
+
+            <i class="bi bi-plus-lg"></i>
+
+        </a>
+
+    </div>
+
+    <select id="mainCourse"
+            class="form-select">
+
+        <option value="">
+            Select Course
+        </option>
+
+        <option th:each="course : ${courses}"
+                th:value="${course.id}"
+                th:data-department="${course.department.id}"
+                th:text="${course.courseName}">
+        </option>
+
+    </select>
+
+</div>
+                <!-- Upload Excel -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <form th:action="@{/students/upload}"
+                          method="post"
+                          enctype="multipart/form-data"
+                          id="uploadExcelForm">
+
+                        <label class="form-label fw-semibold">
+                            Upload Excel
+                        </label>
+
+                        <input type="file"
+                               id="excelFile"
+                               name="file"
+                               accept=".xlsx,.xls"
+                               class="d-none">
+
+                        <button type="button"
+                                class="btn w-100"
+                                style="background:#5F473B;color:white;"
+                                onclick="document.getElementById('excelFile').click()">
+
+                            <i class="bi bi-upload me-2"></i>
+
+                            Upload Excel
+
+                        </button>
+
+                    </form>
+
+                </div>
 
 
-<!-- =========================
-     SweetAlert2
-========================= -->
+            </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        </div>
 
-
-<!-- =========================
-     Excel File Selection
-========================= -->
-
-<script>
-
-    const excelFile = document.getElementById("excelFile");
-
-    const selectedFileName =
-        document.getElementById("selectedFileName");
+    </div>
 
 
-    excelFile.addEventListener("change", function () {
+    <!-- ===================================================== -->
+    <!-- DOWNLOAD / IMPORT -->
+    <!-- ===================================================== -->
 
-        if (this.files.length > 0) {
+    <div class="card shadow-sm mb-4">
 
-            selectedFileName.textContent =
-                this.files[0].name;
+        <div class="card-body p-4">
 
-        } else {
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
-            selectedFileName.textContent = "";
+
+                <!-- Download -->
+
+                <a th:href="@{/students/download-template}"
+                   class="btn btn-success">
+
+                    <i class="bi bi-download me-2"></i>
+
+                    Download Template
+
+                </a>
+
+
+                <!-- Import -->
+
+                <button type="button"
+                        id="importStudentsBtn"
+                        class="btn"
+                        style="background:#5F473B;color:white;">
+
+                    <i class="bi bi-database-check me-2"></i>
+
+                    Import Students
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- STUDENT LIST HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h4 class="mb-0">
+                    Student List
+                </h4>
+
+                <span class="badge bg-success fs-6 px-3 py-2">
+
+                    Total Students :
+                    <span id="totalStudents">
+                        0
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- SEARCH + FILTER -->
+    <!-- ===================================================== -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row align-items-center">
+
+
+                <!-- FILTER BUTTON -->
+
+                <div class="col-lg-8 col-md-6">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#studentFilterModal">
+
+                        <i class="bi bi-funnel-fill me-2"></i>
+
+                        Filter
+
+                    </button>
+
+                    <span id="filterStatus"
+                          class="text-muted ms-2">
+                    </span>
+
+                </div>
+
+
+                <!-- SEARCH -->
+
+                <div class="col-lg-4 col-md-6 mt-3 mt-md-0">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-search"></i>
+
+                        </span>
+
+                        <input type="text"
+                               id="studentSearch"
+                               class="form-control"
+                               placeholder="Search Student...">
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- FILTER MODAL -->
+    <!-- ===================================================== -->
+
+    <div class="modal fade"
+         id="studentFilterModal"
+         tabindex="-1"
+         aria-labelledby="studentFilterModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+
+                <!-- Modal Header -->
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title"
+                        id="studentFilterModalLabel">
+
+                        <i class="bi bi-funnel-fill me-2"></i>
+
+                        Filter Students
+
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+
+                <!-- Modal Body -->
+
+                <div class="modal-body">
+
+
+                    <!-- Department -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                            Department
+
+                        </label>
+
+                        <select id="filterDepartment"
+                                class="form-select">
+
+                            <option value="">
+                                Select Department
+                            </option>
+
+                            <option th:each="department : ${departments}"
+                                    th:value="${department.id}"
+                                    th:text="${department.departmentName}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Course -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                            Course
+
+                        </label>
+
+                        <select id="filterCourse"
+                                class="form-select">
+
+                            <option value="">
+                                Select Course
+                            </option>
+
+                            <option th:each="course : ${courses}"
+                                    th:value="${course.id}"
+                                    th:data-department="${course.department.id}"
+                                    th:text="${course.courseName}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Semester -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                            Semester
+
+                        </label>
+
+                        <select id="filterSemester"
+                                class="form-select">
+
+                            <option value="">
+                                Select Semester
+                            </option>
+
+                            <option th:each="semester : ${semesters}"
+                                    th:value="${semester.id}"
+                                    th:data-course="${semester.course.id}"
+                                    th:text="${semester.semesterName}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- Modal Footer -->
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            onclick="resetStudentFilter()">
+
+                        <i class="bi bi-arrow-counterclockwise me-2"></i>
+
+                        Reset
+
+                    </button>
+
+
+                    <button type="button"
+                            class="btn btn-success"
+                            onclick="applyStudentFilter()">
+
+                        <i class="bi bi-funnel-fill me-2"></i>
+
+                        Apply Filter
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- STUDENT TABLE -->
+    <!-- ===================================================== -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead style="background:#212529;color:white;">
+
+                    <tr>
+
+                        <th>
+                            Photo
+                        </th>
+
+                        <th>
+                            Enrollment No
+                        </th>
+
+                        <th>
+                            Student Name
+                        </th>
+
+                        <th>
+                            Gender
+                        </th>
+
+                        <th>
+                            Semester
+                        </th>
+
+                        <th>
+                            Mobile
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody id="studentTableBody">
+
+
+                    <!-- NO DATA -->
+
+                    <tr id="noStudentData"
+                        style="display:none;">
+
+                        <td colspan="9"
+                            class="text-center py-5">
+
+                            <i class="bi bi-people fs-1 text-secondary"></i>
+
+                            <h5 class="mt-3">
+                                No Student Found
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                No student matches your search or filter.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- STUDENT LIST -->
+
+                    <tr th:each="student, stat : ${students}"
+                        class="student-row"
+                        th:data-id="${student.id}"
+                        th:data-department="${student.department.id}"
+                        th:data-course="${student.course.id}"
+                        th:data-semester="${student.semester.id}"
+                        th:data-search="${student.enrollmentNo + ' ' +
+                                         student.firstName + ' ' +
+                                         student.middleName + ' ' +
+                                         student.lastName + ' ' +
+                                         student.mobile + ' ' +
+                                         student.email}">
+
+
+                        <!-- PHOTO -->
+
+                        <td>
+
+                            <div th:if="${student.photo != null and student.photo != ''}">
+
+                                <img th:src="@{'/uploads/students/' + ${student.photo}}"
+                                     width="45"
+                                     height="45"
+                                     class="rounded-circle"
+                                     style="object-fit:cover;">
+
+                            </div>
+
+
+                            <i th:unless="${student.photo != null and student.photo != ''}"
+                               class="bi bi-person-circle fs-2">
+                            </i>
+
+                        </td>
+
+
+                        <!-- ENROLLMENT -->
+
+                        <td th:text="${student.enrollmentNo}">
+                            -
+                        </td>
+
+
+                        <!-- NAME -->
+
+                        <td>
+
+                            <span th:text="${student.firstName}">
+                            </span>
+
+                            <span th:if="${student.middleName != null}"
+                                  th:text="' ' + ${student.middleName}">
+                            </span>
+
+                            <span th:text="' ' + ${student.lastName}">
+                            </span>
+
+                        </td>
+
+
+                        <!-- GENDER -->
+
+                        <td th:text="${student.gender}">
+                            -
+                        </td>
+
+
+                        <!-- SEMESTER -->
+
+                        <td>
+
+                            <span class="badge bg-primary"
+                                  th:text="${student.semester.semesterName}">
+                            </span>
+
+                        </td>
+
+
+                        <!-- MOBILE -->
+
+                        <td th:text="${student.mobile}">
+                            -
+                        </td>
+
+
+                        <!-- EMAIL -->
+
+                        <td th:text="${student.email}">
+                            -
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <span class="badge bg-success"
+                                  th:if="${student.active}">
+
+                                Active
+
+                            </span>
+
+
+                            <span class="badge bg-danger"
+                                  th:unless="${student.active}">
+
+                                Inactive
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            <!-- VIEW -->
+
+                            <a th:href="@{/students/view/{id}(id=${student.id})}"
+                               class="btn btn-info btn-sm text-white"
+                               title="View">
+
+                                <i class="bi bi-eye"></i>
+
+                            </a>
+
+
+                            <!-- EDIT -->
+
+                            <a th:href="@{/students/edit/{id}(id=${student.id})}"
+                               class="btn btn-warning btn-sm"
+                               title="Edit">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </a>
+
+
+                            <!-- DELETE -->
+
+                            <a href="#"
+                               class="btn btn-danger btn-sm"
+                               title="Delete"
+                               th:onclick="'deleteStudent(' + ${student.id} + '); return false;'">
+
+                                <i class="bi bi-trash"></i>
+
+                            </a>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- PAGINATION -->
+    <!-- ===================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
+
+
+        <!-- RECORD INFORMATION -->
+
+        <div class="text-muted">
+
+            Showing
+
+            <strong id="startRecord">
+                0
+            </strong>
+
+            -
+
+            <strong id="endRecord">
+                0
+            </strong>
+
+            of
+
+            <strong id="filteredRecords">
+                0
+            </strong>
+
+            students
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        <nav>
+
+            <ul class="pagination mb-0"
+                id="studentPagination">
+
+            </ul>
+
+        </nav>
+
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- JAVASCRIPT -->
+    <!-- ===================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* ==========================================
+                   VARIABLES
+                ========================================== */
+
+                const rows = Array.from(
+                    document.querySelectorAll(
+                        ".student-row"
+                    )
+                );
+
+                const rowsPerPage = 100;
+
+                let currentPage = 1;
+
+                let filteredRows = [...rows];
+
+
+                const searchInput =
+                    document.getElementById(
+                        "studentSearch"
+                    );
+
+
+                const filterDepartment =
+                    document.getElementById(
+                        "filterDepartment"
+                    );
+
+
+                const filterCourse =
+                    document.getElementById(
+                        "filterCourse"
+                    );
+
+
+                const filterSemester =
+                    document.getElementById(
+                        "filterSemester"
+                    );
+
+
+                /* ==========================================
+                   TOTAL STUDENTS
+                ========================================== */
+
+                document.getElementById(
+                    "totalStudents"
+                ).textContent = rows.length;
+
+
+                /* ==========================================
+                   COURSE FILTER BY DEPARTMENT
+                ========================================== */
+
+                function updateCourseOptions(
+                    departmentSelect,
+                    courseSelect
+                ) {
+
+                    const departmentId =
+                        departmentSelect.value;
+
+
+                    const options =
+                        Array.from(
+                            courseSelect.options
+                        );
+
+
+                    options.forEach(
+                        function (option) {
+
+                            if (!option.value) {
+
+                                option.style.display = "";
+
+                                return;
+
+                            }
+
+
+                            const courseDepartment =
+                                option.getAttribute(
+                                    "data-department"
+                                );
+
+
+                            if (
+                                !departmentId ||
+                                courseDepartment === departmentId
+                            ) {
+
+                                option.style.display = "";
+
+                            } else {
+
+                                option.style.display = "none";
+
+                            }
+
+                        }
+                    );
+
+
+                    courseSelect.value = "";
+
+                }
+
+
+                /* ==========================================
+                   SEMESTER FILTER BY COURSE
+                ========================================== */
+
+                function updateSemesterOptions() {
+
+                    const courseId =
+                        filterCourse.value;
+
+
+                    const options =
+                        Array.from(
+                            filterSemester.options
+                        );
+
+
+                    options.forEach(
+                        function (option) {
+
+                            if (!option.value) {
+
+                                option.style.display = "";
+
+                                return;
+
+                            }
+
+
+                            const semesterCourse =
+                                option.getAttribute(
+                                    "data-course"
+                                );
+
+
+                            if (
+                                !courseId ||
+                                semesterCourse === courseId
+                            ) {
+
+                                option.style.display = "";
+
+                            } else {
+
+                                option.style.display = "none";
+
+                            }
+
+                        }
+                    );
+
+
+                    filterSemester.value = "";
+
+                }
+
+
+                /* ==========================================
+                   MAIN DEPARTMENT
+                ========================================== */
+
+                const mainDepartment =
+                    document.getElementById(
+                        "mainDepartment"
+                    );
+
+
+                const mainCourse =
+                    document.getElementById(
+                        "mainCourse"
+                    );
+
+
+                mainDepartment.addEventListener(
+                    "change",
+                    function () {
+
+                        updateCourseOptions(
+                            mainDepartment,
+                            mainCourse
+                        );
+
+                    }
+                );
+
+
+                /* ==========================================
+                   FILTER DEPARTMENT
+                ========================================== */
+
+                filterDepartment.addEventListener(
+                    "change",
+                    function () {
+
+                        updateCourseOptions(
+                            filterDepartment,
+                            filterCourse
+                        );
+
+                        updateSemesterOptions();
+
+                    }
+                );
+
+
+                /* ==========================================
+                   FILTER COURSE
+                ========================================== */
+
+                filterCourse.addEventListener(
+                    "change",
+                    function () {
+
+                        updateSemesterOptions();
+
+                    }
+                );
+
+
+                /* ==========================================
+                   SEARCH
+                ========================================== */
+
+                searchInput.addEventListener(
+                    "input",
+                    function () {
+
+                        applyFilters();
+
+                    }
+                );
+
+
+                /* ==========================================
+                   APPLY FILTER
+                ========================================== */
+
+                window.applyStudentFilter =
+                    function () {
+
+                        applyFilters();
+
+
+                        const modalElement =
+                            document.getElementById(
+                                "studentFilterModal"
+                            );
+
+
+                        const modal =
+                            bootstrap.Modal.getInstance(
+                                modalElement
+                            );
+
+
+                        if (modal) {
+
+                            modal.hide();
+
+                        }
+
+                    };
+
+
+                /* ==========================================
+                   RESET FILTER
+                ========================================== */
+
+                window.resetStudentFilter =
+                    function () {
+
+                        filterDepartment.value = "";
+
+                        filterCourse.value = "";
+
+                        filterSemester.value = "";
+
+
+                        searchInput.value = "";
+
+
+                        // Show all course options
+
+                        Array.from(
+                            filterCourse.options
+                        ).forEach(
+                            function (option) {
+
+                                option.style.display = "";
+
+                            }
+                        );
+
+
+                        // Show all semester options
+
+                        Array.from(
+                            filterSemester.options
+                        ).forEach(
+                            function (option) {
+
+                                option.style.display = "";
+
+                            }
+                        );
+
+
+                        applyFilters();
+
+
+                        const modalElement =
+                            document.getElementById(
+                                "studentFilterModal"
+                            );
+
+
+                        const modal =
+                            bootstrap.Modal.getInstance(
+                                modalElement
+                            );
+
+
+                        if (modal) {
+
+                            modal.hide();
+
+                        }
+
+                    };
+
+
+                /* ==========================================
+                   FILTER LOGIC
+                ========================================== */
+
+                function applyFilters() {
+
+                    const departmentId =
+                        filterDepartment.value;
+
+
+                    const courseId =
+                        filterCourse.value;
+
+
+                    const semesterId =
+                        filterSemester.value;
+
+
+                    const searchText =
+                        searchInput.value
+                        .trim()
+                        .toLowerCase();
+
+
+                    filteredRows =
+                        rows.filter(
+                            function (row) {
+
+
+                                const rowDepartment =
+                                    row.getAttribute(
+                                        "data-department"
+                                    );
+
+
+                                const rowCourse =
+                                    row.getAttribute(
+                                        "data-course"
+                                    );
+
+
+                                const rowSemester =
+                                    row.getAttribute(
+                                        "data-semester"
+                                    );
+
+
+                                const rowSearch =
+                                    (
+                                        row.getAttribute(
+                                            "data-search"
+                                        ) || ""
+                                    ).toLowerCase();
+
+
+                                const departmentMatch =
+                                    !departmentId ||
+                                    rowDepartment === departmentId;
+
+
+                                const courseMatch =
+                                    !courseId ||
+                                    rowCourse === courseId;
+
+
+                                const semesterMatch =
+                                    !semesterId ||
+                                    rowSemester === semesterId;
+
+
+                                const searchMatch =
+                                    !searchText ||
+                                    rowSearch.includes(
+                                        searchText
+                                    );
+
+
+                                return (
+                                    departmentMatch &&
+                                    courseMatch &&
+                                    semesterMatch &&
+                                    searchMatch
+                                );
+
+                            }
+                        );
+
+
+                    currentPage = 1;
+
+
+                    updateFilterStatus();
+
+                    showPage(currentPage);
+
+                }
+
+
+                /* ==========================================
+                   FILTER STATUS
+                ========================================== */
+
+                function updateFilterStatus() {
+
+                    const activeFilters = [];
+
+
+                    if (filterDepartment.value) {
+
+                        activeFilters.push(
+                            "Department"
+                        );
+
+                    }
+
+
+                    if (filterCourse.value) {
+
+                        activeFilters.push(
+                            "Course"
+                        );
+
+                    }
+
+
+                    if (filterSemester.value) {
+
+                        activeFilters.push(
+                            "Semester"
+                        );
+
+                    }
+
+
+                    const status =
+                        document.getElementById(
+                            "filterStatus"
+                        );
+
+
+                    if (activeFilters.length > 0) {
+
+                        status.textContent =
+                            activeFilters.length +
+                            " filter(s) applied";
+
+                    } else {
+
+                        status.textContent = "";
+
+                    }
+
+                }
+
+
+                /* ==========================================
+                   SHOW PAGE
+                ========================================== */
+
+                function showPage(page) {
+
+                    currentPage = page;
+
+
+                    const totalPages =
+                        Math.ceil(
+                            filteredRows.length /
+                            rowsPerPage
+                        );
+
+
+                    const start =
+                        (page - 1) *
+                        rowsPerPage;
+
+
+                    const end =
+                        Math.min(
+                            start + rowsPerPage,
+                            filteredRows.length
+                        );
+
+
+                    /* Hide all */
+
+                    rows.forEach(
+                        function (row) {
+
+                            row.style.display =
+                                "none";
+
+                        }
+                    );
+
+
+                    /* Show current page */
+
+                    for (
+                        let i = start;
+                        i < end;
+                        i++
+                    ) {
+
+                        filteredRows[i].style.display =
+                            "";
+
+                    }
+
+
+                    /* No Data */
+
+                    const noData =
+                        document.getElementById(
+                            "noStudentData"
+                        );
+
+
+                    if (
+                        filteredRows.length === 0
+                    ) {
+
+                        noData.style.display = "";
+
+                    } else {
+
+                        noData.style.display =
+                            "none";
+
+                    }
+
+
+                    /* Record text */
+
+                    document.getElementById(
+                        "startRecord"
+                    ).textContent =
+                        filteredRows.length === 0
+                            ? 0
+                            : start + 1;
+
+
+                    document.getElementById(
+                        "endRecord"
+                    ).textContent =
+                        end;
+
+
+                    document.getElementById(
+                        "filteredRecords"
+                    ).textContent =
+                        filteredRows.length;
+
+
+                    createPagination(
+                        totalPages
+                    );
+
+                }
+
+
+                /* ==========================================
+                   PAGINATION
+                ========================================== */
+
+                function createPagination(
+                    totalPages
+                ) {
+
+                    const pagination =
+                        document.getElementById(
+                            "studentPagination"
+                        );
+
+
+                    pagination.innerHTML = "";
+
+
+                    if (totalPages <= 1) {
+
+                        return;
+
+                    }
+
+
+                    /* Previous */
+
+                    const previous =
+                        document.createElement(
+                            "li"
+                        );
+
+
+                    previous.className =
+                        "page-item " +
+                        (
+                            currentPage === 1
+                                ? "disabled"
+                                : ""
+                        );
+
+
+                    previous.innerHTML =
+                        `
+                        <a class="page-link"
+                           href="#">
+                            Previous
+                        </a>
+                        `;
+
+
+                    previous
+                        .querySelector("a")
+                        .addEventListener(
+                            "click",
+                            function (event) {
+
+                                event.preventDefault();
+
+
+                                if (
+                                    currentPage > 1
+                                ) {
+
+                                    showPage(
+                                        currentPage - 1
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    pagination.appendChild(
+                        previous
+                    );
+
+
+                    /* Page Numbers */
+
+                    for (
+                        let page = 1;
+                        page <= totalPages;
+                        page++
+                    ) {
+
+                        const pageItem =
+                            document.createElement(
+                                "li"
+                            );
+
+
+                        pageItem.className =
+                            "page-item " +
+                            (
+                                page === currentPage
+                                    ? "active"
+                                    : ""
+                            );
+
+
+                        pageItem.innerHTML =
+                            `
+                            <a class="page-link"
+                               href="#">
+                                ${page}
+                            </a>
+                            `;
+
+
+                        pageItem
+                            .querySelector("a")
+                            .addEventListener(
+                                "click",
+                                function (event) {
+
+                                    event.preventDefault();
+
+
+                                    showPage(page);
+
+                                }
+                            );
+
+
+                        pagination.appendChild(
+                            pageItem
+                        );
+
+                    }
+
+
+                    /* Next */
+
+                    const next =
+                        document.createElement(
+                            "li"
+                        );
+
+
+                    next.className =
+                        "page-item " +
+                        (
+                            currentPage === totalPages
+                                ? "disabled"
+                                : ""
+                        );
+
+
+                    next.innerHTML =
+                        `
+                        <a class="page-link"
+                           href="#">
+                            Next
+                        </a>
+                        `;
+
+
+                    next
+                        .querySelector("a")
+                        .addEventListener(
+                            "click",
+                            function (event) {
+
+                                event.preventDefault();
+
+
+                                if (
+                                    currentPage < totalPages
+                                ) {
+
+                                    showPage(
+                                        currentPage + 1
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    pagination.appendChild(
+                        next
+                    );
+
+                }
+
+
+                /* ==========================================
+                   INITIAL FILTER OPTIONS
+                ========================================== */
+
+                Array.from(
+                    filterSemester.options
+                ).forEach(function (option) {
+
+                    option.style.display = "";
+
+                });
+
+
+                /* ==========================================
+                   INITIAL PAGE
+                ========================================== */
+
+                showPage(1);
+
+            });
+
+
+        /* ==================================================
+           DELETE STUDENT
+        ================================================== */
+
+        function deleteStudent(id) {
+
+            Swal.fire({
+
+                title: "Delete Student?",
+
+                text: "This student will be permanently deleted.",
+
+                icon: "warning",
+
+                showCancelButton: true,
+
+                confirmButtonColor: "#dc3545",
+
+                cancelButtonColor: "#6c757d",
+
+                confirmButtonText: "Yes, Delete",
+
+                cancelButtonText: "Cancel"
+
+            }).then(
+                function (result) {
+
+                    if (result.isConfirmed) {
+
+                        window.location.href =
+                            "/students/delete/" + id;
+
+                    }
+
+                }
+            );
 
         }
 
-    });
 
-</script>
+        /* ==================================================
+           EXCEL FILE SELECT
+        ================================================== */
 
-</body>
+        document
+            .getElementById("excelFile")
+            .addEventListener(
+                "change",
+                function () {
+
+                    const file =
+                        this.files[0];
+
+
+                    if (!file) {
+
+                        return;
+
+                    }
+
+
+                    Swal.fire({
+
+                        title: "Excel Selected",
+
+                        text:
+                            file.name +
+                            " selected successfully.",
+
+                        icon: "success",
+
+                        showCancelButton: true,
+
+                        confirmButtonText:
+                            "Upload",
+
+                        cancelButtonText:
+                            "Cancel"
+
+                    }).then(
+                        function (result) {
+
+                            if (
+                                result.isConfirmed
+                            ) {
+
+                                document
+                                    .getElementById(
+                                        "uploadExcelForm"
+                                    )
+                                    .submit();
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+        /* ==================================================
+           IMPORT STUDENTS
+        ================================================== */
+
+        document
+            .getElementById("importStudentsBtn")
+            .addEventListener(
+                "click",
+                function () {
+
+                    const department =
+                        document.getElementById(
+                            "mainDepartment"
+                        ).value;
+
+
+                    const course =
+                        document.getElementById(
+                            "mainCourse"
+                        ).value;
+
+
+                    if (!department) {
+
+                        Swal.fire({
+
+                            icon: "warning",
+
+                            title: "Department Required",
+
+                            text:
+                                "Please select a department."
+
+                        });
+
+                        return;
+
+                    }
+
+
+                    if (!course) {
+
+                        Swal.fire({
+
+                            icon: "warning",
+
+                            title: "Course Required",
+
+                            text:
+                                "Please select a course."
+
+                        });
+
+                        return;
+
+                    }
+
+
+                    Swal.fire({
+
+                        icon: "info",
+
+                        title: "Import Students",
+
+                        text:
+                            "Please use the uploaded Excel file to import students."
+
+                    });
+
+                }
+            );
+
+    </script>
+
+
+</section>
+
+</div>
 
 </html>

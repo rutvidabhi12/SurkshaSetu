@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{layout/base :: layout(~{::section})}">
+
+<section>
+
+    <!-- Page Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="page-title mb-1">
+                Student Details
+            </h2>
+
+            <p class="text-muted mb-0">
+                View complete student information.
+            </p>
+
+        </div>
+
+        <div>
+
+            <a th:href="@{/students}"
+               class="btn btn-outline-secondary">
+
+                <i class="bi bi-arrow-left me-2"></i>
+                Back
+
+            </a>
+
+            <a th:href="@{/students/edit/{id}(id=${student.id})}"
+               class="btn btn-warning ms-2">
+
+                <i class="bi bi-pencil-square me-2"></i>
+                Edit Student
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Student Profile -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row align-items-center">
+
+                <!-- Photo -->
+
+                <div class="col-md-2 text-center">
+
+                    <img th:if="${student.photo != null and student.photo != ''}"
+                         th:src="@{'/uploads/students/' + ${student.photo}}"
+                         class="rounded-circle border"
+                         width="120"
+                         height="120">
+
+                    <i th:unless="${student.photo != null and student.photo != ''}"
+                       class="bi bi-person-circle text-secondary"
+                       style="font-size:120px;">
+                    </i>
+
+                </div>
+
+
+                <!-- Basic Information -->
+
+                <div class="col-md-10">
+
+                    <h3 class="mb-1"
+                        th:text="${student.firstName + ' ' + student.lastName}">
+                        Student Name
+                    </h3>
+
+                    <p class="text-muted mb-3"
+                       th:text="${student.enrollmentNo}">
+                        Enrollment No
+                    </p>
+
+                    <span class="badge bg-success"
+                          th:if="${student.active}">
+                        Active
+                    </span>
+
+                    <span class="badge bg-danger"
+                          th:unless="${student.active}">
+                        Inactive
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Academic Information -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                Academic Information
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        Enrollment No
+                    </label>
+
+                    <h6 th:text="${student.enrollmentNo}">
+                        -
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        Department
+                    </label>
+
+                    <h6 th:text="${student.department.departmentName}">
+                        -
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        Course
+                    </label>
+
+                    <h6 th:text="${student.course.courseName}">
+                        -
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        Semester
+                    </label>
+
+                    <h6 th:text="${student.semester.semesterName}">
+                        -
+                    </h6>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Personal Information -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                <i class="bi bi-person-fill me-2"></i>
+                Personal Information
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        First Name
+                    </label>
+
+                    <h6 th:text="${student.firstName}">
+                        -
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        Middle Name
+                    </label>
+
+                    <h6 th:text="${student.middleName}">
+                        -
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        Last Name
+                    </label>
+
+                    <h6 th:text="${student.lastName}">
+                        -
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        Gender
+                    </label>
+
+                    <h6 th:text="${student.gender}">
+                        -
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        Mobile
+                    </label>
+
+                    <h6 th:text="${student.mobile}">
+                        -
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="text-muted">
+                        Email
+                    </label>
+
+                    <h6 th:text="${student.email}">
+                        -
+                    </h6>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+</html>

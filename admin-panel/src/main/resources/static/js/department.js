@@ -8,30 +8,44 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    searchInput.addEventListener("input", function () {
+    searchInput.addEventListener("keyup", function () {
 
-        const searchValue = this.value.toLowerCase().trim();
+        const searchValue = searchInput.value.toLowerCase().trim();
 
-        const rows = tableBody.querySelectorAll(
-            "tr[data-department-row]"
-        );
+        const rows = tableBody.querySelectorAll("tr");
 
         rows.forEach(function (row) {
 
-            const rowText = row.textContent.toLowerCase();
+            const cells = row.querySelectorAll("td");
 
-            if (rowText.includes(searchValue)) {
-
-                row.style.display = "";
-
-            } else {
-
-                row.style.display = "none";
-
+            // No Department Found row
+            if (cells.length === 1) {
+                return;
             }
 
-        });
+            const departmentName = cells[1]
+                ? cells[1].textContent.toLowerCase()
+                : "";
 
+            const departmentCode = cells[2]
+                ? cells[2].textContent.toLowerCase()
+                : "";
+
+            const status = cells[3]
+                ? cells[3].textContent.toLowerCase()
+                : "";
+
+            const searchText =
+                departmentName + " " +
+                departmentCode + " " +
+                status;
+
+            if (searchText.includes(searchValue)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
     });
 
 });

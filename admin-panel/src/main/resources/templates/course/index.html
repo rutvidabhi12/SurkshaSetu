@@ -5,53 +5,9 @@
 
 <section>
 
-    <!-- ========================= -->
-    <!-- Success Popup -->
-    <!-- ========================= -->
-
-    <div th:if="${param.success}">
-
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Course Added Successfully',
-                confirmButtonText: 'OK'
-            });
-        </script>
-
-    </div>
-
-    <div th:if="${param.updated}">
-
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Course Updated Successfully',
-                confirmButtonText: 'OK'
-            });
-        </script>
-
-    </div>
-
-    <div th:if="${param.deleted}">
-
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Course Deleted Successfully',
-                confirmButtonText: 'OK'
-            });
-        </script>
-
-    </div>
-
-
-    <!-- ========================= -->
-    <!-- Page Header -->
-    <!-- ========================= -->
+    <!-- ================================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ================================================= -->
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -67,55 +23,71 @@
 
         </div>
 
-        <div>
+
+        <div class="d-flex gap-2">
+
             <a th:href="@{/students}"
-           class="btn btn-outline-secondary">
+               class="btn btn-outline-secondary">
 
-            <i class="bi bi-arrow-left me-2"></i>
+                <i class="bi bi-arrow-left me-2"></i>
 
-            Home
+                Home
 
-        </a>
+            </a>
 
-        <a th:href="@{/courses/add}"
-           class="btn btn-success">
 
-            <i class="bi bi-plus-circle me-2"></i>
+            <a th:href="@{/courses/add}"
+               class="btn btn-success">
 
-            Add Course
+                <i class="bi bi-plus-circle me-2"></i>
 
-        </a>
+                Add Course
+
+            </a>
+
+        </div>
 
     </div>
-    </div>
 
-    <!-- ========================= -->
-    <!-- Filter / Search -->
-    <!-- ========================= -->
+
+    <!-- ================================================= -->
+    <!-- FILTER CARD -->
+    <!-- ================================================= -->
 
     <div class="card shadow-sm mb-4">
 
-        <div class="card-body">
+        <div class="card-body p-4">
 
             <div class="row g-3 align-items-end">
 
-                <!-- Department -->
 
-                <div class="col-lg-4">
+                <!-- DEPARTMENT FILTER -->
+
+                <div class="col-lg-4 col-md-6">
 
                     <label class="form-label fw-semibold">
+
                         Department
+
                     </label>
 
-                    <select class="form-select">
+
+                    <select id="departmentFilter"
+                            class="form-select">
 
                         <option value="">
-                            All Departments
+
+                            Select Department
+
                         </option>
+
 
                         <option th:each="department : ${departments}"
                                 th:value="${department.id}"
-                                th:text="${department.departmentName}">
+                                th:text="${department.departmentName}"
+                                th:selected="${selectedDepartment != null
+                                    and selectedDepartment == department.id}">
+
                         </option>
 
                     </select>
@@ -123,13 +95,16 @@
                 </div>
 
 
-                <!-- Search -->
+                <!-- SEARCH -->
 
-                <div class="col-lg-5">
+                <div class="col-lg-5 col-md-6">
 
                     <label class="form-label fw-semibold">
+
                         Search
+
                     </label>
+
 
                     <div class="input-group">
 
@@ -139,22 +114,25 @@
 
                         </span>
 
+
                         <input type="text"
-                            id="courseSearch"
-                            class="form-control"
-                            placeholder="Search Course...">
+                               id="courseSearch"
+                               class="form-control"
+                               placeholder="Search Course...">
 
                     </div>
 
                 </div>
 
 
-                <!-- Filter Button -->
+                <!-- APPLY FILTER -->
 
                 <div class="col-lg-3">
 
                     <button type="button"
-                            class="btn btn-primary w-100">
+                            id="applyDepartmentFilter"
+                            class="btn w-100"
+                            style="background:#5F473B;color:white;">
 
                         <i class="bi bi-funnel-fill me-2"></i>
 
@@ -166,28 +144,82 @@
 
             </div>
 
+
+            <!-- CLEAR FILTER -->
+
+            <div class="mt-3">
+
+                <button type="button"
+                        id="clearDepartmentFilter"
+                        class="btn btn-sm btn-outline-secondary">
+
+                    <i class="bi bi-x-circle me-1"></i>
+
+                    Clear Department Filter
+
+                </button>
+
+            </div>
+
         </div>
 
     </div>
 
 
-    <!-- ========================= -->
-    <!-- Course Table -->
-    <!-- ========================= -->
+    <!-- ================================================= -->
+    <!-- COURSE COUNT -->
+    <!-- ================================================= -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h4 class="mb-0">
+
+                    Course List
+
+                </h4>
+
+
+                <span class="badge bg-success fs-6 px-3 py-2">
+
+                    Total Courses :
+
+                    <span id="courseCount"
+                          th:text="${#lists.size(courses)}">
+
+                        0
+
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- COURSE TABLE -->
+    <!-- ================================================= -->
 
     <div class="card shadow-sm">
 
-        <div class="card-body">
+        <div class="card-body p-4">
 
             <div class="table-responsive">
 
                 <table class="table table-hover align-middle">
 
-                    <thead class="table-success">
+                    <thead style="background:#212529;color:white;">
 
                     <tr>
 
-                        <th width="70">
+                        <th width="80">
                             #
                         </th>
 
@@ -196,18 +228,18 @@
                         </th>
 
                         <th>
-                            Department
+                            Total Semester
                         </th>
 
                         <th>
-                            Total Semester
+                            Department
                         </th>
 
                         <th>
                             Status
                         </th>
 
-                        <th width="150">
+                        <th width="160">
                             Action
                         </th>
 
@@ -218,9 +250,11 @@
 
                     <tbody id="courseTableBody">
 
-                    <!-- No Data -->
 
-                    <tr th:if="${#lists.isEmpty(courses)}">
+                    <!-- NO DATA -->
+
+                    <tr id="noCourseData"
+                        th:if="${#lists.isEmpty(courses)}">
 
                         <td colspan="6"
                             class="text-center py-5">
@@ -228,11 +262,15 @@
                             <i class="bi bi-book fs-1 text-secondary"></i>
 
                             <h5 class="mt-3">
+
                                 No Course Found
+
                             </h5>
 
                             <p class="text-muted mb-0">
-                                Click "Add Course" to create your first course.
+
+                                No course available for this selection.
+
                             </p>
 
                         </td>
@@ -240,43 +278,67 @@
                     </tr>
 
 
-                    <!-- Course List -->
+                    <!-- COURSE LIST -->
 
-                    <tr th:each="course, stat : ${courses}">
+                    <tr th:each="course, stat : ${courses}"
+                        class="course-row"
+                        th:data-course-name="${course.courseName}">
+
+
+                        <!-- NUMBER -->
 
                         <td th:text="${stat.count}">
+
+                            1
+
                         </td>
 
+
+                        <!-- COURSE NAME -->
 
                         <td th:text="${course.courseName}">
+
+                            Course Name
+
                         </td>
 
+
+                        <!-- TOTAL SEMESTER -->
+
+                        <td th:text="${course.totalSemester}">
+
+                            6
+
+                        </td>
+
+
+                        <!-- DEPARTMENT -->
 
                         <td th:text="${course.department.departmentName}">
-                        </td>
 
-
-                        <td>
-
-                            <span th:text="${course.totalSemester}">
-                            </span>
-
-                            Semesters
+                            Department
 
                         </td>
 
+
+                        <!-- STATUS -->
 
                         <td>
 
                             <span class="badge bg-success"
-                                  th:if="${course.status == 'Active'}">
+                                  th:if="${course.status == 'ACTIVE'
+                                      or course.status == 'Active'
+                                      or course.status == 'active'}">
 
                                 Active
 
                             </span>
 
+
                             <span class="badge bg-danger"
-                                  th:unless="${course.status == 'Active'}">
+                                  th:unless="${course.status == 'ACTIVE'
+                                      or course.status == 'Active'
+                                      or course.status == 'active'}">
 
                                 Inactive
 
@@ -285,33 +347,40 @@
                         </td>
 
 
+                        <!-- ACTION -->
+
                         <td>
 
-                            <!-- Edit -->
+
+                            <!-- EDIT -->
 
                             <a th:href="@{/courses/edit/{id}(id=${course.id})}"
                                class="btn btn-warning btn-sm"
-                               title="Edit Course">
+                               title="Edit">
 
                                 <i class="bi bi-pencil-square"></i>
 
                             </a>
 
 
-                            <!-- Delete -->
+                            <!-- DELETE -->
 
-                            <a th:href="@{/courses/delete/{id}(id=${course.id})}"
+                            <a href="#"
                                class="btn btn-danger btn-sm"
-                               title="Delete Course"
-                               onclick="return confirm('Delete this course?')">
+                               title="Delete"
+                               th:onclick="'deleteCourse('
+                                    + ${course.id}
+                                    + '); return false;'">
 
                                 <i class="bi bi-trash"></i>
 
                             </a>
 
+
                         </td>
 
                     </tr>
+
 
                     </tbody>
 
@@ -324,50 +393,245 @@
     </div>
 
 
-    <!-- ========================= -->
-    <!-- Pagination -->
-    <!-- ========================= -->
+    <!-- ================================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ================================================= -->
 
-    <div class="d-flex justify-content-end mt-4">
+    <script>
 
-        <nav>
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
 
-            <ul class="pagination">
 
-                <li class="page-item disabled">
+                const departmentFilter =
+                    document.getElementById(
+                        "departmentFilter"
+                    );
 
-                    <a class="page-link" href="#">
-                        Previous
-                    </a>
 
-                </li>
+                const applyDepartmentFilter =
+                    document.getElementById(
+                        "applyDepartmentFilter"
+                    );
 
-                <li class="page-item active">
 
-                    <a class="page-link" href="#">
-                        1
-                    </a>
+                const clearDepartmentFilter =
+                    document.getElementById(
+                        "clearDepartmentFilter"
+                    );
 
-                </li>
 
-                <li class="page-item disabled">
+                const courseSearch =
+                    document.getElementById(
+                        "courseSearch"
+                    );
 
-                    <a class="page-link" href="#">
-                        Next
-                    </a>
 
-                </li>
+                const courseRows =
+                    Array.from(
+                        document.querySelectorAll(
+                            ".course-row"
+                        )
+                    );
 
-            </ul>
 
-        </nav>
+                const courseCount =
+                    document.getElementById(
+                        "courseCount"
+                    );
 
-    </div>
+
+                /* ==========================================
+                   DEPARTMENT FILTER
+                ========================================== */
+
+                applyDepartmentFilter
+                    .addEventListener(
+                        "click",
+                        function () {
+
+                            const departmentId =
+                                departmentFilter.value;
+
+
+                            if (!departmentId) {
+
+                                window.location.href =
+                                    "/courses";
+
+                                return;
+
+                            }
+
+
+                            window.location.href =
+                                "/courses?departmentId="
+                                + departmentId;
+
+                        }
+                    );
+
+
+                /* ==========================================
+                   CLEAR DEPARTMENT FILTER
+                ========================================== */
+
+                clearDepartmentFilter
+                    .addEventListener(
+                        "click",
+                        function () {
+
+                            departmentFilter.value = "";
+
+                            window.location.href =
+                                "/courses";
+
+                        }
+                    );
+
+
+                /* ==========================================
+                   COURSE NAME SEARCH
+                   SEARCH ONLY COURSE NAME
+                ========================================== */
+
+                courseSearch
+                    .addEventListener(
+                        "input",
+                        function () {
+
+                            const keyword =
+                                this.value
+                                    .trim()
+                                    .toLowerCase();
+
+
+                            let visibleCount = 0;
+
+
+                            courseRows.forEach(
+                                function (row) {
+
+
+                                    const courseName =
+                                        (
+                                            row.getAttribute(
+                                                "data-course-name"
+                                            ) || ""
+                                        )
+                                        .toLowerCase();
+
+
+                                    if (
+                                        courseName.includes(
+                                            keyword
+                                        )
+                                    ) {
+
+                                        row.style.display =
+                                            "";
+
+                                        visibleCount++;
+
+                                    } else {
+
+                                        row.style.display =
+                                            "none";
+
+                                    }
+
+                                }
+                            );
+
+
+                            courseCount.textContent =
+                                visibleCount;
+
+
+                            const noCourseData =
+                                document.getElementById(
+                                    "noCourseData"
+                                );
+
+
+                            if (
+                                visibleCount === 0
+                            ) {
+
+                                if (noCourseData) {
+
+                                    noCourseData.style.display =
+                                        "";
+
+                                }
+
+                            } else {
+
+                                if (noCourseData) {
+
+                                    noCourseData.style.display =
+                                        "none";
+
+                                }
+
+                            }
+
+                        }
+                    );
+
+            }
+        );
+
+
+        /* ==========================================
+           DELETE COURSE
+        ========================================== */
+
+        function deleteCourse(id) {
+
+            Swal.fire({
+
+                title: "Delete Course?",
+
+                text:
+                    "This course will be permanently deleted.",
+
+                icon: "warning",
+
+                showCancelButton: true,
+
+                confirmButtonColor: "#dc3545",
+
+                cancelButtonColor: "#6c757d",
+
+                confirmButtonText:
+                    "Yes, Delete",
+
+                cancelButtonText:
+                    "Cancel"
+
+            }).then(
+                function (result) {
+
+                    if (result.isConfirmed) {
+
+                        window.location.href =
+                            "/courses/delete/"
+                            + id;
+
+                    }
+
+                }
+            );
+
+        }
+
+    </script>
+
 
 </section>
 
 </div>
-
-<script th:src="@{/js/course.js}"></script>
 
 </html>

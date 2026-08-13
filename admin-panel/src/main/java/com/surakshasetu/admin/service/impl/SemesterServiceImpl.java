@@ -1,11 +1,13 @@
 package com.surakshasetu.admin.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.surakshasetu.admin.entity.Semester;
 import com.surakshasetu.admin.repository.SemesterRepository;
 import com.surakshasetu.admin.service.SemesterService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SemesterServiceImpl implements SemesterService {
@@ -39,5 +41,17 @@ public class SemesterServiceImpl implements SemesterService {
     @Override
     public void deleteSemester(Long id) {
         semesterRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Semester> getSemesterByCourseIdAndSemesterNumber(
+            Long courseId,
+            Integer semesterNumber) {
+
+        return semesterRepository
+                .findByCourseIdAndSemesterNumber(
+                        courseId,
+                        semesterNumber
+                );
     }
 }
