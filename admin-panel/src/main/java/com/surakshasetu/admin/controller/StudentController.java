@@ -110,8 +110,7 @@ public class StudentController {
         }
 
         try {
-
-            studentExcelService.importStudents(
+                studentExcelService.importStudents(
                     file,
                     departmentId,
                     courseId
