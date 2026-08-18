@@ -1,16 +1,15 @@
 package com.example.surkshasetu;
 
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,59 +17,274 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_login);
+        // =====================================================
+        // STATUS BAR
+        // =====================================================
 
-        Window window = getWindow();
-        window.setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setStatusBarColor(Color.rgb(5, 27, 75));
 
-       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            getWindow().getDecorView().setImportantForAutofill(
-                    View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
-            );
+        // White status bar icons
+        getWindow().getDecorView().setSystemUiVisibility(0);
+
+        // Bottom navigation/system bar
+        getWindow().setNavigationBarColor(Color.WHITE);
+
+        if (android.os.Build.VERSION.SDK_INT >= 28) {
+            getWindow().setNavigationBarDividerColor(Color.WHITE);
         }
 
-        EditText etUsername = findViewById(R.id.etUsername);
-        EditText etPassword = findViewById(R.id.etPassword);
-        MaterialButton btnLogin = findViewById(R.id.btnLogin);
+        // =====================================================
+        // HOME
+        // =====================================================
 
-       btnLogin.setOnClickListener(v -> {
+        setContentView(R.layout.activity_home);
 
-            String username = etUsername.getText().toString().trim();
-            String password = etPassword.getText().toString().trim();
+        setupCards();
+        setupClicks();
+        setupBottomNavigation();
+    }
 
-            if (username.isEmpty()) {
-                etUsername.setError("Enter User ID / Email");
-                etUsername.requestFocus();
-                return;
-            }
 
-            if (password.isEmpty()) {
-                etPassword.setError("Enter Password");
-                etPassword.requestFocus();
-                return;
-            }
+    // =====================================================
+    // SERVICE CARDS
+    // =====================================================
 
-            Toast toast = new Toast(MainActivity.this);
-            TextView toastText = new TextView(MainActivity.this);
+    private void setupCards() {
 
-            toastText.setText("✓  Login successfull");
-            toastText.setTextColor(Color.WHITE);
-            toastText.setTextSize(16);
-            toastText.setGravity(Gravity.CENTER);
-            toastText.setTypeface(null, Typeface.BOLD);
+        setupCard(
+                R.id.profilecardd,
+                R.drawable.profilecardd,
+                "My Profile",
+                "View and manage your profile"
+        );
 
-            toastText.setPadding(35, 18, 35, 18);
+        setupCard(
+                R.id.safetycardd,
+                R.drawable.safetycardd,
+                "Safety Tips",
+                "Important tips for your safety"
+        );
 
-            toastText.setBackgroundResource(
-                    R.drawable.bg_success_toast
-            );
+        setupCard(
+                R.id.feedbackcardd,
+                R.drawable.feedbackcardd,
+                "Feedback",
+                "Share your feedback or suggestions"
+        );
 
-            toast.setView(toastText);
-            toast.setDuration(Toast.LENGTH_SHORT);
-            toast.show();
+        setupCard(
+                R.id.mapcardd,
+                R.drawable.mapcardd,
+                "Campus Map",
+                "View important campus locations"
+        );
 
-            etUsername.setText("");
-            etPassword.setText("");
+        setupCard(
+                R.id.lostfoundcardd,
+                R.drawable.lostfoundcardd,
+                "Lost & Found",
+                "Report or search for lost items"
+        );
+
+        setupCard(
+                R.id.complaincardd,
+                R.drawable.complaincardd,
+                "Complaint",
+                "Lodge a complaint or issue"
+        );
+    }
+
+
+    // =====================================================
+    // COMMON CARD METHOD
+    // =====================================================
+
+    private void setupCard(
+            int cardId,
+            int imageId,
+            String title,
+            String description) {
+
+        View card = findViewById(cardId);
+
+        ImageView icon = card.findViewById(R.id.imgService);
+        TextView titleText = card.findViewById(R.id.txtService);
+
+        icon.setImageResource(imageId);
+        titleText.setText(title);
+    }
+
+
+    // =====================================================
+    // CLICK EVENTS
+    // =====================================================
+
+    private void setupClicks() {
+
+        // =====================================================
+        // SOS
+        // =====================================================
+
+        findViewById(R.id.cardSOS).setOnClickListener(v -> {
+            makeCall("112");
         });
+
+
+        // =====================================================
+        // MY PROFILE
+        // =====================================================
+
+        findViewById(R.id.profilecardd).setOnClickListener(v -> {
+            Toast.makeText(
+                    this,
+                    "My Profile",
+                    Toast.LENGTH_SHORT
+            ).show();
+        });
+
+
+        // =====================================================
+        // SAFETY TIPS
+        // =====================================================
+
+        findViewById(R.id.safetycardd).setOnClickListener(v -> {
+            Toast.makeText(
+                    this,
+                    "Safety Tips",
+                    Toast.LENGTH_SHORT
+            ).show();
+        });
+
+
+        // =====================================================
+        // FEEDBACK
+        // =====================================================
+
+        findViewById(R.id.feedbackcardd).setOnClickListener(v -> {
+            Toast.makeText(
+                    this,
+                    "Feedback",
+                    Toast.LENGTH_SHORT
+            ).show();
+        });
+
+
+        // =====================================================
+        // CAMPUS MAP
+        // =====================================================
+
+        findViewById(R.id.mapcardd).setOnClickListener(v -> {
+            Toast.makeText(
+                    this,
+                    "Campus Map",
+                    Toast.LENGTH_SHORT
+            ).show();
+        });
+
+
+        // =====================================================
+        // LOST & FOUND
+        // =====================================================
+
+        findViewById(R.id.lostfoundcardd).setOnClickListener(v -> {
+            Toast.makeText(
+                    this,
+                    "Lost & Found",
+                    Toast.LENGTH_SHORT
+            ).show();
+        });
+
+
+        // =====================================================
+        // COMPLAINT
+        // =====================================================
+
+        findViewById(R.id.complaincardd).setOnClickListener(v -> {
+            Toast.makeText(
+                    this,
+                    "Complaint",
+                    Toast.LENGTH_SHORT
+            ).show();
+        });
+
+
+        // =====================================================
+        // IMPORTANT ANNOUNCEMENT
+        // =====================================================
+
+        findViewById(R.id.btnViewAnnouncement).setOnClickListener(v -> {
+
+            Toast.makeText(
+                    this,
+                    "Announcement",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+        });
+    }
+
+
+    // =====================================================
+    // BOTTOM NAVIGATION
+    // =====================================================
+
+    private void setupBottomNavigation() {
+
+        // =====================================================
+        // HOME
+        // =====================================================
+
+        findViewById(R.id.navHome).setOnClickListener(v -> {
+
+            Toast.makeText(
+                    this,
+                    "Home",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+        });
+
+
+        // =====================================================
+        // CONTACTS
+        // =====================================================
+
+        findViewById(R.id.navContacts).setOnClickListener(v -> {
+
+            Toast.makeText(
+                    this,
+                    "Contacts",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+        });
+
+
+        // PROFILE
+        findViewById(R.id.navProfile).setOnClickListener(v -> {
+
+            Toast.makeText(
+                    this,
+                    "Profile",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+        });
+
+    }
+
+
+    // =====================================================
+    // SOS CALL
+    // =====================================================
+
+    private void makeCall(String number) {
+
+        Intent intent = new Intent(
+                Intent.ACTION_DIAL,
+                Uri.parse("tel:" + number)
+        );
+
+        startActivity(intent);
     }
 }
