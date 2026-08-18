@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{layout/base :: layout(~{::section})}">
+
+<section>
+
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="page-title mb-1">
+                Faculty Management
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage all faculty members from one place.
+            </p>
+
+        </div>
+
+        <a th:href="@{/faculty/add}"
+           class="btn btn-success">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Add Faculty
+
+        </a>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- DEPARTMENT CARD -->
+    <!-- ===================================================== -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row g-3 align-items-end">
+
+
+                <!-- Department -->
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="d-flex align-items-center mb-2">
+
+                        <label class="form-label fw-semibold mb-0">
+                            Department
+                        </label>
+
+                        <a th:href="@{/departments/add}"
+                           class="btn btn-success ms-auto add-btn"
+                           title="Add Department">
+
+                            <i class="bi bi-plus-lg"></i>
+
+                        </a>
+
+                    </div>
+
+                    <select id="mainDepartment"
+                            class="form-select">
+
+                        <option value="">
+                            Select Department
+                        </option>
+
+                        <option th:each="department : ${departments}"
+                                th:value="${department.id}"
+                                th:text="${department.departmentName}">
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Status -->
+
+                <div class="col-lg-4 col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Status
+                    </label>
+
+                    <select id="mainStatus"
+                            class="form-select">
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="true">
+                            Active
+                        </option>
+
+                        <option value="false">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- FACULTY LIST HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h4 class="mb-0">
+                    Faculty List
+                </h4>
+
+                <span class="badge bg-success fs-6 px-3 py-2">
+
+                    Total Faculty :
+                    <span id="totalFaculty">
+                        0
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- SEARCH + FILTER -->
+    <!-- ===================================================== -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row align-items-center">
+
+
+                <!-- FILTER -->
+
+                <div class="col-lg-8 col-md-6">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#facultyFilterModal">
+
+                        <i class="bi bi-funnel-fill me-2"></i>
+
+                        Filter
+
+                    </button>
+
+                    <span id="filterStatus"
+                          class="text-muted ms-2">
+                    </span>
+
+                </div>
+
+
+                <!-- SEARCH -->
+
+                <div class="col-lg-4 col-md-6 mt-3 mt-md-0">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-search"></i>
+
+                        </span>
+
+                        <input type="text"
+                               id="facultySearch"
+                               class="form-control"
+                               placeholder="Search Faculty...">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- FILTER MODAL -->
+    <!-- ===================================================== -->
+
+    <div class="modal fade"
+         id="facultyFilterModal"
+         tabindex="-1"
+         aria-labelledby="facultyFilterModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+
+                <!-- Header -->
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title"
+                        id="facultyFilterModalLabel">
+
+                        <i class="bi bi-funnel-fill me-2"></i>
+
+                        Filter Faculty
+
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+
+                <!-- Body -->
+
+                <div class="modal-body">
+
+
+                    <!-- Department -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Department
+                        </label>
+
+                        <select id="filterDepartment"
+                                class="form-select">
+
+                            <option value="">
+                                Select Department
+                            </option>
+
+                            <option th:each="department : ${departments}"
+                                    th:value="${department.id}"
+                                    th:text="${department.departmentName}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select id="filterStatusSelect"
+                                class="form-select">
+
+                            <option value="">
+                                All Status
+                            </option>
+
+                            <option value="true">
+                                Active
+                            </option>
+
+                            <option value="false">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- Footer -->
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            onclick="resetFacultyFilter()">
+
+                        <i class="bi bi-arrow-counterclockwise me-2"></i>
+
+                        Reset
+
+                    </button>
+
+
+                    <button type="button"
+                            class="btn btn-success"
+                            onclick="applyFacultyFilter()">
+
+                        <i class="bi bi-funnel-fill me-2"></i>
+
+                        Apply Filter
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- FACULTY TABLE -->
+    <!-- ===================================================== -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead style="background:#212529;color:white;">
+
+                    <tr>
+
+                        <th>
+                            Photo
+                        </th>
+
+                        <th>
+                            Faculty Code
+                        </th>
+
+                        <th>
+                            Faculty Name
+                        </th>
+
+                        <th>
+                            Department
+                        </th>
+
+                        <th>
+                            Designation
+                        </th>
+
+                        <th>
+                            Mobile
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody id="facultyTableBody">
+
+
+                    <!-- NO DATA -->
+
+                    <tr id="noFacultyData"
+                        style="display:none;">
+
+                        <td colspan="9"
+                            class="text-center py-5">
+
+                            <i class="bi bi-person-badge fs-1 text-secondary"></i>
+
+                            <h5 class="mt-3">
+                                No Faculty Found
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                No faculty matches your search or filter.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- FACULTY LIST -->
+
+                    <tr th:each="faculty : ${faculties}"
+                        class="faculty-row"
+
+                        th:data-id="${faculty.id}"
+
+                        th:data-department="${faculty.departmentId}"
+
+                        th:data-status="${faculty.active}"
+
+                        th:data-search="${faculty.facultyCode + ' ' +
+                                         faculty.firstName + ' ' +
+                                         faculty.middleName + ' ' +
+                                         faculty.lastName + ' ' +
+                                         faculty.mobile + ' ' +
+                                         faculty.email}">
+
+
+                        <!-- PHOTO -->
+
+                        <td>
+
+                            <div th:if="${faculty.photo != null and faculty.photo != ''}">
+
+                                <img th:src="@{'/uploads/faculty/' + ${faculty.photo}}"
+                                     width="45"
+                                     height="45"
+                                     class="rounded-circle"
+                                     style="object-fit:cover;">
+
+                            </div>
+
+                            <i th:unless="${faculty.photo != null and faculty.photo != ''}"
+                               class="bi bi-person-circle fs-2">
+                            </i>
+
+                        </td>
+
+
+                        <!-- FACULTY CODE -->
+
+                        <td th:text="${faculty.facultyCode}">
+                            -
+                        </td>
+
+
+                        <!-- NAME -->
+
+                        <td>
+
+                            <span th:text="${faculty.firstName}">
+                            </span>
+
+                            <span th:if="${faculty.middleName != null and faculty.middleName != ''}"
+                                  th:text="' ' + ${faculty.middleName}">
+                            </span>
+
+                            <span th:text="' ' + ${faculty.lastName}">
+                            </span>
+
+                        </td>
+
+
+                        <!-- DEPARTMENT -->
+
+                        <td th:text="${faculty.departmentName}">
+                            -
+                        </td>
+
+
+                        <!-- DESIGNATION -->
+
+                        <td th:text="${faculty.designation}">
+                            -
+                        </td>
+
+
+                        <!-- MOBILE -->
+
+                        <td th:text="${faculty.mobile}">
+                            -
+                        </td>
+
+
+                        <!-- EMAIL -->
+
+                        <td th:text="${faculty.email}">
+                            -
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <span class="badge bg-success"
+                                  th:if="${faculty.active}">
+
+                                Active
+
+                            </span>
+
+                            <span class="badge bg-danger"
+                                  th:unless="${faculty.active}">
+
+                                Inactive
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            <!-- VIEW -->
+
+                            <a th:href="@{/faculty/view/{id}(id=${faculty.id})}"
+                               class="btn btn-info btn-sm text-white"
+                               title="View">
+
+                                <i class="bi bi-eye"></i>
+
+                            </a>
+
+
+                            <!-- EDIT -->
+
+                            <a th:href="@{/faculty/edit/{id}(id=${faculty.id})}"
+                               class="btn btn-warning btn-sm"
+                               title="Edit">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </a>
+
+
+                            <!-- DELETE -->
+
+                            <a href="#"
+                               class="btn btn-danger btn-sm"
+                               title="Delete"
+                               th:onclick="'deleteFaculty(' + ${faculty.id} + '); return false;'">
+
+                                <i class="bi bi-trash"></i>
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- PAGINATION -->
+    <!-- ===================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
+
+
+        <div class="text-muted">
+
+            Showing
+
+            <strong id="startRecord">
+                0
+            </strong>
+
+            -
+
+            <strong id="endRecord">
+                0
+            </strong>
+
+            of
+
+            <strong id="filteredRecords">
+                0
+            </strong>
+
+            faculty
+
+        </div>
+
+
+        <nav>
+
+            <ul class="pagination mb-0"
+                id="facultyPagination">
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- JAVASCRIPT -->
+    <!-- ===================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const rows = Array.from(
+                    document.querySelectorAll(
+                        ".faculty-row"
+                    )
+                );
+
+                const rowsPerPage = 100;
+
+                let currentPage = 1;
+
+                let filteredRows = [...rows];
+
+
+                const searchInput =
+                    document.getElementById(
+                        "facultySearch"
+                    );
+
+                const filterDepartment =
+                    document.getElementById(
+                        "filterDepartment"
+                    );
+
+                const filterStatus =
+                    document.getElementById(
+                        "filterStatusSelect"
+                    );
+
+
+                /* ==========================================
+                   TOTAL FACULTY
+                ========================================== */
+
+                document.getElementById(
+                    "totalFaculty"
+                ).textContent = rows.length;
+
+
+                /* ==========================================
+                   SEARCH
+                ========================================== */
+
+                searchInput.addEventListener(
+                    "input",
+                    function () {
+
+                        applyFilters();
+
+                    }
+                );
+
+
+                /* ==========================================
+                   APPLY FILTER
+                ========================================== */
+
+                window.applyFacultyFilter =
+                    function () {
+
+                        applyFilters();
+
+
+                        const modalElement =
+                            document.getElementById(
+                                "facultyFilterModal"
+                            );
+
+                        const modal =
+                            bootstrap.Modal.getInstance(
+                                modalElement
+                            );
+
+                        if (modal) {
+
+                            modal.hide();
+
+                        }
+
+                    };
+
+
+                /* ==========================================
+                   RESET FILTER
+                ========================================== */
+
+                window.resetFacultyFilter =
+                    function () {
+
+                        filterDepartment.value = "";
+
+                        filterStatus.value = "";
+
+                        searchInput.value = "";
+
+                        applyFilters();
+
+
+                        const modalElement =
+                            document.getElementById(
+                                "facultyFilterModal"
+                            );
+
+                        const modal =
+                            bootstrap.Modal.getInstance(
+                                modalElement
+                            );
+
+                        if (modal) {
+
+                            modal.hide();
+
+                        }
+
+                    };
+
+
+                /* ==========================================
+                   FILTER LOGIC
+                ========================================== */
+
+                function applyFilters() {
+
+                    const departmentId =
+                        filterDepartment.value;
+
+                    const statusValue =
+                        filterStatus.value;
+
+                    const searchText =
+                        searchInput.value
+                        .trim()
+                        .toLowerCase();
+
+
+                    filteredRows =
+                        rows.filter(
+                            function (row) {
+
+                                const rowDepartment =
+                                    row.getAttribute(
+                                        "data-department"
+                                    );
+
+                                const rowStatus =
+                                    row.getAttribute(
+                                        "data-status"
+                                    );
+
+                                const rowSearch =
+                                    (
+                                        row.getAttribute(
+                                            "data-search"
+                                        ) || ""
+                                    ).toLowerCase();
+
+
+                                const departmentMatch =
+                                    !departmentId ||
+                                    rowDepartment === departmentId;
+
+
+                                const statusMatch =
+                                    !statusValue ||
+                                    rowStatus === statusValue;
+
+
+                                const searchMatch =
+                                    !searchText ||
+                                    rowSearch.includes(
+                                        searchText
+                                    );
+
+
+                                return (
+                                    departmentMatch &&
+                                    statusMatch &&
+                                    searchMatch
+                                );
+
+                            }
+                        );
+
+
+                    currentPage = 1;
+
+                    updateFilterStatus();
+
+                    showPage(currentPage);
+
+                }
+
+
+                /* ==========================================
+                   FILTER STATUS
+                ========================================== */
+
+                function updateFilterStatus() {
+
+                    const activeFilters = [];
+
+
+                    if (filterDepartment.value) {
+
+                        activeFilters.push(
+                            "Department"
+                        );
+
+                    }
+
+
+                    if (filterStatus.value) {
+
+                        activeFilters.push(
+                            "Status"
+                        );
+
+                    }
+
+
+                    const status =
+                        document.getElementById(
+                            "filterStatus"
+                        );
+
+
+                    if (activeFilters.length > 0) {
+
+                        status.textContent =
+                            activeFilters.length +
+                            " filter(s) applied";
+
+                    } else {
+
+                        status.textContent = "";
+
+                    }
+
+                }
+
+
+                /* ==========================================
+                   SHOW PAGE
+                ========================================== */
+
+                function showPage(page) {
+
+                    currentPage = page;
+
+
+                    const totalPages =
+                        Math.ceil(
+                            filteredRows.length /
+                            rowsPerPage
+                        );
+
+
+                    const start =
+                        (page - 1) *
+                        rowsPerPage;
+
+
+                    const end =
+                        Math.min(
+                            start + rowsPerPage,
+                            filteredRows.length
+                        );
+
+
+                    rows.forEach(
+                        function (row) {
+
+                            row.style.display =
+                                "none";
+
+                        }
+                    );
+
+
+                    for (
+                        let i = start;
+                        i < end;
+                        i++
+                    ) {
+
+                        filteredRows[i].style.display =
+                            "";
+
+                    }
+
+
+                    const noData =
+                        document.getElementById(
+                            "noFacultyData"
+                        );
+
+
+                    if (
+                        filteredRows.length === 0
+                    ) {
+
+                        noData.style.display = "";
+
+                    } else {
+
+                        noData.style.display = "none";
+
+                    }
+
+
+                    document.getElementById(
+                        "startRecord"
+                    ).textContent =
+                        filteredRows.length === 0
+                            ? 0
+                            : start + 1;
+
+
+                    document.getElementById(
+                        "endRecord"
+                    ).textContent = end;
+
+
+                    document.getElementById(
+                        "filteredRecords"
+                    ).textContent =
+                        filteredRows.length;
+
+
+                    createPagination(
+                        totalPages
+                    );
+
+                }
+
+
+                /* ==========================================
+                   PAGINATION
+                ========================================== */
+
+                function createPagination(
+                    totalPages
+                ) {
+
+                    const pagination =
+                        document.getElementById(
+                            "facultyPagination"
+                        );
+
+                    pagination.innerHTML = "";
+
+
+                    if (totalPages <= 1) {
+
+                        return;
+
+                    }
+
+
+                    /* Previous */
+
+                    const previous =
+                        document.createElement(
+                            "li"
+                        );
+
+                    previous.className =
+                        "page-item " +
+                        (
+                            currentPage === 1
+                                ? "disabled"
+                                : ""
+                        );
+
+
+                    previous.innerHTML =
+                        `
+                        <a class="page-link"
+                           href="#">
+                            Previous
+                        </a>
+                        `;
+
+
+                    previous
+                        .querySelector("a")
+                        .addEventListener(
+                            "click",
+                            function (event) {
+
+                                event.preventDefault();
+
+                                if (
+                                    currentPage > 1
+                                ) {
+
+                                    showPage(
+                                        currentPage - 1
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    pagination.appendChild(
+                        previous
+                    );
+
+
+                    /* Page Numbers */
+
+                    for (
+                        let page = 1;
+                        page <= totalPages;
+                        page++
+                    ) {
+
+                        const pageItem =
+                            document.createElement(
+                                "li"
+                            );
+
+
+                        pageItem.className =
+                            "page-item " +
+                            (
+                                page === currentPage
+                                    ? "active"
+                                    : ""
+                            );
+
+
+                        pageItem.innerHTML =
+                            `
+                            <a class="page-link"
+                               href="#">
+                                ${page}
+                            </a>
+                            `;
+
+
+                        pageItem
+                            .querySelector("a")
+                            .addEventListener(
+                                "click",
+                                function (event) {
+
+                                    event.preventDefault();
+
+                                    showPage(page);
+
+                                }
+                            );
+
+
+                        pagination.appendChild(
+                            pageItem
+                        );
+
+                    }
+
+
+                    /* Next */
+
+                    const next =
+                        document.createElement(
+                            "li"
+                        );
+
+
+                    next.className =
+                        "page-item " +
+                        (
+                            currentPage === totalPages
+                                ? "disabled"
+                                : ""
+                        );
+
+
+                    next.innerHTML =
+                        `
+                        <a class="page-link"
+                           href="#">
+                            Next
+                        </a>
+                        `;
+
+
+                    next
+                        .querySelector("a")
+                        .addEventListener(
+                            "click",
+                            function (event) {
+
+                                event.preventDefault();
+
+                                if (
+                                    currentPage < totalPages
+                                ) {
+
+                                    showPage(
+                                        currentPage + 1
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    pagination.appendChild(
+                        next
+                    );
+
+                }
+
+
+                /* ==========================================
+                   INITIAL PAGE
+                ========================================== */
+
+                showPage(1);
+
+            });
+
+
+        /* ==================================================
+           DELETE FACULTY
+        ================================================== */
+
+        function deleteFaculty(id) {
+
+            Swal.fire({
+
+                title: "Delete Faculty?",
+
+                text:
+                    "This faculty will be permanently deleted.",
+
+                icon: "warning",
+
+                showCancelButton: true,
+
+                confirmButtonColor: "#dc3545",
+
+                cancelButtonColor: "#6c757d",
+
+                confirmButtonText: "Yes, Delete",
+
+                cancelButtonText: "Cancel"
+
+            }).then(
+                function (result) {
+
+                    if (result.isConfirmed) {
+
+                        window.location.href =
+                            "/faculty/delete/" + id;
+
+                    }
+
+                }
+            );
+
+        }
+
+    </script>
+
+
+</section>
+
+</div>
+
+</html>
