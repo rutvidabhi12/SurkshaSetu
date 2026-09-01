@@ -23,28 +23,52 @@ public class StudentServiceImpl implements StudentService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    // =====================================================
+    // GET ALL STUDENTS
+    // =====================================================
+
     @Override
     public List<Student> getAllStudents() {
+
         return studentRepository.findAll();
     }
+
+
+    // =====================================================
+    // SAVE / UPDATE STUDENT
+    // =====================================================
 
     @Override
     public Student saveStudent(Student student) {
 
         /*
+         * =================================================
          * UPDATE STUDENT
+         * =================================================
          */
+
         if (student.getId() != null) {
 
-            Student existingStudent = studentRepository
-                    .findById(student.getId())
-                    .orElseThrow(() ->
-                            new RuntimeException("Student not found"));
+            Student existingStudent =
+                    studentRepository
+                            .findById(student.getId())
+                            .orElseThrow(() ->
+                                    new RuntimeException(
+                                            "Student not found"
+                                    )
+                            );
+
 
             /*
-             * Password Edit page માંથી નથી આવતો,
-             * એટલે જૂનો password જ રાખવો.
+             * =================================================
+             * PASSWORD
+             * =================================================
+             *
+             * Edit page પરથી password ન આવે તો
+             * જૂનો password જ રાખવો.
              */
+
             if (student.getPassword() == null
                     || student.getPassword().isBlank()) {
 
@@ -55,9 +79,9 @@ public class StudentServiceImpl implements StudentService {
             } else {
 
                 /*
-                 * New password આપ્યો હોય તો
-                 * BCrypt encode કરવો.
+                 * New password આપ્યો હોય તો BCrypt encode કરવો.
                  */
+
                 if (!student.getPassword().startsWith("$2a$")) {
 
                     student.setPassword(
@@ -68,29 +92,60 @@ public class StudentServiceImpl implements StudentService {
                 }
             }
 
+
+            /*
+             * =================================================
+             * PHOTO
+             * =================================================
+             *
+             * Edit વખતે photo select ન કર્યો હોય તો
+             * જૂનો photo રાખવો.
+             */
+
+            if (student.getPhoto() == null
+                    || student.getPhoto().isBlank()) {
+
+                student.setPhoto(
+                        existingStudent.getPhoto()
+                );
+            }
+
         }
 
+
         /*
+         * =================================================
          * NEW STUDENT
+         * =================================================
          */
+
         else {
 
             if (student.getPassword() != null
                     && !student.getPassword().isBlank()) {
 
-                String password = student.getPassword();
+                String password =
+                        student.getPassword();
 
                 if (!password.startsWith("$2a$")) {
 
                     student.setPassword(
-                            passwordEncoder.encode(password)
+                            passwordEncoder.encode(
+                                    password
+                            )
                     );
                 }
             }
         }
 
+
         return studentRepository.save(student);
     }
+
+
+    // =====================================================
+    // GET STUDENT BY ID
+    // =====================================================
 
     @Override
     public Student getStudentById(Long id) {
@@ -100,32 +155,60 @@ public class StudentServiceImpl implements StudentService {
                 .orElse(null);
     }
 
+
+    // =====================================================
+    // DELETE STUDENT
+    // =====================================================
+
     @Override
     public void deleteStudent(Long id) {
 
         studentRepository.deleteById(id);
     }
 
+
+    // =====================================================
+    // STUDENTS BY DEPARTMENT
+    // =====================================================
+
     @Override
-    public List<Student> getStudentsByDepartment(Long departmentId) {
+    public List<Student> getStudentsByDepartment(
+            Long departmentId) {
 
         return studentRepository
                 .findByDepartmentId(departmentId);
     }
 
+
+    // =====================================================
+    // STUDENTS BY COURSE
+    // =====================================================
+
     @Override
-    public List<Student> getStudentsByCourse(Long courseId) {
+    public List<Student> getStudentsByCourse(
+            Long courseId) {
 
         return studentRepository
                 .findByCourseId(courseId);
     }
 
+
+    // =====================================================
+    // STUDENTS BY SEMESTER
+    // =====================================================
+
     @Override
-    public List<Student> getStudentsBySemester(Long semesterId) {
+    public List<Student> getStudentsBySemester(
+            Long semesterId) {
 
         return studentRepository
                 .findBySemesterId(semesterId);
     }
+
+
+    // =====================================================
+    // CHECK EMAIL
+    // =====================================================
 
     @Override
     public boolean existsByEmail(String email) {
@@ -134,8 +217,14 @@ public class StudentServiceImpl implements StudentService {
                 .existsByEmail(email);
     }
 
+
+    // =====================================================
+    // CHECK ENROLLMENT NUMBER
+    // =====================================================
+
     @Override
-    public boolean existsByEnrollmentNo(String enrollmentNo) {
+    public boolean existsByEnrollmentNo(
+            String enrollmentNo) {
 
         return studentRepository
                 .existsByEnrollmentNo(enrollmentNo);

@@ -1,5 +1,13 @@
 package com.surakshasetu.admin.controller;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,11 +20,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import com.surakshasetu.admin.service.SemesterService;
 
 import com.surakshasetu.admin.entity.Student;
 import com.surakshasetu.admin.service.CourseService;
 import com.surakshasetu.admin.service.DepartmentService;
+import com.surakshasetu.admin.service.SemesterService;
 import com.surakshasetu.admin.service.StudentExcelService;
 import com.surakshasetu.admin.service.StudentService;
 
@@ -28,6 +36,7 @@ public class StudentController {
     private final DepartmentService departmentService;
     private final CourseService courseService;
     private final SemesterService semesterService;
+
 
     public StudentController(
             StudentExcelService studentExcelService,
@@ -42,6 +51,7 @@ public class StudentController {
         this.courseService = courseService;
         this.semesterService = semesterService;
     }
+
 
     // =========================================
     // Student Page
@@ -73,6 +83,7 @@ public class StudentController {
         return "student/index";
     }
 
+
     // =========================================
     // Download Excel Template
     // =========================================
@@ -94,6 +105,7 @@ public class StudentController {
                 .body(resource);
     }
 
+
     // =========================================
     // Upload Excel
     // =========================================
@@ -110,7 +122,8 @@ public class StudentController {
         }
 
         try {
-                studentExcelService.importStudents(
+
+            studentExcelService.importStudents(
                     file,
                     departmentId,
                     courseId
@@ -121,12 +134,13 @@ public class StudentController {
         } catch (RuntimeException e) {
 
             return "redirect:/students?error="
-                    + java.net.URLEncoder.encode(
+                    + URLEncoder.encode(
                             e.getMessage(),
-                            java.nio.charset.StandardCharsets.UTF_8
+                            StandardCharsets.UTF_8
                     );
         }
     }
+
 
     // =========================================
     // View Student
@@ -145,6 +159,7 @@ public class StudentController {
         return "student/view";
     }
 
+
     // =========================================
     // Edit Student
     // =========================================
@@ -162,18 +177,187 @@ public class StudentController {
         return "student/edit";
     }
 
+
     // =========================================
-    // Update Student
+    // Update Student + Photo
     // =========================================
 
     @PostMapping("/students/update")
     public String updateStudent(
-            @ModelAttribute Student student) {
 
-        studentService.saveStudent(student);
+            @ModelAttribute Student student,
 
-        return "redirect:/students";
+            @RequestParam(
+                    value = "photoFile",
+                    required = false
+            )
+            MultipartFile photoFile) {
+
+        try {
+
+            // =====================================
+            // GET EXISTING STUDENT
+            // =====================================
+
+            Student existingStudent =
+                    studentService.getStudentById(
+                            student.getId()
+                    );
+
+
+            if (existingStudent == null) {
+
+                return "redirect:/students?error=Student not found";
+            }
+
+
+            // =====================================
+            // KEEP OLD PASSWORD
+            // =====================================
+
+            student.setPassword(
+                    existingStudent.getPassword()
+            );
+
+
+            // =====================================
+            // KEEP OLD PHOTO IF NO NEW PHOTO
+            // =====================================
+
+            if (photoFile == null
+                    || photoFile.isEmpty()) {
+
+                student.setPhoto(
+                        existingStudent.getPhoto()
+                );
+            }
+
+
+            // =====================================
+            // SAVE STUDENT DATA
+            // =====================================
+
+            Student updatedStudent =
+                    studentService.saveStudent(
+                            student
+                    );
+
+
+            // =====================================
+            // NEW PHOTO UPLOAD
+            // =====================================
+
+            if (photoFile != null
+                    && !photoFile.isEmpty()) {
+
+
+                // -------------------------------
+                // Create upload folder
+                // -------------------------------
+
+                Path uploadDirectory =
+                        Paths.get(
+                                "uploads",
+                                "students"
+                        );
+
+
+                Files.createDirectories(
+                        uploadDirectory
+                );
+
+
+                // -------------------------------
+                // File extension
+                // -------------------------------
+
+                String originalName =
+                        photoFile.getOriginalFilename();
+
+
+                String extension = "";
+
+
+                if (originalName != null
+                        && originalName.contains(".")) {
+
+                    extension =
+                            originalName.substring(
+                                    originalName.lastIndexOf(".")
+                            );
+                }
+
+
+                // -------------------------------
+                // Unique filename
+                // -------------------------------
+
+                String fileName =
+                        "student_"
+                        + updatedStudent.getId()
+                        + "_"
+                        + UUID.randomUUID()
+                        + extension;
+
+
+                // -------------------------------
+                // Save file
+                // -------------------------------
+
+                Path filePath =
+                        uploadDirectory.resolve(
+                                fileName
+                        );
+
+
+                Files.write(
+                        filePath,
+                        photoFile.getBytes()
+                );
+
+
+                // -------------------------------
+                // Save filename in DB
+                // -------------------------------
+
+                updatedStudent.setPhoto(
+                        fileName
+                );
+
+
+                studentService.saveStudent(
+                        updatedStudent
+                );
+            }
+
+
+            return "redirect:/students?updated";
+
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+            return "redirect:/students?error="
+                    + URLEncoder.encode(
+                            "Photo upload failed: "
+                                    + e.getMessage(),
+                            StandardCharsets.UTF_8
+                    );
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return "redirect:/students?error="
+                    + URLEncoder.encode(
+                            "Student update failed: "
+                                    + e.getMessage(),
+                            StandardCharsets.UTF_8
+                    );
+        }
     }
+
 
     // =========================================
     // Delete Student

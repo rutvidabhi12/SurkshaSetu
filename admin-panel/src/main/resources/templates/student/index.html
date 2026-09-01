@@ -486,6 +486,10 @@
                         </th>
 
                         <th>
+                            Department
+                        </th>
+
+                        <th>
                             Mobile
                         </th>
 
@@ -514,7 +518,7 @@
                     <tr id="noStudentData"
                         style="display:none;">
 
-                        <td colspan="9"
+                        <td colspan="10"
                             class="text-center py-5">
 
                             <i class="bi bi-people fs-1 text-secondary"></i>
@@ -550,24 +554,24 @@
 
                         <!-- PHOTO -->
 
-                        <td>
+<td>
 
-                            <div th:if="${student.photo != null and student.photo != ''}">
+    <div th:if="${student.photo != null and student.photo != ''}">
 
-                                <img th:src="@{'/uploads/students/' + ${student.photo}}"
-                                     width="45"
-                                     height="45"
-                                     class="rounded-circle"
-                                     style="object-fit:cover;">
+        <img th:src="@{'/api/student/' + ${student.id} + '/photo'}"
+             width="45"
+             height="45"
+             class="rounded-circle border"
+             style="object-fit:cover;"
+             alt="Student Photo">
 
-                            </div>
+    </div>
 
+    <i th:unless="${student.photo != null and student.photo != ''}"
+       class="bi bi-person-circle fs-2">
+    </i>
 
-                            <i th:unless="${student.photo != null and student.photo != ''}"
-                               class="bi bi-person-circle fs-2">
-                            </i>
-
-                        </td>
+</td>
 
 
                         <!-- ENROLLMENT -->
@@ -607,6 +611,17 @@
 
                             <span class="badge bg-primary"
                                   th:text="${student.semester.semesterName}">
+                            </span>
+
+                        </td>
+
+
+                        <!-- DEPARTMENT -->
+
+                        <td>
+
+                            <span th:text="${student.department.departmentName}">
+                                -
                             </span>
 
                         </td>

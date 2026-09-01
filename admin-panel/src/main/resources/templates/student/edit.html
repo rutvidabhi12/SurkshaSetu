@@ -37,7 +37,8 @@
 
     <form th:action="@{/students/update}"
           th:object="${student}"
-          method="post">
+          method="post"
+          enctype="multipart/form-data">
 
         <!-- Student ID -->
 
@@ -224,6 +225,7 @@
 
                     </div>
 
+
                     <!-- Department Display -->
 
                     <div class="col-md-4">
@@ -272,9 +274,51 @@
                     </div>
 
 
+                    <!-- PROFILE PHOTO -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Profile Photo
+                        </label>
+
+                        <input type="file"
+                               name="photoFile"
+                               id="studentPhoto"
+                               class="form-control"
+                               accept="image/*">
+
+                        <!-- Current Photo -->
+
+                        <div class="mt-3"
+                             th:if="${student.photo != null and !student.photo.isEmpty()}">
+
+                            <label class="form-label text-muted">
+                                Current Photo
+                            </label>
+
+                            <br>
+
+                            <img th:src="@{'http://localhost:8080/api/student/' + ${student.id} + '/photo'}"
+                                    alt="Student Photo"
+                                    style="width:80px;
+                                            height:80px;
+                                            object-fit:cover;
+                                            border-radius:50%;
+                                            border:1px solid #ddd;">
+
+                        </div>
+
+                        <small class="text-muted">
+                            Select a new photo only if you want to change it.
+                        </small>
+
+                    </div>
+
+
                     <!-- Status -->
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
 
                         <label class="form-label fw-semibold">
                             Status

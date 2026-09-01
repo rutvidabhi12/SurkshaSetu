@@ -56,13 +56,15 @@
 
                 <div class="col-md-2 text-center">
 
-                    <img th:if="${student.photo != null and student.photo != ''}"
-                         th:src="@{'/uploads/students/' + ${student.photo}}"
+                    <img th:if="${student.photo != null and !student.photo.isEmpty()}"
+                         th:src="@{'/api/student/' + ${student.id} + '/photo'}"
+                         alt="Student Photo"
                          class="rounded-circle border"
                          width="120"
-                         height="120">
+                         height="120"
+                         style="object-fit: cover;">
 
-                    <i th:unless="${student.photo != null and student.photo != ''}"
+                    <i th:unless="${student.photo != null and !student.photo.isEmpty()}"
                        class="bi bi-person-circle text-secondary"
                        style="font-size:120px;">
                     </i>
