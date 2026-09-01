@@ -28,6 +28,11 @@
 
         </activity>
 
+        <!--=============profile==================-->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+
 
         <!-- ================= HOME ACTIVITY ================= -->
 

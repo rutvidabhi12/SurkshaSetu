@@ -135,11 +135,13 @@ public class MainActivity extends AppCompatActivity {
         // =====================================================
 
         findViewById(R.id.profilecardd).setOnClickListener(v -> {
-            Toast.makeText(
-                    this,
-                    "My Profile",
-                    Toast.LENGTH_SHORT
-            ).show();
+
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    ProfileActivity.class
+            );
+
+            startActivity(intent);
         });
 
 
