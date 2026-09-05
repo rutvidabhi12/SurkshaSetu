@@ -1,0 +1,412 @@
+/* =====================================================
+   FACULTY MANAGEMENT
+===================================================== */
+
+.faculty-page-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+}
+
+
+.faculty-page-header .page-title {
+
+    color: #6B4F3F;
+
+    font-size: 34px;
+
+    font-weight: 700;
+
+}
+
+
+.faculty-page-header p {
+
+    font-size: 16px;
+
+}
+
+
+/* =====================================================
+   FILTER CARD
+===================================================== */
+
+.faculty-filter-card {
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+}
+
+
+.faculty-filter-card .form-label {
+
+    font-weight: 600;
+
+    color: #4b4b4b;
+
+    margin-bottom: 7px;
+
+}
+
+
+.faculty-filter-card .form-control,
+.faculty-filter-card .form-select {
+
+    height: 44px;
+
+    border-radius: 8px;
+
+    border: 1px solid #d8d8d8;
+
+}
+
+
+.faculty-filter-card .input-group-text {
+
+    background: #ffffff;
+
+    border: 1px solid #d8d8d8;
+
+    border-right: none;
+
+}
+
+
+.faculty-filter-card .input-group .form-control {
+
+    border-left: none;
+
+}
+
+
+/* =====================================================
+   TABLE CARD
+===================================================== */
+
+.faculty-table-card {
+
+    border: none;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.faculty-table {
+
+    width: 100%;
+
+    min-width: 1250px;
+
+}
+
+
+.faculty-table thead th {
+
+    background: #ffffff;
+
+    color: #6B4F3F;
+
+    font-weight: 700;
+
+    font-size: 14px;
+
+    padding: 14px 12px;
+
+    border-bottom: 1px solid #dddddd;
+
+    white-space: nowrap;
+
+}
+
+
+.faculty-table tbody td {
+
+    padding: 12px;
+
+    font-size: 14px;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    vertical-align: middle;
+
+}
+
+
+.faculty-table tbody tr:hover {
+
+    background: #faf7f2;
+
+}
+
+
+/* =====================================================
+   PHOTO
+===================================================== */
+
+.faculty-photo {
+
+    width: 52px;
+
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.faculty-photo img {
+
+    width: 52px;
+
+    height: 52px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 2px solid #6B4F3F;
+
+}
+
+
+.faculty-photo i {
+
+    font-size: 52px;
+
+    line-height: 52px;
+
+    color: #777777;
+
+}
+
+
+/* =====================================================
+   EMAIL
+===================================================== */
+
+.faculty-email {
+
+    max-width: 230px;
+
+    word-break: break-word;
+
+}
+
+
+/* =====================================================
+   ACTION BUTTONS
+===================================================== */
+
+.faculty-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+
+.faculty-actions .btn {
+
+    width: 38px;
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 7px;
+
+}
+
+
+.faculty-actions .btn-info {
+
+    color: #ffffff;
+
+}
+
+
+.faculty-actions .btn-warning {
+
+    color: #212529;
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.faculty-table .badge {
+
+    padding: 7px 10px;
+
+    font-size: 12px;
+
+    border-radius: 7px;
+
+}
+
+
+/* =====================================================
+   PAGINATION
+===================================================== */
+
+.faculty-pagination {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 15px 18px;
+
+    border-top: 1px solid #e5e5e5;
+
+    background: #ffffff;
+
+    font-size: 14px;
+
+    color: #666666;
+
+}
+
+
+.pagination-buttons {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+.pagination-buttons button {
+
+    min-width: 90px;
+
+}
+
+
+.page-number {
+
+    min-width: 70px;
+
+    text-align: center;
+
+    font-weight: 600;
+
+    color: #6B4F3F;
+
+}
+
+
+/* =====================================================
+   TABLE SCROLL
+===================================================== */
+
+.faculty-table-card .table-responsive {
+
+    max-height: 650px;
+
+    overflow: auto;
+
+}
+
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+.faculty-table-card .table-responsive::-webkit-scrollbar {
+
+    width: 8px;
+
+    height: 8px;
+
+}
+
+
+.faculty-table-card .table-responsive::-webkit-scrollbar-thumb {
+
+    background: #b9aaa0;
+
+    border-radius: 10px;
+
+}
+
+
+.faculty-table-card .table-responsive::-webkit-scrollbar-track {
+
+    background: #f4f1ed;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .faculty-page-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+    }
+
+
+    .faculty-page-header .page-title {
+
+        font-size: 28px;
+
+    }
+
+
+    .faculty-pagination {
+
+        flex-direction: column;
+
+        gap: 12px;
+
+        align-items: flex-start;
+
+    }
+
+}

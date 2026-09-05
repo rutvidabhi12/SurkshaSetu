@@ -5,14 +5,11 @@
 
 <section>
 
-    <!-- ===================================================== -->
-    <!-- PAGE HEADER -->
-    <!-- ===================================================== -->
+    <!-- ================= PAGE HEADER ================= -->
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="faculty-page-header">
 
         <div>
-
             <h2 class="page-title mb-1">
                 Faculty Management
             </h2>
@@ -20,14 +17,12 @@
             <p class="text-muted mb-0">
                 Manage all faculty members from one place.
             </p>
-
         </div>
 
         <a th:href="@{/faculty/add}"
            class="btn btn-success">
 
             <i class="bi bi-plus-circle me-2"></i>
-
             Add Faculty
 
         </a>
@@ -35,46 +30,102 @@
     </div>
 
 
-    <!-- ===================================================== -->
-    <!-- DEPARTMENT CARD -->
-    <!-- ===================================================== -->
+    <!-- ================= ALERTS ================= -->
 
-    <div class="card shadow-sm mb-4">
+    <div th:if="${success}"
+         class="alert alert-success alert-dismissible fade show"
+         role="alert">
 
-        <div class="card-body p-4">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${success}"></span>
 
-            <div class="row g-3 align-items-end">
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
 
 
-                <!-- Department -->
+    <div th:if="${error}"
+         class="alert alert-danger alert-dismissible fade show"
+         role="alert">
+
+        <i class="bi bi-x-circle-fill me-2"></i>
+        <span th:text="${error}"></span>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
+
+
+    <div th:if="${warning}"
+         class="alert alert-warning alert-dismissible fade show"
+         role="alert">
+
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${warning}"></span>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
+
+
+    <!-- ================= SEARCH + FILTER ================= -->
+
+    <div class="card faculty-filter-card shadow-sm mb-3">
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <!-- SEARCH -->
 
                 <div class="col-lg-4 col-md-6">
 
-                    <div class="d-flex align-items-center mb-2">
+                    <label class="form-label">
+                        Search Faculty
+                    </label>
 
-                        <label class="form-label fw-semibold mb-0">
-                            Department
-                        </label>
+                    <div class="input-group">
 
-                        <a th:href="@{/departments/add}"
-                           class="btn btn-success ms-auto add-btn"
-                           title="Add Department">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
 
-                            <i class="bi bi-plus-lg"></i>
-
-                        </a>
+                        <input type="text"
+                               id="searchFaculty"
+                               class="form-control"
+                               placeholder="Name, code, email, mobile...">
 
                     </div>
 
-                    <select id="mainDepartment"
+                </div>
+
+
+                <!-- DEPARTMENT -->
+
+                <div class="col-lg-2 col-md-3">
+
+                    <label class="form-label">
+                        Department
+                    </label>
+
+                    <select id="departmentFilter"
                             class="form-select">
 
                         <option value="">
-                            Select Department
+                            All Departments
                         </option>
 
                         <option th:each="department : ${departments}"
-                                th:value="${department.id}"
+                                th:value="${department.departmentName}"
                                 th:text="${department.departmentName}">
                         </option>
 
@@ -83,27 +134,47 @@
                 </div>
 
 
-                <!-- Status -->
+                <!-- DESIGNATION -->
 
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-2 col-md-3">
 
-                    <label class="form-label fw-semibold">
-                        Status
+                    <label class="form-label">
+                        Designation
                     </label>
 
-                    <select id="mainStatus"
+                    <select id="designationFilter"
                             class="form-select">
 
                         <option value="">
-                            All Status
+                            All Designations
                         </option>
 
-                        <option value="true">
-                            Active
+                        <option value="Dean & Professor">
+                            Dean & Professor
                         </option>
 
-                        <option value="false">
-                            Inactive
+                        <option value="Head & Professor">
+                            Head & Professor
+                        </option>
+
+                        <option value="Senior Professor">
+                            Senior Professor
+                        </option>
+
+                        <option value="Professor">
+                            Professor
+                        </option>
+
+                        <option value="Associate Professor">
+                            Associate Professor
+                        </option>
+
+                        <option value="Assistant Professor">
+                            Assistant Professor
+                        </option>
+
+                        <option value="Lecturer">
+                            Lecturer
                         </option>
 
                     </select>
@@ -111,96 +182,80 @@
                 </div>
 
 
-            </div>
+                <!-- GENDER -->
 
-        </div>
+                <div class="col-lg-2 col-md-3">
 
-    </div>
+                    <label class="form-label">
+                        Gender
+                    </label>
 
+                    <select id="genderFilter"
+                            class="form-select">
 
-    <!-- ===================================================== -->
-    <!-- FACULTY LIST HEADER -->
-    <!-- ===================================================== -->
+                        <option value="">
+                            All Gender
+                        </option>
 
-    <div class="card shadow-sm mb-4">
+                        <option value="Male">
+                            Male
+                        </option>
 
-        <div class="card-body p-4">
+                        <option value="Female">
+                            Female
+                        </option>
 
-            <div class="d-flex justify-content-between align-items-center">
+                        <option value="Other">
+                            Other
+                        </option>
 
-                <h4 class="mb-0">
-                    Faculty List
-                </h4>
-
-                <span class="badge bg-success fs-6 px-3 py-2">
-
-                    Total Faculty :
-                    <span id="totalFaculty">
-                        0
-                    </span>
-
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- SEARCH + FILTER -->
-    <!-- ===================================================== -->
-
-    <div class="card shadow-sm mb-4">
-
-        <div class="card-body p-4">
-
-            <div class="row align-items-center">
-
-
-                <!-- FILTER -->
-
-                <div class="col-lg-8 col-md-6">
-
-                    <button type="button"
-                            class="btn btn-outline-secondary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#facultyFilterModal">
-
-                        <i class="bi bi-funnel-fill me-2"></i>
-
-                        Filter
-
-                    </button>
-
-                    <span id="filterStatus"
-                          class="text-muted ms-2">
-                    </span>
+                    </select>
 
                 </div>
 
 
-                <!-- SEARCH -->
+                <!-- STATUS -->
 
-                <div class="col-lg-4 col-md-6 mt-3 mt-md-0">
+                <div class="col-lg-2 col-md-3">
 
-                    <div class="input-group">
+                    <label class="form-label">
+                        Status
+                    </label>
 
-                        <span class="input-group-text">
+                    <select id="statusFilter"
+                            class="form-select">
 
-                            <i class="bi bi-search"></i>
+                        <option value="">
+                            All Status
+                        </option>
 
-                        </span>
+                        <option value="active">
+                            Active
+                        </option>
 
-                        <input type="text"
-                               id="facultySearch"
-                               class="form-control"
-                               placeholder="Search Faculty...">
+                        <option value="inactive">
+                            Inactive
+                        </option>
 
-                    </div>
+                    </select>
 
                 </div>
+
+            </div>
+
+
+            <!-- RESET -->
+
+            <div class="text-end mt-3">
+
+                <button type="button"
+                        id="resetFilters"
+                        class="btn btn-outline-secondary btn-sm">
+
+                    <i class="bi bi-arrow-counterclockwise me-1"></i>
+                    Reset Filters
+
+                </button>
 
             </div>
 
@@ -209,378 +264,258 @@
     </div>
 
 
-    <!-- ===================================================== -->
-    <!-- FILTER MODAL -->
-    <!-- ===================================================== -->
+    <!-- ================= FACULTY TABLE ================= -->
 
-    <div class="modal fade"
-         id="facultyFilterModal"
-         tabindex="-1"
-         aria-labelledby="facultyFilterModalLabel"
-         aria-hidden="true">
+    <div class="card faculty-table-card shadow-sm">
 
-        <div class="modal-dialog modal-dialog-centered">
-
-            <div class="modal-content">
-
-
-                <!-- Header -->
-
-                <div class="modal-header">
-
-                    <h5 class="modal-title"
-                        id="facultyFilterModalLabel">
-
-                        <i class="bi bi-funnel-fill me-2"></i>
-
-                        Filter Faculty
-
-                    </h5>
-
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal">
-                    </button>
-
-                </div>
-
-
-                <!-- Body -->
-
-                <div class="modal-body">
-
-
-                    <!-- Department -->
-
-                    <div class="mb-3">
-
-                        <label class="form-label fw-semibold">
-                            Department
-                        </label>
-
-                        <select id="filterDepartment"
-                                class="form-select">
-
-                            <option value="">
-                                Select Department
-                            </option>
-
-                            <option th:each="department : ${departments}"
-                                    th:value="${department.id}"
-                                    th:text="${department.departmentName}">
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- Status -->
-
-                    <div class="mb-3">
-
-                        <label class="form-label fw-semibold">
-                            Status
-                        </label>
-
-                        <select id="filterStatusSelect"
-                                class="form-select">
-
-                            <option value="">
-                                All Status
-                            </option>
-
-                            <option value="true">
-                                Active
-                            </option>
-
-                            <option value="false">
-                                Inactive
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- Footer -->
-
-                <div class="modal-footer">
-
-                    <button type="button"
-                            class="btn btn-secondary"
-                            onclick="resetFacultyFilter()">
-
-                        <i class="bi bi-arrow-counterclockwise me-2"></i>
-
-                        Reset
-
-                    </button>
-
-
-                    <button type="button"
-                            class="btn btn-success"
-                            onclick="applyFacultyFilter()">
-
-                        <i class="bi bi-funnel-fill me-2"></i>
-
-                        Apply Filter
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- FACULTY TABLE -->
-    <!-- ===================================================== -->
-
-    <div class="card shadow-sm">
-
-        <div class="card-body p-4">
+        <div class="card-body p-0">
 
             <div class="table-responsive">
 
-                <table class="table table-hover align-middle">
+                <table class="table faculty-table align-middle mb-0">
 
-                    <thead style="background:#212529;color:white;">
+                    <thead>
 
-                    <tr>
+                        <tr>
 
-                        <th>
-                            Photo
-                        </th>
+                            <th>Photo</th>
+                            <th>Faculty Code</th>
+                            <th>Faculty Name</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th>Gender</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
 
-                        <th>
-                            Faculty Code
-                        </th>
-
-                        <th>
-                            Faculty Name
-                        </th>
-
-                        <th>
-                            Department
-                        </th>
-
-                        <th>
-                            Designation
-                        </th>
-
-                        <th>
-                            Mobile
-                        </th>
-
-                        <th>
-                            Email
-                        </th>
-
-                        <th>
-                            Status
-                        </th>
-
-                        <th>
-                            Action
-                        </th>
-
-                    </tr>
+                        </tr>
 
                     </thead>
 
 
                     <tbody id="facultyTableBody">
 
+                        <tr th:each="faculty : ${faculties}"
+                            class="faculty-row"
 
-                    <!-- NO DATA -->
+                            th:attr="
+                            data-name=${faculty.firstName + ' ' + faculty.middleName + ' ' + faculty.lastName},
+                            data-code=${faculty.facultyCode},
+                            data-department=${faculty.department},
+                            data-designation=${faculty.designation},
+                            data-gender=${faculty.gender},
+                            data-mobile=${faculty.mobile},
+                            data-email=${faculty.email},
+                            data-status=${faculty.active ? 'active' : 'inactive'}">
 
-                    <tr id="noFacultyData"
-                        style="display:none;">
 
-                        <td colspan="9"
-                            class="text-center py-5">
+                            <!-- PHOTO -->
 
-                            <i class="bi bi-person-badge fs-1 text-secondary"></i>
+                            <td>
 
-                            <h5 class="mt-3">
-                                No Faculty Found
-                            </h5>
+                                <div class="faculty-photo">
 
-                            <p class="text-muted mb-0">
-                                No faculty matches your search or filter.
-                            </p>
+                                    <img th:if="${faculty.photo != null and !faculty.photo.isEmpty()}"
+                                         th:src="@{'http://localhost:8082/uploads/faculty/' + ${faculty.photo}}"
+                                         alt="Faculty Photo">
 
-                        </td>
+                                    <i th:unless="${faculty.photo != null and !faculty.photo.isEmpty()}"
+                                       class="bi bi-person-circle">
+                                    </i>
 
-                    </tr>
+                                </div>
 
+                            </td>
 
-                    <!-- FACULTY LIST -->
 
-                    <tr th:each="faculty : ${faculties}"
-                        class="faculty-row"
+                            <!-- CODE -->
 
-                        th:data-id="${faculty.id}"
+                            <td>
+                                <span th:text="${faculty.facultyCode}">
+                                </span>
+                            </td>
 
-                        th:data-department="${faculty.departmentId}"
 
-                        th:data-status="${faculty.active}"
+                            <!-- NAME -->
 
-                        th:data-search="${faculty.facultyCode + ' ' +
-                                         faculty.firstName + ' ' +
-                                         faculty.middleName + ' ' +
-                                         faculty.lastName + ' ' +
-                                         faculty.mobile + ' ' +
-                                         faculty.email}">
+                            <td>
 
+                                <strong>
 
-                        <!-- PHOTO -->
+                                    <span th:text="${faculty.firstName}">
+                                    </span>
 
-                        <td>
+                                    <span th:if="${faculty.middleName != null and !faculty.middleName.isEmpty()}"
+                                          th:text="' ' + ${faculty.middleName}">
+                                    </span>
 
-                            <div th:if="${faculty.photo != null and faculty.photo != ''}">
+                                    <span th:text="' ' + ${faculty.lastName}">
+                                    </span>
 
-                                <img th:src="@{'/uploads/faculty/' + ${faculty.photo}}"
-                                     width="45"
-                                     height="45"
-                                     class="rounded-circle"
-                                     style="object-fit:cover;">
+                                </strong>
 
-                            </div>
+                            </td>
 
-                            <i th:unless="${faculty.photo != null and faculty.photo != ''}"
-                               class="bi bi-person-circle fs-2">
-                            </i>
 
-                        </td>
+                            <!-- DEPARTMENT -->
 
+                            <td th:text="${faculty.department}">
+                            </td>
 
-                        <!-- FACULTY CODE -->
 
-                        <td th:text="${faculty.facultyCode}">
-                            -
-                        </td>
+                            <!-- DESIGNATION -->
 
+                            <td th:text="${faculty.designation}">
+                            </td>
 
-                        <!-- NAME -->
 
-                        <td>
+                            <!-- GENDER -->
 
-                            <span th:text="${faculty.firstName}">
-                            </span>
+                            <td th:text="${faculty.gender}">
+                            </td>
 
-                            <span th:if="${faculty.middleName != null and faculty.middleName != ''}"
-                                  th:text="' ' + ${faculty.middleName}">
-                            </span>
 
-                            <span th:text="' ' + ${faculty.lastName}">
-                            </span>
+                            <!-- MOBILE -->
 
-                        </td>
+                            <td th:text="${faculty.mobile}">
+                            </td>
 
 
-                        <!-- DEPARTMENT -->
+                            <!-- EMAIL -->
 
-                        <td th:text="${faculty.departmentName}">
-                            -
-                        </td>
+                            <td class="faculty-email"
+                                th:text="${faculty.email}">
+                            </td>
 
 
-                        <!-- DESIGNATION -->
+                            <!-- STATUS -->
 
-                        <td th:text="${faculty.designation}">
-                            -
-                        </td>
+                            <td>
 
+                                <span th:if="${faculty.active}"
+                                      class="badge bg-success">
 
-                        <!-- MOBILE -->
+                                    Active
 
-                        <td th:text="${faculty.mobile}">
-                            -
-                        </td>
+                                </span>
 
+                                <span th:unless="${faculty.active}"
+                                      class="badge bg-secondary">
 
-                        <!-- EMAIL -->
+                                    Inactive
 
-                        <td th:text="${faculty.email}">
-                            -
-                        </td>
+                                </span>
 
+                            </td>
 
-                        <!-- STATUS -->
 
-                        <td>
+                            <!-- ACTION -->
 
-                            <span class="badge bg-success"
-                                  th:if="${faculty.active}">
+                            <td>
 
-                                Active
+                                <div class="faculty-actions">
 
-                            </span>
+                                    <a th:href="@{'/faculty/view/' + ${faculty.id}}"
+                                       class="btn btn-info btn-sm"
+                                       title="View">
 
-                            <span class="badge bg-danger"
-                                  th:unless="${faculty.active}">
+                                        <i class="bi bi-eye"></i>
 
-                                Inactive
+                                    </a>
 
-                            </span>
 
-                        </td>
+                                    <a th:href="@{'/faculty/edit/' + ${faculty.id}}"
+                                       class="btn btn-warning btn-sm"
+                                       title="Edit">
 
+                                        <i class="bi bi-pencil-square"></i>
 
-                        <!-- ACTION -->
+                                    </a>
 
-                        <td>
 
-                            <!-- VIEW -->
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm"
+                                            title="Delete"
+                                            th:onclick="'deleteFaculty(' + ${faculty.id} + ')'">
 
-                            <a th:href="@{/faculty/view/{id}(id=${faculty.id})}"
-                               class="btn btn-info btn-sm text-white"
-                               title="View">
+                                        <i class="bi bi-trash"></i>
 
-                                <i class="bi bi-eye"></i>
+                                    </button>
 
-                            </a>
+                                </div>
 
+                            </td>
 
-                            <!-- EDIT -->
-
-                            <a th:href="@{/faculty/edit/{id}(id=${faculty.id})}"
-                               class="btn btn-warning btn-sm"
-                               title="Edit">
-
-                                <i class="bi bi-pencil-square"></i>
-
-                            </a>
-
-
-                            <!-- DELETE -->
-
-                            <a href="#"
-                               class="btn btn-danger btn-sm"
-                               title="Delete"
-                               th:onclick="'deleteFaculty(' + ${faculty.id} + '); return false;'">
-
-                                <i class="bi bi-trash"></i>
-
-                            </a>
-
-                        </td>
-
-                    </tr>
+                        </tr>
 
 
                     </tbody>
 
                 </table>
+
+
+                <!-- NO RESULT -->
+
+                <div id="noFacultyResult"
+                     class="text-center py-5"
+                     style="display:none;">
+
+                    <i class="bi bi-search"
+                       style="font-size:40px;">
+                    </i>
+
+                    <p class="mt-2 mb-0">
+                        No faculty found.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PAGINATION ================= -->
+
+        <div class="faculty-pagination">
+
+            <div id="facultyCount">
+
+                Showing <strong>0</strong> - <strong>0</strong>
+                of <strong>0</strong> faculty
+
+            </div>
+
+
+            <div class="pagination-buttons">
+
+                <button type="button"
+                        id="previousPage"
+                        class="btn btn-outline-secondary btn-sm">
+
+                    <i class="bi bi-chevron-left"></i>
+                    Previous
+
+                </button>
+
+
+                <span id="pageNumber"
+                      class="page-number">
+
+                    1
+
+                </span>
+
+
+                <button type="button"
+                        id="nextPage"
+                        class="btn btn-outline-secondary btn-sm">
+
+                    Next
+                    <i class="bi bi-chevron-right"></i>
+
+                </button>
 
             </div>
 
@@ -588,633 +523,396 @@
 
     </div>
 
+</section>
 
-    <!-- ===================================================== -->
-    <!-- PAGINATION -->
-    <!-- ===================================================== -->
+</div>
 
-    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
 
+<!-- ================= DELETE POPUP ================= -->
 
-        <div class="text-muted">
+<script>
 
-            Showing
+function deleteFaculty(id) {
 
-            <strong id="startRecord">
-                0
-            </strong>
+    const confirmed = confirm(
+        "Are you sure you want to delete this faculty?"
+    );
 
-            -
+    if (confirmed) {
 
-            <strong id="endRecord">
-                0
-            </strong>
+        window.location.href =
+            "/faculty/delete/" + id;
 
-            of
+    }
+}
 
-            <strong id="filteredRecords">
-                0
-            </strong>
 
-            faculty
+/* =====================================================
+   SEARCH + FILTER + PAGINATION
+===================================================== */
 
-        </div>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const searchInput =
+        document.getElementById("searchFaculty");
 
-        <nav>
+    const departmentFilter =
+        document.getElementById("departmentFilter");
 
-            <ul class="pagination mb-0"
-                id="facultyPagination">
+    const designationFilter =
+        document.getElementById("designationFilter");
 
-            </ul>
+    const genderFilter =
+        document.getElementById("genderFilter");
 
-        </nav>
+    const statusFilter =
+        document.getElementById("statusFilter");
 
-    </div>
+    const resetButton =
+        document.getElementById("resetFilters");
 
+    const previousButton =
+        document.getElementById("previousPage");
 
-    <!-- ===================================================== -->
-    <!-- JAVASCRIPT -->
-    <!-- ===================================================== -->
+    const nextButton =
+        document.getElementById("nextPage");
 
-    <script>
+    const pageNumber =
+        document.getElementById("pageNumber");
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
+    const facultyCount =
+        document.getElementById("facultyCount");
 
-                const rows = Array.from(
-                    document.querySelectorAll(
-                        ".faculty-row"
-                    )
-                );
+    const noResult =
+        document.getElementById("noFacultyResult");
 
-                const rowsPerPage = 100;
 
-                let currentPage = 1;
+    const rows = Array.from(
+        document.querySelectorAll(".faculty-row")
+    );
 
-                let filteredRows = [...rows];
 
+    const recordsPerPage = 50;
 
-                const searchInput =
-                    document.getElementById(
-                        "facultySearch"
-                    );
+    let currentPage = 1;
 
-                const filterDepartment =
-                    document.getElementById(
-                        "filterDepartment"
-                    );
 
-                const filterStatus =
-                    document.getElementById(
-                        "filterStatusSelect"
-                    );
+    function filterRows() {
 
+        const search =
+            searchInput.value
+                .toLowerCase()
+                .trim();
 
-                /* ==========================================
-                   TOTAL FACULTY
-                ========================================== */
+        const department =
+            departmentFilter.value
+                .toLowerCase();
 
-                document.getElementById(
-                    "totalFaculty"
-                ).textContent = rows.length;
+        const designation =
+            designationFilter.value
+                .toLowerCase();
 
+        const gender =
+            genderFilter.value
+                .toLowerCase();
 
-                /* ==========================================
-                   SEARCH
-                ========================================== */
+        const status =
+            statusFilter.value
+                .toLowerCase();
 
-                searchInput.addEventListener(
-                    "input",
-                    function () {
 
-                        applyFilters();
+        return rows.filter(function (row) {
 
-                    }
-                );
+            const name =
+                (row.dataset.name || "")
+                    .toLowerCase();
 
+            const code =
+                (row.dataset.code || "")
+                    .toLowerCase();
 
-                /* ==========================================
-                   APPLY FILTER
-                ========================================== */
+            const rowDepartment =
+                (row.dataset.department || "")
+                    .toLowerCase();
 
-                window.applyFacultyFilter =
-                    function () {
+            const rowDesignation =
+                (row.dataset.designation || "")
+                    .toLowerCase();
 
-                        applyFilters();
+            const rowGender =
+                (row.dataset.gender || "")
+                    .toLowerCase();
 
+            const mobile =
+                (row.dataset.mobile || "")
+                    .toLowerCase();
 
-                        const modalElement =
-                            document.getElementById(
-                                "facultyFilterModal"
-                            );
+            const email =
+                (row.dataset.email || "")
+                    .toLowerCase();
 
-                        const modal =
-                            bootstrap.Modal.getInstance(
-                                modalElement
-                            );
+            const rowStatus =
+                (row.dataset.status || "")
+                    .toLowerCase();
 
-                        if (modal) {
 
-                            modal.hide();
+            const matchesSearch =
+                !search ||
+                name.includes(search) ||
+                code.includes(search) ||
+                mobile.includes(search) ||
+                email.includes(search);
 
-                        }
 
-                    };
+            const matchesDepartment =
+                !department ||
+                rowDepartment === department;
 
 
-                /* ==========================================
-                   RESET FILTER
-                ========================================== */
+            const matchesDesignation =
+                !designation ||
+                rowDesignation === designation;
 
-                window.resetFacultyFilter =
-                    function () {
 
-                        filterDepartment.value = "";
+            const matchesGender =
+                !gender ||
+                rowGender === gender;
 
-                        filterStatus.value = "";
 
-                        searchInput.value = "";
+            const matchesStatus =
+                !status ||
+                rowStatus === status;
 
-                        applyFilters();
 
+            return (
+                matchesSearch &&
+                matchesDepartment &&
+                matchesDesignation &&
+                matchesGender &&
+                matchesStatus
+            );
 
-                        const modalElement =
-                            document.getElementById(
-                                "facultyFilterModal"
-                            );
+        });
 
-                        const modal =
-                            bootstrap.Modal.getInstance(
-                                modalElement
-                            );
+    }
 
-                        if (modal) {
 
-                            modal.hide();
+    function renderTable() {
 
-                        }
+        const filteredRows =
+            filterRows();
 
-                    };
 
+        const total =
+            filteredRows.length;
 
-                /* ==========================================
-                   FILTER LOGIC
-                ========================================== */
 
-                function applyFilters() {
+        const totalPages =
+            Math.max(
+                1,
+                Math.ceil(
+                    total / recordsPerPage
+                )
+            );
 
-                    const departmentId =
-                        filterDepartment.value;
 
-                    const statusValue =
-                        filterStatus.value;
+        if (currentPage > totalPages) {
 
-                    const searchText =
-                        searchInput.value
-                        .trim()
-                        .toLowerCase();
+            currentPage = totalPages;
 
+        }
 
-                    filteredRows =
-                        rows.filter(
-                            function (row) {
 
-                                const rowDepartment =
-                                    row.getAttribute(
-                                        "data-department"
-                                    );
+        const startIndex =
+            (currentPage - 1)
+            * recordsPerPage;
 
-                                const rowStatus =
-                                    row.getAttribute(
-                                        "data-status"
-                                    );
 
-                                const rowSearch =
-                                    (
-                                        row.getAttribute(
-                                            "data-search"
-                                        ) || ""
-                                    ).toLowerCase();
+        const endIndex =
+            Math.min(
+                startIndex + recordsPerPage,
+                total
+            );
 
 
-                                const departmentMatch =
-                                    !departmentId ||
-                                    rowDepartment === departmentId;
+        rows.forEach(function (row) {
 
+            row.style.display = "none";
 
-                                const statusMatch =
-                                    !statusValue ||
-                                    rowStatus === statusValue;
+        });
 
 
-                                const searchMatch =
-                                    !searchText ||
-                                    rowSearch.includes(
-                                        searchText
-                                    );
+        filteredRows
+            .slice(
+                startIndex,
+                endIndex
+            )
+            .forEach(function (row) {
 
-
-                                return (
-                                    departmentMatch &&
-                                    statusMatch &&
-                                    searchMatch
-                                );
-
-                            }
-                        );
-
-
-                    currentPage = 1;
-
-                    updateFilterStatus();
-
-                    showPage(currentPage);
-
-                }
-
-
-                /* ==========================================
-                   FILTER STATUS
-                ========================================== */
-
-                function updateFilterStatus() {
-
-                    const activeFilters = [];
-
-
-                    if (filterDepartment.value) {
-
-                        activeFilters.push(
-                            "Department"
-                        );
-
-                    }
-
-
-                    if (filterStatus.value) {
-
-                        activeFilters.push(
-                            "Status"
-                        );
-
-                    }
-
-
-                    const status =
-                        document.getElementById(
-                            "filterStatus"
-                        );
-
-
-                    if (activeFilters.length > 0) {
-
-                        status.textContent =
-                            activeFilters.length +
-                            " filter(s) applied";
-
-                    } else {
-
-                        status.textContent = "";
-
-                    }
-
-                }
-
-
-                /* ==========================================
-                   SHOW PAGE
-                ========================================== */
-
-                function showPage(page) {
-
-                    currentPage = page;
-
-
-                    const totalPages =
-                        Math.ceil(
-                            filteredRows.length /
-                            rowsPerPage
-                        );
-
-
-                    const start =
-                        (page - 1) *
-                        rowsPerPage;
-
-
-                    const end =
-                        Math.min(
-                            start + rowsPerPage,
-                            filteredRows.length
-                        );
-
-
-                    rows.forEach(
-                        function (row) {
-
-                            row.style.display =
-                                "none";
-
-                        }
-                    );
-
-
-                    for (
-                        let i = start;
-                        i < end;
-                        i++
-                    ) {
-
-                        filteredRows[i].style.display =
-                            "";
-
-                    }
-
-
-                    const noData =
-                        document.getElementById(
-                            "noFacultyData"
-                        );
-
-
-                    if (
-                        filteredRows.length === 0
-                    ) {
-
-                        noData.style.display = "";
-
-                    } else {
-
-                        noData.style.display = "none";
-
-                    }
-
-
-                    document.getElementById(
-                        "startRecord"
-                    ).textContent =
-                        filteredRows.length === 0
-                            ? 0
-                            : start + 1;
-
-
-                    document.getElementById(
-                        "endRecord"
-                    ).textContent = end;
-
-
-                    document.getElementById(
-                        "filteredRecords"
-                    ).textContent =
-                        filteredRows.length;
-
-
-                    createPagination(
-                        totalPages
-                    );
-
-                }
-
-
-                /* ==========================================
-                   PAGINATION
-                ========================================== */
-
-                function createPagination(
-                    totalPages
-                ) {
-
-                    const pagination =
-                        document.getElementById(
-                            "facultyPagination"
-                        );
-
-                    pagination.innerHTML = "";
-
-
-                    if (totalPages <= 1) {
-
-                        return;
-
-                    }
-
-
-                    /* Previous */
-
-                    const previous =
-                        document.createElement(
-                            "li"
-                        );
-
-                    previous.className =
-                        "page-item " +
-                        (
-                            currentPage === 1
-                                ? "disabled"
-                                : ""
-                        );
-
-
-                    previous.innerHTML =
-                        `
-                        <a class="page-link"
-                           href="#">
-                            Previous
-                        </a>
-                        `;
-
-
-                    previous
-                        .querySelector("a")
-                        .addEventListener(
-                            "click",
-                            function (event) {
-
-                                event.preventDefault();
-
-                                if (
-                                    currentPage > 1
-                                ) {
-
-                                    showPage(
-                                        currentPage - 1
-                                    );
-
-                                }
-
-                            }
-                        );
-
-
-                    pagination.appendChild(
-                        previous
-                    );
-
-
-                    /* Page Numbers */
-
-                    for (
-                        let page = 1;
-                        page <= totalPages;
-                        page++
-                    ) {
-
-                        const pageItem =
-                            document.createElement(
-                                "li"
-                            );
-
-
-                        pageItem.className =
-                            "page-item " +
-                            (
-                                page === currentPage
-                                    ? "active"
-                                    : ""
-                            );
-
-
-                        pageItem.innerHTML =
-                            `
-                            <a class="page-link"
-                               href="#">
-                                ${page}
-                            </a>
-                            `;
-
-
-                        pageItem
-                            .querySelector("a")
-                            .addEventListener(
-                                "click",
-                                function (event) {
-
-                                    event.preventDefault();
-
-                                    showPage(page);
-
-                                }
-                            );
-
-
-                        pagination.appendChild(
-                            pageItem
-                        );
-
-                    }
-
-
-                    /* Next */
-
-                    const next =
-                        document.createElement(
-                            "li"
-                        );
-
-
-                    next.className =
-                        "page-item " +
-                        (
-                            currentPage === totalPages
-                                ? "disabled"
-                                : ""
-                        );
-
-
-                    next.innerHTML =
-                        `
-                        <a class="page-link"
-                           href="#">
-                            Next
-                        </a>
-                        `;
-
-
-                    next
-                        .querySelector("a")
-                        .addEventListener(
-                            "click",
-                            function (event) {
-
-                                event.preventDefault();
-
-                                if (
-                                    currentPage < totalPages
-                                ) {
-
-                                    showPage(
-                                        currentPage + 1
-                                    );
-
-                                }
-
-                            }
-                        );
-
-
-                    pagination.appendChild(
-                        next
-                    );
-
-                }
-
-
-                /* ==========================================
-                   INITIAL PAGE
-                ========================================== */
-
-                showPage(1);
+                row.style.display =
+                    "table-row";
 
             });
 
 
-        /* ==================================================
-           DELETE FACULTY
-        ================================================== */
+        if (total === 0) {
 
-        function deleteFaculty(id) {
+            noResult.style.display =
+                "block";
 
-            Swal.fire({
+        } else {
 
-                title: "Delete Faculty?",
-
-                text:
-                    "This faculty will be permanently deleted.",
-
-                icon: "warning",
-
-                showCancelButton: true,
-
-                confirmButtonColor: "#dc3545",
-
-                cancelButtonColor: "#6c757d",
-
-                confirmButtonText: "Yes, Delete",
-
-                cancelButtonText: "Cancel"
-
-            }).then(
-                function (result) {
-
-                    if (result.isConfirmed) {
-
-                        window.location.href =
-                            "/faculty/delete/" + id;
-
-                    }
-
-                }
-            );
+            noResult.style.display =
+                "none";
 
         }
 
-    </script>
+
+        if (total === 0) {
+
+            facultyCount.innerHTML =
+                'Showing <strong>0</strong> - <strong>0</strong> of <strong>0</strong> faculty';
+
+        } else {
+
+            facultyCount.innerHTML =
+                'Showing <strong>'
+                + (startIndex + 1)
+                + '</strong> - <strong>'
+                + endIndex
+                + '</strong> of <strong>'
+                + total
+                + '</strong> faculty';
+
+        }
 
 
-</section>
+        pageNumber.textContent =
+            currentPage
+            + " / "
+            + totalPages;
 
-</div>
+
+        previousButton.disabled =
+            currentPage <= 1;
+
+
+        nextButton.disabled =
+            currentPage >= totalPages;
+
+    }
+
+
+    function resetToFirstPage() {
+
+        currentPage = 1;
+
+        renderTable();
+
+    }
+
+
+    searchInput.addEventListener(
+        "input",
+        resetToFirstPage
+    );
+
+
+    departmentFilter.addEventListener(
+        "change",
+        resetToFirstPage
+    );
+
+
+    designationFilter.addEventListener(
+        "change",
+        resetToFirstPage
+    );
+
+
+    genderFilter.addEventListener(
+        "change",
+        resetToFirstPage
+    );
+
+
+    statusFilter.addEventListener(
+        "change",
+        resetToFirstPage
+    );
+
+
+    resetButton.addEventListener(
+        "click",
+        function () {
+
+            searchInput.value = "";
+
+            departmentFilter.value = "";
+
+            designationFilter.value = "";
+
+            genderFilter.value = "";
+
+            statusFilter.value = "";
+
+            currentPage = 1;
+
+            renderTable();
+
+        }
+    );
+
+
+    previousButton.addEventListener(
+        "click",
+        function () {
+
+            if (currentPage > 1) {
+
+                currentPage--;
+
+                renderTable();
+
+            }
+
+        }
+    );
+
+
+    nextButton.addEventListener(
+        "click",
+        function () {
+
+            const filteredRows =
+                filterRows();
+
+            const totalPages =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        filteredRows.length
+                        / recordsPerPage
+                    )
+                );
+
+
+            if (currentPage < totalPages) {
+
+                currentPage++;
+
+                renderTable();
+
+            }
+
+        }
+    );
+
+
+    renderTable();
+
+});
+
+</script>
 
 </html>

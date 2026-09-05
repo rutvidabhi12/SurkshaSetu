@@ -5,7 +5,9 @@
 
 <section>
 
-    <!-- PAGE HEADER -->
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -21,6 +23,9 @@
 
         </div>
 
+
+        <!-- BACK -->
+
         <a th:href="@{/faculty}"
            class="btn btn-outline-secondary">
 
@@ -33,272 +38,572 @@
     </div>
 
 
-    <!-- FACULTY FORM -->
+    <!-- =====================================================
+         ADD FACULTY FORM
+    ====================================================== -->
 
-    <div class="card shadow-sm">
-
-        <div class="card-body p-4">
-
-            <div class="row g-4">
-
-
-                <!-- FIRST NAME -->
-
-                <div class="col-md-4">
-
-                    <label class="form-label fw-semibold">
-                        First Name
-                    </label>
-
-                    <input type="text"
-                           class="form-control"
-                           placeholder="Enter First Name">
-
-                </div>
+    <form th:action="@{/faculty/add}"
+          method="post"
+          enctype="multipart/form-data"
+          id="facultyAddForm">
 
 
-                <!-- MIDDLE NAME -->
+        <div class="card shadow-sm">
 
-                <div class="col-md-4">
+            <div class="card-body p-4">
 
-                    <label class="form-label fw-semibold">
-                        Middle Name
-                    </label>
-
-                    <input type="text"
-                           class="form-control"
-                           placeholder="Enter Middle Name">
-
-                </div>
+                <div class="row g-4">
 
 
-                <!-- LAST NAME -->
+                    <!-- =================================================
+                         FIRST NAME
+                    ================================================== -->
 
-                <div class="col-md-4">
+                    <div class="col-md-4">
 
-                    <label class="form-label fw-semibold">
-                        Last Name
-                    </label>
+                        <label class="form-label fw-semibold">
 
-                    <input type="text"
-                           class="form-control"
-                           placeholder="Enter Last Name">
+                            First Name
+                            <span class="text-danger">*</span>
 
-                </div>
-
-
-                <!-- FACULTY CODE -->
-
-                <div class="col-md-6">
-
-                    <label class="form-label fw-semibold">
-                        Faculty Code
-                    </label>
-
-                    <input type="text"
-                           class="form-control"
-                           placeholder="Enter Faculty Code">
-
-                </div>
-
-
-                <!-- EMAIL -->
-
-                <div class="col-md-6">
-
-                    <label class="form-label fw-semibold">
-                        Email
-                    </label>
-
-                    <input type="email"
-                           class="form-control"
-                           placeholder="Enter Email">
-
-                </div>
-
-
-                <!-- MOBILE -->
-
-                <div class="col-md-6">
-
-                    <label class="form-label fw-semibold">
-                        Mobile
-                    </label>
-
-                    <input type="tel"
-                           class="form-control"
-                           placeholder="Enter Mobile Number">
-
-                </div>
-
-
-                <!-- DEPARTMENT -->
-
-                <div class="col-md-6">
-
-                    <div class="d-flex align-items-center mb-2">
-
-                        <label class="form-label fw-semibold mb-0">
-                            Department
                         </label>
 
-                        <a th:href="@{/departments/add}"
-                           class="btn btn-success ms-auto add-btn"
-                           title="Add Department">
-
-                            <i class="bi bi-plus-lg"></i>
-
-                        </a>
+                        <input type="text"
+                               name="firstName"
+                               class="form-control"
+                               placeholder="Enter First Name"
+                               autocomplete="off"
+                               required>
 
                     </div>
 
-                    <select class="form-select">
 
-                        <option value="">
-                            Select Department
-                        </option>
+                    <!-- =================================================
+                         MIDDLE NAME
+                    ================================================== -->
 
-                    </select>
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Middle Name
+
+                        </label>
+
+                        <input type="text"
+                               name="middleName"
+                               class="form-control"
+                               placeholder="Enter Middle Name"
+                               autocomplete="off">
+
+                    </div>
+
+
+                    <!-- =================================================
+                         LAST NAME
+                    ================================================== -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Last Name
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input type="text"
+                               name="lastName"
+                               class="form-control"
+                               placeholder="Enter Last Name"
+                               autocomplete="off"
+                               required>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         FACULTY CODE
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Faculty Code
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input type="text"
+                               name="facultyCode"
+                               class="form-control"
+                               placeholder="Enter Faculty Code"
+                               autocomplete="off"
+                               required>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         EMAIL
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Email
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               placeholder="Enter Email"
+                               autocomplete="off"
+                               required>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         MOBILE
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Mobile
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input type="tel"
+                               name="mobile"
+                               class="form-control"
+                               placeholder="Enter Mobile Number"
+                               maxlength="10"
+                               pattern="[0-9]{10}"
+                               autocomplete="off"
+                               required>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         DEPARTMENT
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <div class="d-flex align-items-center mb-2">
+
+                            <label class="form-label fw-semibold mb-0">
+
+                                Department
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+
+                            <!-- ADD DEPARTMENT -->
+
+                            <a th:href="@{/departments/add}"
+                               class="btn btn-success ms-auto"
+                               title="Add Department">
+
+                                <i class="bi bi-plus-lg"></i>
+
+                            </a>
+
+                        </div>
+
+
+                        <select name="department"
+                                id="department"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Select Department
+                            </option>
+
+
+                            <option th:each="department : ${departments}"
+                                    th:value="${department.departmentName}"
+                                    th:text="${department.departmentName}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         DESIGNATION
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Designation
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+
+                        <select name="designation"
+                                id="designation"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Select Designation
+                            </option>
+
+
+                            <option value="Dean & Professor">
+                                Dean & Professor
+                            </option>
+
+
+                            <option value="Head & Professor">
+                                Head & Professor
+                            </option>
+
+
+                            <option value="Senior Professor">
+                                Senior Professor
+                            </option>
+
+
+                            <option value="Professor">
+                                Professor
+                            </option>
+
+
+                            <option value="Associate Professor">
+                                Associate Professor
+                            </option>
+
+
+                            <option value="Assistant Professor">
+                                Assistant Professor
+                            </option>
+
+
+                            <option value="Lecturer">
+                                Lecturer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         GENDER
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Gender
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+
+                        <select name="gender"
+                                id="gender"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Select Gender
+                            </option>
+
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PROFILE PHOTO
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Profile Photo
+
+                        </label>
+
+
+                        <input type="file"
+                               name="photoFile"
+                               id="facultyPhoto"
+                               class="form-control"
+                               accept="image/*">
+
+
+                        <!-- PHOTO PREVIEW -->
+
+                        <div id="photoPreview"
+                             class="mt-3"
+                             style="display:none;">
+
+                            <img id="previewImage"
+                                 src=""
+                                 alt="Photo Preview"
+                                 style="
+                                    width:80px;
+                                    height:80px;
+                                    object-fit:cover;
+                                    border-radius:50%;
+                                    border:2px solid #6B4F3F;
+                                 ">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         STATUS
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Status
+
+                        </label>
+
+
+                        <select name="active"
+                                id="active"
+                                class="form-select">
+
+                            <option value="true"
+                                    selected>
+
+                                Active
+
+                            </option>
+
+
+                            <option value="false">
+
+                                Inactive
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
 
                 </div>
 
-
-                <!-- DESIGNATION -->
-
-                <div class="col-md-6">
-
-                    <label class="form-label fw-semibold">
-                        Designation
-                    </label>
-
-                    <select class="form-select">
-
-                        <option value="">
-                            Select Designation
-                        </option>
-
-                        <option value="Professor">
-                            Professor
-                        </option>
-
-                        <option value="Associate Professor">
-                            Associate Professor
-                        </option>
-
-                        <option value="Assistant Professor">
-                            Assistant Professor
-                        </option>
-
-                        <option value="Lecturer">
-                            Lecturer
-                        </option>
-
-                    </select>
-
-                </div>
+            </div>
 
 
-                <!-- GENDER -->
+            <!-- =====================================================
+                 FOOTER
+            ====================================================== -->
 
-                <div class="col-md-6">
-
-                    <label class="form-label fw-semibold">
-                        Gender
-                    </label>
-
-                    <select class="form-select">
-
-                        <option value="">
-                            Select Gender
-                        </option>
-
-                        <option value="Male">
-                            Male
-                        </option>
-
-                        <option value="Female">
-                            Female
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
-
-                    </select>
-
-                </div>
+            <div class="card-footer text-end">
 
 
-                <!-- PROFILE PHOTO -->
+                <!-- CANCEL -->
 
-                <div class="col-md-6">
+                <a th:href="@{/faculty}"
+                   class="btn btn-secondary">
 
-                    <label class="form-label fw-semibold">
-                        Profile Photo
-                    </label>
+                    <i class="bi bi-x-circle me-1"></i>
 
-                    <input type="file"
-                           class="form-control"
-                           accept="image/*">
+                    Cancel
 
-                </div>
+                </a>
 
 
-                <!-- STATUS -->
+                <!-- SAVE -->
 
-                <div class="col-md-6">
+                <button type="submit"
+                        id="saveFacultyButton"
+                        class="btn btn-success ms-2">
 
-                    <label class="form-label fw-semibold">
-                        Status
-                    </label>
+                    <i class="bi bi-check-circle me-2"></i>
 
-                    <select class="form-select">
+                    Save Faculty
 
-                        <option value="true">
-                            Active
-                        </option>
-
-                        <option value="false">
-                            Inactive
-                        </option>
-
-                    </select>
-
-                </div>
-
+                </button>
 
             </div>
 
         </div>
 
-
-        <!-- FOOTER -->
-
-        <div class="card-footer text-end">
-
-            <a th:href="@{/faculty}"
-               class="btn btn-secondary">
-
-                Cancel
-
-            </a>
-
-            <button type="button"
-                    class="btn btn-success ms-2">
-
-                <i class="bi bi-check-circle me-2"></i>
-
-                Save Faculty
-
-            </button>
-
-        </div>
-
-    </div>
-
+    </form>
 
 </section>
 
 </div>
+
+
+<!-- =====================================================
+     PHOTO PREVIEW
+====================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const photoInput =
+            document.getElementById("facultyPhoto");
+
+        const previewBox =
+            document.getElementById("photoPreview");
+
+        const previewImage =
+            document.getElementById("previewImage");
+
+
+        if (photoInput) {
+
+            photoInput.addEventListener(
+                "change",
+                function () {
+
+                    const file =
+                        this.files[0];
+
+
+                    if (!file) {
+
+                        previewBox.style.display =
+                            "none";
+
+                        previewImage.src =
+                            "";
+
+                        return;
+                    }
+
+
+                    if (!file.type.startsWith("image/")) {
+
+                        alert(
+                            "Please select an image file."
+                        );
+
+                        this.value = "";
+
+                        previewBox.style.display =
+                            "none";
+
+                        return;
+                    }
+
+
+                    const reader =
+                        new FileReader();
+
+
+                    reader.onload =
+                        function (event) {
+
+                            previewImage.src =
+                                event.target.result;
+
+                            previewBox.style.display =
+                                "block";
+
+                        };
+
+
+                    reader.readAsDataURL(file);
+
+                }
+            );
+
+        }
+
+    }
+
+);
+
+</script>
+
+
+<!-- =====================================================
+     FORM SUBMIT PROTECTION
+====================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const form =
+            document.getElementById(
+                "facultyAddForm"
+            );
+
+
+        const button =
+            document.getElementById(
+                "saveFacultyButton"
+            );
+
+
+        if (form && button) {
+
+            form.addEventListener(
+                "submit",
+                function () {
+
+                    button.disabled = true;
+
+
+                    button.innerHTML =
+                        '<span class="spinner-border spinner-border-sm me-2"></span>' +
+                        'Saving Faculty...';
+
+                }
+            );
+
+        }
+
+    }
+
+);
+
+</script>
 
 </html>

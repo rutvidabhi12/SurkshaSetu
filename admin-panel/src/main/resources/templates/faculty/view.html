@@ -5,7 +5,9 @@
 
 <section>
 
-    <!-- PAGE HEADER -->
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -21,6 +23,7 @@
 
         </div>
 
+
         <a th:href="@{/faculty}"
            class="btn btn-outline-secondary">
 
@@ -33,7 +36,9 @@
     </div>
 
 
-    <!-- FACULTY PROFILE -->
+    <!-- =====================================================
+         FACULTY DETAILS CARD
+    ====================================================== -->
 
     <div class="card shadow-sm">
 
@@ -42,49 +47,78 @@
             <div class="row g-4">
 
 
-                <!-- PROFILE PHOTO -->
+                <!-- =================================================
+                     PHOTO / PROFILE
+                ================================================== -->
 
-                <div class="col-md-3 text-center">
+                <div class="col-md-4 text-center">
 
-                    <div th:if="${faculty.photo != null and faculty.photo != ''}">
+                    <div class="mb-3">
 
-                        <img th:src="@{'/uploads/faculty/' + ${faculty.photo}}"
-                             width="150"
-                             height="150"
+                        <!-- PHOTO EXISTS -->
+
+                        <img th:if="${faculty.photo != null and !#strings.isEmpty(faculty.photo)}"
+                             th:src="@{'http://localhost:8082/api/faculty/' + ${faculty.id} + '/photo'}"
+                             alt="Faculty Photo"
                              class="rounded-circle"
-                             style="object-fit:cover;">
+                             style="
+                                width:180px;
+                                height:180px;
+                                object-fit:cover;
+                                border:4px solid #6b4f3f;
+                             ">
+
+
+                        <!-- PHOTO NOT EXISTS -->
+
+                        <div th:if="${faculty.photo == null or #strings.isEmpty(faculty.photo)}"
+                             class="rounded-circle d-flex align-items-center justify-content-center mx-auto"
+                             style="
+                                width:180px;
+                                height:180px;
+                                border:4px solid #6b4f3f;
+                                background:#f5f5f5;
+                                font-size:70px;
+                                color:#6c757d;
+                             ">
+
+                            <i class="bi bi-person"></i>
+
+                        </div>
 
                     </div>
 
-                    <i th:unless="${faculty.photo != null and faculty.photo != ''}"
-                       class="bi bi-person-circle"
-                       style="font-size:150px;">
-                    </i>
 
-                    <h5 class="mt-3 mb-0">
+                    <!-- NAME -->
 
-                        <span th:text="${faculty.firstName}">
-                        </span>
+                    <h4 class="mb-1"
+                        th:text="${faculty.firstName + ' ' +
+                                 (faculty.middleName != null ?
+                                 faculty.middleName + ' ' : '') +
+                                 faculty.lastName}">
 
-                        <span th:if="${faculty.middleName != null and faculty.middleName != ''}"
-                              th:text="' ' + ${faculty.middleName}">
-                        </span>
+                        Faculty Name
 
-                        <span th:text="' ' + ${faculty.lastName}">
-                        </span>
+                    </h4>
 
-                    </h5>
+
+                    <!-- CODE -->
 
                     <p class="text-muted mb-0"
                        th:text="${faculty.facultyCode}">
+
+                        GV-CS-001
+
                     </p>
 
                 </div>
 
 
-                <!-- FACULTY INFORMATION -->
+                <!-- =================================================
+                     DETAILS
+                ================================================== -->
 
-                <div class="col-md-9">
+                <div class="col-md-8">
 
                     <div class="row g-4">
 
@@ -97,10 +131,10 @@
                                 First Name
                             </label>
 
-                            <div class="form-control bg-light"
-                                 th:text="${faculty.firstName}">
-                                -
-                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${faculty.firstName}"
+                                   readonly>
 
                         </div>
 
@@ -113,10 +147,10 @@
                                 Middle Name
                             </label>
 
-                            <div class="form-control bg-light"
-                                 th:text="${faculty.middleName}">
-                                -
-                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${faculty.middleName}"
+                                   readonly>
 
                         </div>
 
@@ -129,10 +163,10 @@
                                 Last Name
                             </label>
 
-                            <div class="form-control bg-light"
-                                 th:text="${faculty.lastName}">
-                                -
-                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${faculty.lastName}"
+                                   readonly>
 
                         </div>
 
@@ -145,10 +179,10 @@
                                 Faculty Code
                             </label>
 
-                            <div class="form-control bg-light"
-                                 th:text="${faculty.facultyCode}">
-                                -
-                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${faculty.facultyCode}"
+                                   readonly>
 
                         </div>
 
@@ -161,10 +195,10 @@
                                 Email
                             </label>
 
-                            <div class="form-control bg-light"
-                                 th:text="${faculty.email}">
-                                -
-                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${faculty.email}"
+                                   readonly>
 
                         </div>
 
@@ -177,10 +211,10 @@
                                 Mobile
                             </label>
 
-                            <div class="form-control bg-light"
-                                 th:text="${faculty.mobile}">
-                                -
-                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${faculty.mobile}"
+                                   readonly>
 
                         </div>
 
@@ -193,10 +227,10 @@
                                 Department
                             </label>
 
-                            <div class="form-control bg-light"
-                                 th:text="${faculty.departmentName}">
-                                -
-                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${faculty.department}"
+                                   readonly>
 
                         </div>
 
@@ -209,10 +243,10 @@
                                 Designation
                             </label>
 
-                            <div class="form-control bg-light"
-                                 th:text="${faculty.designation}">
-                                -
-                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${faculty.designation}"
+                                   readonly>
 
                         </div>
 
@@ -225,10 +259,10 @@
                                 Gender
                             </label>
 
-                            <div class="form-control bg-light"
-                                 th:text="${faculty.gender}">
-                                -
-                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   th:value="${faculty.gender}"
+                                   readonly>
 
                         </div>
 
@@ -241,22 +275,26 @@
                                 Status
                             </label>
 
-                            <div class="form-control bg-light">
+                            <div class="form-control">
 
-                                <span class="badge bg-success"
-                                      th:if="${faculty.active}">
+                                <span th:if="${faculty.active}"
+                                      class="badge bg-success">
+
                                     Active
+
                                 </span>
 
-                                <span class="badge bg-danger"
-                                      th:unless="${faculty.active}">
+
+                                <span th:unless="${faculty.active}"
+                                      class="badge bg-danger">
+
                                     Inactive
+
                                 </span>
 
                             </div>
 
                         </div>
-
 
                     </div>
 
@@ -267,25 +305,25 @@
         </div>
 
 
-        <!-- FOOTER -->
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
 
         <div class="card-footer text-end">
 
-            <a th:href="@{/faculty}"
-               class="btn btn-secondary">
-
-                <i class="bi bi-arrow-left me-2"></i>
-
-                Back
-
-            </a>
-
-            <a th:href="@{/faculty/edit/{id}(id=${faculty.id})}"
-               class="btn btn-warning ms-2">
+            <a th:href="@{'/faculty/edit/' + ${faculty.id}}"
+               class="btn btn-warning">
 
                 <i class="bi bi-pencil-square me-2"></i>
 
                 Edit Faculty
+
+            </a>
+
+            <a th:href="@{/faculty}"
+               class="btn btn-secondary ms-2">
+
+                Back
 
             </a>
 
