@@ -14,6 +14,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     private final FacultyRepository facultyRepository;
 
+
     public FacultyServiceImpl(
             FacultyRepository facultyRepository) {
 
@@ -21,7 +22,10 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
 
-    // Get all faculty
+    // =====================================================
+    // GET ALL FACULTY
+    // =====================================================
+
     @Override
     public List<Faculty> getAllFaculties() {
 
@@ -29,15 +33,22 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
 
-    // Get faculty by ID
+    // =====================================================
+    // GET FACULTY BY ID
+    // =====================================================
+
     @Override
-    public Optional<Faculty> getFacultyById(Long id) {
+    public Optional<Faculty> getFacultyById(
+            Long id) {
 
         return facultyRepository.findById(id);
     }
 
 
-    // Get faculty by faculty code
+    // =====================================================
+    // GET FACULTY BY CODE
+    // =====================================================
+
     @Override
     public Optional<Faculty> getFacultyByCode(
             String facultyCode) {
@@ -47,7 +58,10 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
 
-    // Get faculty by email
+    // =====================================================
+    // GET FACULTY BY EMAIL
+    // =====================================================
+
     @Override
     public Optional<Faculty> getFacultyByEmail(
             String email) {
@@ -57,87 +71,204 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
 
-    // Save faculty
+    // =====================================================
+    // SAVE FACULTY
+    // =====================================================
+
     @Override
-    public Faculty saveFaculty(Faculty faculty) {
+    public Faculty saveFaculty(
+            Faculty faculty) {
 
         return facultyRepository.save(faculty);
     }
 
 
-    // Update faculty
+    // =====================================================
+    // UPDATE FACULTY
+    // =====================================================
+
     @Override
     public Faculty updateFaculty(
             Long id,
             Faculty faculty) {
 
-        Optional<Faculty> existingFaculty =
+        Optional<Faculty> optionalFaculty =
                 facultyRepository.findById(id);
 
-        if (existingFaculty.isEmpty()) {
+
+        if (optionalFaculty.isEmpty()) {
+
             return null;
         }
 
+
         Faculty existing =
-                existingFaculty.get();
+                optionalFaculty.get();
 
-        existing.setFacultyCode(
-                faculty.getFacultyCode()
-        );
 
-        existing.setFirstName(
-                faculty.getFirstName()
-        );
+        // =================================================
+        // FACULTY CODE
+        // =================================================
+
+        if (faculty.getFacultyCode() != null &&
+            !faculty.getFacultyCode().isBlank()) {
+
+            existing.setFacultyCode(
+                    faculty.getFacultyCode()
+            );
+        }
+
+
+        // =================================================
+        // FIRST NAME
+        // =================================================
+
+        if (faculty.getFirstName() != null &&
+            !faculty.getFirstName().isBlank()) {
+
+            existing.setFirstName(
+                    faculty.getFirstName()
+            );
+        }
+
+
+        // =================================================
+        // MIDDLE NAME
+        // =================================================
 
         existing.setMiddleName(
                 faculty.getMiddleName()
         );
 
-        existing.setLastName(
-                faculty.getLastName()
-        );
 
-        existing.setEmail(
-                faculty.getEmail()
-        );
+        // =================================================
+        // LAST NAME
+        // =================================================
 
-        existing.setMobile(
-                faculty.getMobile()
-        );
+        if (faculty.getLastName() != null &&
+            !faculty.getLastName().isBlank()) {
 
-        existing.setDepartment(
-                faculty.getDepartment()
-        );
+            existing.setLastName(
+                    faculty.getLastName()
+            );
+        }
 
-        existing.setDesignation(
-                faculty.getDesignation()
-        );
 
-        existing.setGender(
-                faculty.getGender()
-        );
+        // =================================================
+        // EMAIL
+        // =================================================
 
-        existing.setPhoto(
-                faculty.getPhoto()
-        );
+        if (faculty.getEmail() != null &&
+            !faculty.getEmail().isBlank()) {
+
+            existing.setEmail(
+                    faculty.getEmail()
+            );
+        }
+
+
+        // =================================================
+        // MOBILE
+        // =================================================
+
+        if (faculty.getMobile() != null &&
+            !faculty.getMobile().isBlank()) {
+
+            existing.setMobile(
+                    faculty.getMobile()
+            );
+        }
+
+
+        // =================================================
+        // DEPARTMENT
+        // =================================================
+
+        if (faculty.getDepartment() != null &&
+            !faculty.getDepartment().isBlank()) {
+
+            existing.setDepartment(
+                    faculty.getDepartment()
+            );
+        }
+
+
+        // =================================================
+        // DESIGNATION
+        // =================================================
+
+        if (faculty.getDesignation() != null &&
+            !faculty.getDesignation().isBlank()) {
+
+            existing.setDesignation(
+                    faculty.getDesignation()
+            );
+        }
+
+
+        // =================================================
+        // GENDER
+        // =================================================
+
+        if (faculty.getGender() != null &&
+            !faculty.getGender().isBlank()) {
+
+            existing.setGender(
+                    faculty.getGender()
+            );
+        }
+
+
+        // =================================================
+        // PHOTO
+        //
+        // Photo null હોય તો જૂનો photo રાખશે.
+        // =================================================
+
+        if (faculty.getPhoto() != null &&
+            !faculty.getPhoto().isBlank()) {
+
+            existing.setPhoto(
+                    faculty.getPhoto()
+            );
+        }
+
+
+        // =================================================
+        // ACTIVE
+        // =================================================
 
         existing.setActive(
                 faculty.isActive()
         );
 
-        return facultyRepository.save(existing);
+
+        // =================================================
+        // SAVE UPDATED FACULTY
+        // =================================================
+
+        return facultyRepository.save(
+                existing
+        );
     }
 
 
-    // Delete faculty
+    // =====================================================
+    // DELETE FACULTY
+    // =====================================================
+
     @Override
-    public void deleteFaculty(Long id) {
+    public void deleteFaculty(
+            Long id) {
 
         facultyRepository.deleteById(id);
     }
 
 
-    // Check faculty code
+    // =====================================================
+    // CHECK FACULTY CODE
+    // =====================================================
+
     @Override
     public boolean existsByFacultyCode(
             String facultyCode) {
@@ -147,7 +278,10 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
 
-    // Check email
+    // =====================================================
+    // CHECK EMAIL
+    // =====================================================
+
     @Override
     public boolean existsByEmail(
             String email) {
@@ -155,4 +289,5 @@ public class FacultyServiceImpl implements FacultyService {
         return facultyRepository
                 .existsByEmail(email);
     }
+
 }
