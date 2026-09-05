@@ -36,79 +36,81 @@
 
             <div class="row g-3 align-items-end">
 
-<!-- Department -->
+                <!-- Department -->
 
-<div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6">
 
-    <div class="d-flex align-items-center mb-2">
+                    <div class="d-flex align-items-center mb-2">
 
-        <label class="form-label fw-semibold mb-0">
-            Department
-        </label>
+                        <label class="form-label fw-semibold mb-0">
+                            Department
+                        </label>
 
-        <a th:href="@{/departments/add}"
-        class="btn btn-success ms-auto add-btn"
-        title="Add Department">
+                        <a th:href="@{/departments/add}"
+                           class="btn btn-success ms-auto add-btn"
+                           title="Add Department">
 
-            <i class="bi bi-plus-lg"></i>
+                            <i class="bi bi-plus-lg"></i>
 
-        </a>
+                        </a>
 
-    </div>
+                    </div>
 
-    <select id="mainDepartment"
-            class="form-select">
+                    <select id="mainDepartment"
+                            class="form-select">
 
-        <option value="">
-            Select Department
-        </option>
+                        <option value="">
+                            Select Department
+                        </option>
 
-        <option th:each="department : ${departments}"
-                th:value="${department.id}"
-                th:text="${department.departmentName}">
-        </option>
+                        <option th:each="department : ${departments}"
+                                th:value="${department.id}"
+                                th:text="${department.departmentName}">
+                        </option>
 
-    </select>
+                    </select>
 
-</div>
+                </div>
 
 
-<!-- Course -->
+                <!-- Course -->
 
-<div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6">
 
-    <div class="d-flex align-items-center mb-2">
+                    <div class="d-flex align-items-center mb-2">
 
-        <label class="form-label fw-semibold mb-0">
-            Course
-        </label>
+                        <label class="form-label fw-semibold mb-0">
+                            Course
+                        </label>
 
-        <a th:href="@{/courses/add}"
-           class="btn btn-success ms-auto add-btn"
-           title="Add Course">
+                        <a th:href="@{/courses/add}"
+                           class="btn btn-success ms-auto add-btn"
+                           title="Add Course">
 
-            <i class="bi bi-plus-lg"></i>
+                            <i class="bi bi-plus-lg"></i>
 
-        </a>
+                        </a>
 
-    </div>
+                    </div>
 
-    <select id="mainCourse"
-            class="form-select">
+                    <select id="mainCourse"
+                            class="form-select">
 
-        <option value="">
-            Select Course
-        </option>
+                        <option value="">
+                            Select Course
+                        </option>
 
-        <option th:each="course : ${courses}"
-                th:value="${course.id}"
-                th:data-department="${course.department.id}"
-                th:text="${course.courseName}">
-        </option>
+                        <option th:each="course : ${courses}"
+                                th:value="${course.id}"
+                                th:data-department="${course.department.id}"
+                                th:text="${course.courseName}">
+                        </option>
 
-    </select>
+                    </select>
 
-</div>
+                </div>
+
+
                 <!-- Upload Excel -->
 
                 <div class="col-lg-3 col-md-6">
@@ -122,6 +124,18 @@
                             Upload Excel
                         </label>
 
+                        <!-- FIX: Department ID -->
+
+                        <input type="hidden"
+                               name="departmentId"
+                               id="uploadDepartmentId">
+
+                        <!-- FIX: Course ID -->
+
+                        <input type="hidden"
+                               name="courseId"
+                               id="uploadCourseId">
+
                         <input type="file"
                                id="excelFile"
                                name="file"
@@ -129,12 +143,12 @@
                                class="d-none">
 
                         <button type="button"
+                                id="uploadExcelBtn"
                                 class="btn w-100"
                                 style="background:#5F473B;color:white;"
-                                onclick="document.getElementById('excelFile').click()">
+                                onclick="openExcelUpload()">
 
                             <i class="bi bi-upload me-2"></i>
-
                             Upload Excel
 
                         </button>
@@ -151,50 +165,7 @@
     </div>
 
 
-    <!-- ===================================================== -->
-    <!-- DOWNLOAD / IMPORT -->
-    <!-- ===================================================== -->
-
-    <div class="card shadow-sm mb-4">
-
-        <div class="card-body p-4">
-
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-
-
-                <!-- Download -->
-
-                <a th:href="@{/students/download-template}"
-                   class="btn btn-success">
-
-                    <i class="bi bi-download me-2"></i>
-
-                    Download Template
-
-                </a>
-
-
-                <!-- Import -->
-
-                <button type="button"
-                        id="importStudentsBtn"
-                        class="btn"
-                        style="background:#5F473B;color:white;">
-
-                    <i class="bi bi-database-check me-2"></i>
-
-                    Import Students
-
-                </button>
-
-
-            </div>
-
-        </div>
-
-    </div>
-
-
+   
     <!-- ===================================================== -->
     <!-- STUDENT LIST HEADER -->
     <!-- ===================================================== -->
@@ -234,7 +205,6 @@
         <div class="card-body p-4">
 
             <div class="row align-items-center">
-
 
                 <!-- FILTER BUTTON -->
 
@@ -301,7 +271,6 @@
 
             <div class="modal-content">
 
-
                 <!-- Modal Header -->
 
                 <div class="modal-header">
@@ -327,15 +296,12 @@
 
                 <div class="modal-body">
 
-
                     <!-- Department -->
 
                     <div class="mb-3">
 
                         <label class="form-label fw-semibold">
-
                             Department
-
                         </label>
 
                         <select id="filterDepartment"
@@ -360,9 +326,7 @@
                     <div class="mb-3">
 
                         <label class="form-label fw-semibold">
-
                             Course
-
                         </label>
 
                         <select id="filterCourse"
@@ -388,9 +352,7 @@
                     <div class="mb-3">
 
                         <label class="form-label fw-semibold">
-
                             Semester
-
                         </label>
 
                         <select id="filterSemester"
@@ -409,7 +371,6 @@
                         </select>
 
                     </div>
-
 
                 </div>
 
@@ -465,45 +426,25 @@
 
                     <tr>
 
-                        <th>
-                            Photo
-                        </th>
+                        <th>Photo</th>
 
-                        <th>
-                            Enrollment No
-                        </th>
+                        <th>Enrollment No</th>
 
-                        <th>
-                            Student Name
-                        </th>
+                        <th>Student Name</th>
 
-                        <th>
-                            Gender
-                        </th>
+                        <th>Gender</th>
 
-                        <th>
-                            Semester
-                        </th>
+                        <th>Semester</th>
 
-                        <th>
-                            Department
-                        </th>
+                        <th>Department</th>
 
-                        <th>
-                            Mobile
-                        </th>
+                        <th>Mobile</th>
 
-                        <th>
-                            Email
-                        </th>
+                        <th>Email</th>
 
-                        <th>
-                            Status
-                        </th>
+                        <th>Status</th>
 
-                        <th>
-                            Action
-                        </th>
+                        <th>Action</th>
 
                     </tr>
 
@@ -511,7 +452,6 @@
 
 
                     <tbody id="studentTableBody">
-
 
                     <!-- NO DATA -->
 
@@ -551,27 +491,26 @@
                                          student.mobile + ' ' +
                                          student.email}">
 
-
                         <!-- PHOTO -->
 
-<td>
+                        <td>
 
-    <div th:if="${student.photo != null and student.photo != ''}">
+                            <div th:if="${student.photo != null and student.photo != ''}">
 
-        <img th:src="@{'/api/student/' + ${student.id} + '/photo'}"
-             width="45"
-             height="45"
-             class="rounded-circle border"
-             style="object-fit:cover;"
-             alt="Student Photo">
+                                <img th:src="@{'/api/student/' + ${student.id} + '/photo'}"
+                                     width="45"
+                                     height="45"
+                                     class="rounded-circle border"
+                                     style="object-fit:cover;"
+                                     alt="Student Photo">
 
-    </div>
+                            </div>
 
-    <i th:unless="${student.photo != null and student.photo != ''}"
-       class="bi bi-person-circle fs-2">
-    </i>
+                            <i th:unless="${student.photo != null and student.photo != ''}"
+                               class="bi bi-person-circle fs-2">
+                            </i>
 
-</td>
+                        </td>
 
 
                         <!-- ENROLLMENT -->
@@ -647,17 +586,12 @@
 
                             <span class="badge bg-success"
                                   th:if="${student.active}">
-
                                 Active
-
                             </span>
-
 
                             <span class="badge bg-danger"
                                   th:unless="${student.active}">
-
                                 Inactive
-
                             </span>
 
                         </td>
@@ -702,9 +636,7 @@
 
                         </td>
 
-
                     </tr>
-
 
                     </tbody>
 
@@ -722,9 +654,6 @@
     <!-- ===================================================== -->
 
     <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
-
-
-        <!-- RECORD INFORMATION -->
 
         <div class="text-muted">
 
@@ -751,8 +680,6 @@
         </div>
 
 
-        <!-- PAGINATION -->
-
         <nav>
 
             <ul class="pagination mb-0"
@@ -761,7 +688,6 @@
             </ul>
 
         </nav>
-
 
     </div>
 
@@ -775,7 +701,6 @@
         document.addEventListener(
             "DOMContentLoaded",
             function () {
-
 
                 /* ==========================================
                    VARIABLES
@@ -1066,8 +991,6 @@
                         searchInput.value = "";
 
 
-                        // Show all course options
-
                         Array.from(
                             filterCourse.options
                         ).forEach(
@@ -1078,8 +1001,6 @@
                             }
                         );
 
-
-                        // Show all semester options
 
                         Array.from(
                             filterSemester.options
@@ -1144,7 +1065,6 @@
                         rows.filter(
                             function (row) {
 
-
                                 const rowDepartment =
                                     row.getAttribute(
                                         "data-department"
@@ -1205,7 +1125,6 @@
 
 
                     currentPage = 1;
-
 
                     updateFilterStatus();
 
@@ -1299,8 +1218,6 @@
                         );
 
 
-                    /* Hide all */
-
                     rows.forEach(
                         function (row) {
 
@@ -1310,8 +1227,6 @@
                         }
                     );
 
-
-                    /* Show current page */
 
                     for (
                         let i = start;
@@ -1324,8 +1239,6 @@
 
                     }
 
-
-                    /* No Data */
 
                     const noData =
                         document.getElementById(
@@ -1346,8 +1259,6 @@
 
                     }
 
-
-                    /* Record text */
 
                     document.getElementById(
                         "startRecord"
@@ -1493,7 +1404,6 @@
                                 function (event) {
 
                                     event.preventDefault();
-
 
                                     showPage(page);
 
@@ -1671,6 +1581,26 @@
                             if (
                                 result.isConfirmed
                             ) {
+
+                                /* =====================================
+                                   FIX: SEND DEPARTMENT + COURSE
+                                ===================================== */
+
+                                document.getElementById(
+                                    "uploadDepartmentId"
+                                ).value =
+                                    document.getElementById(
+                                        "mainDepartment"
+                                    ).value;
+
+
+                                document.getElementById(
+                                    "uploadCourseId"
+                                ).value =
+                                    document.getElementById(
+                                        "mainCourse"
+                                    ).value;
+
 
                                 document
                                     .getElementById(
