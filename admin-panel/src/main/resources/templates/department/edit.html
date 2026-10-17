@@ -136,37 +136,9 @@
 
                     </div>
 
-            <!-- Fixed Faculty -->
-
-                <div class="col-md-6">
-
-                    <label class="form-label fw-semibold">
-                        Fixed Faculty
-                    </label>
-
-                    <select class="form-select"
-                            th:field="*{fixedFacultyId}">
-
-                        <option value="">-- Select Faculty --</option>
-
-                        <option th:each="faculty : ${faculties}"
-                                th:if="${faculty.active}"
-                                th:value="${faculty.id}"
-                                th:text="${faculty.firstName + ' ' + faculty.lastName + ' (' + faculty.department + ')'}">
-                        </option>
-
-                    </select>
-
-                    <small class="text-muted">
-                        Complaints for this department will be assigned to this faculty.
-                    </small>
-
-                </div>
-
                 </div>
 
             </div>
-            
 
 
             <!-- ========================= -->

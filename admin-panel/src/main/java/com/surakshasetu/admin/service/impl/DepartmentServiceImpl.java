@@ -70,7 +70,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         existingDepartment.setDepartmentName(department.getDepartmentName());
         existingDepartment.setDepartmentCode(department.getDepartmentCode());
         existingDepartment.setActive(department.isActive());
-        existingDepartment.setFixedFacultyId(department.getFixedFacultyId());
 
         return departmentRepository.save(existingDepartment);
     }

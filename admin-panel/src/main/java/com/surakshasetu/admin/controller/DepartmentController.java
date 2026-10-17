@@ -5,32 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.client.RestClient;
-import java.util.List;
-import java.util.Map;
+
 import com.surakshasetu.admin.entity.Department;
 import com.surakshasetu.admin.service.DepartmentService;
-
 
 @Controller
 public class DepartmentController {
 
     private final DepartmentService departmentService;
-
-    @Value("${faculty.service.url}")
-    private String facultyServiceUrl;
-
-    private final RestClient restClient = RestClient.create();
-
-    
-    @SuppressWarnings("unchecked")
-    private List<Map<String, Object>> getFacultyList() {
-        return restClient.get()
-                .uri(facultyServiceUrl + "/api/faculty")
-                .retrieve()
-                .body(List.class);
-    }
 
     public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
@@ -44,7 +26,6 @@ public class DepartmentController {
 
         return "department/index";
     }
-
 
     @GetMapping("/departments/add")
     public String addDepartmentForm(Model model) {
@@ -81,7 +62,6 @@ public class DepartmentController {
                 .orElseThrow(() -> new RuntimeException("Department not found"));
 
         model.addAttribute("department", department);
-        model.addAttribute("faculties", getFacultyList());
 
         return "department/edit";
     }

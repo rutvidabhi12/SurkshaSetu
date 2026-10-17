@@ -25,6 +25,4 @@ public class Department {
     @Column(nullable = false)
     private boolean active;
 
-    @Column(name = "fixed_faculty_id")
-    private Long fixedFacultyId;
 }
