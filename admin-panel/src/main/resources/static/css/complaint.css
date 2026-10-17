@@ -1,0 +1,668 @@
+
+/* ========================================
+   SurakshaSetu - Complaint Management
+   Matching Faculty Management UI
+======================================== */
+
+.complaint-page {
+    background-color: #f5efe4;
+    min-height: 100vh;
+    padding: 20px 24px !important;
+    color: #292929;
+}
+
+/* Page heading */
+.complaint-page .complaint-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.complaint-page .complaint-heading {
+    color: #654b3d;
+    font-size: 25px;
+    font-weight: 700;
+    margin: 0 0 5px;
+}
+
+.complaint-page .complaint-subtitle {
+    color: #77716c;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Error and success messages */
+.complaint-page .alert {
+    border-radius: 10px;
+    margin: 12px 0;
+    padding: 12px 16px;
+}
+
+/* All white cards */
+.complaint-page .card {
+    background: #ffffff;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 2px 5px rgba(76, 57, 43, 0.08);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.complaint-page .card-body {
+    padding: 20px;
+}
+
+/* Summary / list heading */
+.complaint-page .complaint-list-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 21px;
+    font-weight: 500;
+    margin: 0;
+    color: #343a40;
+}
+
+/* Total complaints badge */
+.complaint-page .total-complaints {
+    background-color: #198754;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 13px;
+    border-radius: 5px;
+}
+
+/* Search and filter area */
+.complaint-page .complaint-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.complaint-page .form-label {
+    color: #30343a;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.complaint-page .form-control,
+.complaint-page .form-select {
+    min-height: 39px;
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+.complaint-page .form-control:focus,
+.complaint-page .form-select:focus {
+    border-color: #b59a83;
+    box-shadow: 0 0 0 3px rgba(101, 75, 61, 0.10);
+}
+
+/* Buttons */
+.complaint-page .btn {
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.complaint-page .btn-primary {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.complaint-page .btn-primary:hover {
+    background-color: #146c43;
+    border-color: #146c43;
+}
+
+.complaint-page .btn-outline-secondary {
+    background-color: #ffffff;
+    border-color: #9aa2aa;
+    color: #68727c;
+}
+
+/* Complaint table */
+.complaint-page .table-responsive {
+    width: 100%;
+}
+
+.complaint-page .table {
+    width: 100%;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.complaint-page .table thead th {
+    background-color: #ffffff;
+    color: #171717;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 15px 10px;
+    border-bottom: 1px solid #dfe3e8;
+    white-space: nowrap;
+}
+
+.complaint-page .table tbody td {
+    color: #414141;
+    font-size: 13px;
+    padding: 13px 10px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.complaint-page .table tbody tr:hover td {
+    background-color: #fcfaf7;
+}
+
+.complaint-page .table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status badges */
+.complaint-page .badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.complaint-page .badge.bg-secondary {
+    background-color: #e9ecef !important;
+    color: #495057 !important;
+}
+
+/* Update form inside each row */
+.complaint-page .complaint-update-form {
+    min-width: 170px;
+    max-width: 220px;
+}
+
+.complaint-page .complaint-update-form .form-select,
+.complaint-page .complaint-update-form .form-control {
+    width: 100%;
+    min-height: 35px;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.complaint-page .complaint-update-form .btn {
+    width: 100%;
+    min-height: 35px;
+}
+
+/* Empty table message */
+.complaint-page .text-muted {
+    color: #777777 !important;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .complaint-page {
+        padding: 18px 16px !important;
+    }
+
+    .complaint-page .card-body {
+        padding: 16px;
+    }
+
+    .complaint-page .table thead th,
+    .complaint-page .table tbody td {
+        padding: 11px 8px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .complaint-page {
+        padding: 14px 10px !important;
+    }
+
+    .complaint-page .complaint-heading {
+        font-size: 22px;
+    }
+
+    .complaint-page .complaint-subtitle {
+        font-size: 13px;
+    }
+
+    .complaint-page .card {
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+
+    .complaint-page .card-body {
+        padding: 13px;
+    }
+
+    .complaint-page .complaint-list-heading {
+        font-size: 18px;
+    }
+
+    .complaint-page .complaint-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .complaint-page .complaint-update-form {
+        min-width: 160px;
+    }
+}
+
+
+/* Complaint action column */
+.complaint-update-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.complaint-update-form .form-select,
+.complaint-update-form .form-control {
+    width: 100%;
+    min-height: 38px;
+    margin-bottom: 0 !important;
+    border-radius: 7px;
+    box-sizing: border-box;
+}
+
+.complaint-update-form button {
+    width: 100%;
+    min-height: 36px;
+    border-radius: 7px;
+}
+
+.view-details-btn {
+    width: 100%;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    text-decoration: none;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.view-details-btn:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+
+/* =========================================
+   Complaint Details Page
+========================================= */
+
+.complaint-details-page {
+    color: #263247;
+}
+
+.details-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.details-eyebrow {
+    display: inline-block;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    margin-bottom: 7px;
+}
+
+.details-page-title {
+    margin: 0;
+    color: #172554;
+    font-size: 27px;
+    font-weight: 700;
+}
+
+.details-page-subtitle {
+    margin: 7px 0 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Summary Card */
+
+.details-summary-card,
+.details-info-card {
+    border: 1px solid #e7ecf3;
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(30, 41, 59, 0.045);
+    overflow: hidden;
+}
+
+.details-summary-card {
+    margin-bottom: 10px;
+}
+
+.details-summary-card .card-body {
+    padding: 24px;
+}
+
+.details-summary-content {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.details-icon {
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: #edf4ff;
+    color: #2563eb;
+    font-size: 26px;
+}
+
+.details-summary-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.details-summary-text h4 {
+    margin: 5px 0;
+    color: #172554;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.details-summary-text p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.details-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #718096;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+.details-status {
+    min-width: 125px;
+    text-align: right;
+}
+
+.details-status-badge {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.status-resolved {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-rejected {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.status-progress {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status-assigned {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-pending {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+/* Information Cards */
+
+.details-info-card {
+    height: 100%;
+}
+
+.details-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 17px 20px;
+    background: #fff;
+    border-bottom: 1px solid #edf0f5;
+    color: #24324b;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.details-card-header i {
+    color: #2563eb;
+    font-size: 18px;
+}
+
+.details-info-card .card-body {
+    padding: 22px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
+}
+
+.details-item {
+    min-width: 0;
+    padding: 15px 0;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.details-item strong {
+    display: block;
+    color: #263247;
+    font-size: 13px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.details-item .badge {
+    font-size: 10px;
+    padding: 6px 9px;
+}
+
+.details-description {
+    margin-top: 20px;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #edf0f5;
+    border-radius: 10px;
+}
+
+.details-description p {
+    margin: 0;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.details-photo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.details-photo-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* Resolution and Rejection */
+
+.details-note-box {
+    padding: 17px;
+    margin-bottom: 16px;
+    border: 1px solid #e7ecf3;
+    border-radius: 10px;
+}
+
+.resolution-box {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.rejection-box {
+    background: #fff7f7;
+    border-color: #fecaca;
+}
+
+.details-note-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 12px;
+    color: #263247;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.resolution-box .details-note-heading i {
+    color: #16a34a;
+    font-size: 18px;
+}
+
+.rejection-box .details-note-heading i {
+    color: #dc2626;
+    font-size: 18px;
+}
+
+.details-note-box p {
+    margin: 0;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.details-help-text {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 13px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.details-help-text i {
+    margin-top: 2px;
+    color: #64748b;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+    .complaint-details-page {
+        padding-top: 20px !important;
+    }
+
+    .details-page-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .details-page-title {
+        font-size: 23px;
+    }
+
+    .details-summary-card .card-body {
+        padding: 18px;
+    }
+
+    .details-summary-content {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 13px;
+    }
+
+    .details-icon {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+        font-size: 22px;
+    }
+
+    .details-summary-text {
+        flex-basis: calc(100% - 65px);
+    }
+
+    .details-status {
+        width: 100%;
+        text-align: left;
+        padding-top: 12px;
+        border-top: 1px solid #edf0f5;
+    }
+
+    .details-info-card .card-body {
+        padding: 17px;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .details-item {
+        padding: 12px 0;
+    }
+}
