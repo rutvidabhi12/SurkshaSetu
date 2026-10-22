@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Details | SurakshaSetu</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/student-portal.css}">
+
+    <style>
+        .details-card {
+            border: 0;
+            border-radius: 18px;
+            box-shadow: 0 5px 22px rgba(20, 45, 90, .06);
+        }
+
+        .detail-label {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .detail-value {
+            color: #172b4d;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 0 0 25px 18px;
+            border-left: 2px solid #dbeafe;
+        }
+
+        .timeline-item:last-child {
+            border-left-color: transparent;
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            width: 13px;
+            height: 13px;
+            left: -8px;
+            top: 4px;
+            border-radius: 50%;
+            background: #2563eb;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px #dbeafe;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 30px;
+            background: #fff3cd;
+            color: #856404;
+            font-size: 12px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body class="student-dashboard-page">
+
+<div class="student-layout">
+
+    <aside class="student-sidebar">
+        <a class="student-brand" th:href="@{/student-portal/dashboard}">
+            <span class="student-brand-icon">SS</span>
+            <span><strong>SurakshaSetu</strong><small>STUDENT PORTAL</small></span>
+        </a>
+
+        <div class="sidebar-label">MENU</div>
+
+        <nav class="student-nav">
+            <a th:href="@{/student-portal/dashboard}"><span>▦</span> Dashboard</a>
+            <a class="active" th:href="@{/student-portal/complaints}"><span>▤</span> My Complaints</a>
+            <a th:href="@{/student-portal/new-complaint}"><span>＋</span> New Complaint</a>
+            <a th:href="@{/student-portal/sos}"><span>⚠</span> SOS Emergency</a>
+            <a th:href="@{/student-portal/lost-found}"><span>⌕</span> Lost &amp; Found</a>
+            <a th:href="@{/student-portal/profile}"><span>♙</span> My Profile</a>
+            <a th:href="@{/student-portal/help}"><span>?</span> Help &amp; Support</a>
+        </nav>
+
+        <div class="sidebar-safety-card">
+            <span class="safety-shield">✓</span>
+            <strong>Your safety matters</strong>
+            <p>Stay alert. Stay connected. Keep your campus safe.</p>
+        </div>
+
+        <a class="student-logout" th:href="@{/logout}">↪ Logout</a>
+    </aside>
+
+    <main class="student-main">
+
+        <header class="student-topbar">
+            <div class="mobile-brand">
+                <span class="student-brand-icon">SS</span>
+                <strong>SurakshaSetu</strong>
+            </div>
+
+            <div class="topbar-context">
+                <span class="status-dot"></span> Campus Student Portal
+            </div>
+
+            <div class="topbar-user">
+                <div class="user-avatar">S</div>
+                <div><strong>Student</strong><small>Student Account</small></div>
+            </div>
+        </header>
+
+        <section class="student-content">
+
+            <div class="dashboard-welcome">
+                <div>
+                    <span class="eyebrow">COMPLAINT MANAGEMENT</span>
+                    <h1>Complaint Details</h1>
+                    <p>Review your complaint information and current status.</p>
+                </div>
+
+                <a th:href="@{/student-portal/complaints}"
+                   class="btn btn-outline-primary">
+                    ← All Complaints
+                </a>
+            </div>
+
+            <div class="card details-card mb-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="d-flex flex-wrap justify-content-between
+                                align-items-start gap-3 mb-4">
+                        <div>
+                            <div class="detail-label">Complaint Reference</div>
+                            <h2 class="h4 fw-bold mb-1" id="complaintId">SS-001</h2>
+                            <div class="text-secondary small">
+                                Submitted on <span id="complaintDate">20 Oct 2026</span>
+                            </div>
+                        </div>
+
+                        <span class="status-pill" id="complaintStatus">Pending</span>
+                    </div>
+
+                    <hr>
+
+                    <h3 class="h5 fw-bold mb-4" id="complaintTitle">
+                        Classroom Fan Not Working
+                    </h3>
+
+                    <div class="row g-4">
+
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="detail-label">Department</div>
+                            <div class="detail-value" id="department">Facility</div>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="detail-label">Category</div>
+                            <div class="detail-value" id="category">Facility</div>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="detail-label">Priority</div>
+                            <div class="detail-value" id="priority">Medium</div>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="detail-label">Campus Location</div>
+                            <div class="detail-value" id="location">Block A, Room 204</div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="detail-label">Description</div>
+                            <p class="detail-value mb-0" id="description">
+                                The classroom fan is not working properly.
+                                Please arrange maintenance.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-info border-0 rounded-3 mt-4 mb-0">
+                        <strong>Demo information</strong>
+                        <p class="mb-0 mt-1">
+                            This page currently displays sample complaint information.
+                            Live complaint data will be connected later.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-lg-7">
+                    <div class="card details-card h-100">
+                        <div class="card-body p-4">
+                            <h3 class="h5 fw-bold mb-4">Status Overview</h3>
+
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <span class="timeline-dot"></span>
+                                    <strong>Complaint Submitted</strong>
+                                    <p class="text-secondary small mb-0">
+                                        The complaint was registered in the demo.
+                                    </p>
+                                </div>
+
+                                <div class="timeline-item">
+                                    <span class="timeline-dot"></span>
+                                    <strong>Department Review</strong>
+                                    <p class="text-secondary small mb-0">
+                                        The campus team will review the issue.
+                                    </p>
+                                </div>
+
+                                <div class="timeline-item">
+                                    <span class="timeline-dot"></span>
+                                    <strong>Resolution</strong>
+                                    <p class="text-secondary small mb-0">
+                                        Resolution updates will appear here when implemented.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <a id="historyLink"
+                               href="/student-portal/complaints/SS-001/history"
+                               class="btn btn-outline-primary mt-4">
+                                View Full History →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="card details-card h-100">
+                        <div class="card-body p-4">
+                            <h3 class="h5 fw-bold">Need More Help?</h3>
+                            <p class="text-secondary mt-2">
+                                If you need guidance about this complaint, visit Help &amp; Support.
+                            </p>
+
+                            <a th:href="@{/student-portal/help}"
+                               class="btn btn-primary mt-2">
+                                Help &amp; Support
+                            </a>
+
+                            <hr class="my-4">
+
+                            <h4 class="h6 fw-bold">Feedback</h4>
+                            <p class="text-secondary small">
+                                After a complaint is resolved, you can provide feedback.
+                            </p>
+
+                            <a id="feedbackLink"
+                               href="/student-portal/complaints/SS-001/feedback"
+                               class="btn btn-outline-secondary">
+                                Give Feedback →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer class="student-footer mt-4">
+                <span>© SurakshaSetu · Student Portal</span>
+                <span>Smart Campus Guardian</span>
+            </footer>
+
+        </section>
+    </main>
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const pathParts = window.location.pathname.split("/");
+    const complaintId = pathParts[pathParts.length - 1] || "SS-001";
+
+    const demoComplaints = {
+        "SS-001": {
+            title: "Classroom Fan Not Working",
+            date: "20 Oct 2026",
+            status: "Pending",
+            department: "Facility",
+            category: "Facility",
+            priority: "Medium",
+            location: "Block A, Room 204",
+            description: "The classroom fan is not working properly. Please arrange maintenance."
+        },
+        "SS-002": {
+            title: "Library Access Issue",
+            date: "18 Oct 2026",
+            status: "In Progress",
+            department: "Academic",
+            category: "Academic",
+            priority: "High",
+            location: "Central Library",
+            description: "Unable to access the library service. Please investigate this issue."
+        },
+        "SS-003": {
+            title: "Water Cooler Maintenance",
+            date: "15 Oct 2026",
+            status: "Resolved",
+            department: "Facility",
+            category: "Facility",
+            priority: "Low",
+            location: "Block B",
+            description: "The water cooler required maintenance. This is a sample resolved record."
+        }
+    };
+
+    const complaint = demoComplaints[complaintId] || demoComplaints["SS-001"];
+
+    document.getElementById("complaintId").textContent = complaintId;
+    document.getElementById("complaintDate").textContent = complaint.date;
+    document.getElementById("complaintStatus").textContent = complaint.status;
+    document.getElementById("complaintTitle").textContent = complaint.title;
+    document.getElementById("department").textContent = complaint.department;
+    document.getElementById("category").textContent = complaint.category;
+    document.getElementById("priority").textContent = complaint.priority;
+    document.getElementById("location").textContent = complaint.location;
+    document.getElementById("description").textContent = complaint.description;
+
+    document.getElementById("historyLink").href =
+        "/student-portal/complaints/" + encodeURIComponent(complaintId) + "/history";
+
+    document.getElementById("feedbackLink").href =
+        "/student-portal/complaints/" + encodeURIComponent(complaintId) + "/feedback";
+</script>
+
+</body>
+</html>
