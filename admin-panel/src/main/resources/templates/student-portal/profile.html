@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | SurakshaSetu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/student-portal.css}">
+
+    <style>
+        body {
+            background: #f4f7fb;
+            color: #1e293b;
+            font-family: Arial, sans-serif;
+        }
+
+        .profile-container {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 16px;
+        }
+
+        .profile-header,
+        .profile-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .profile-photo {
+            width: 105px;
+            height: 105px;
+            min-width: 105px;
+            border-radius: 50%;
+            background: #dbeafe;
+            border: 4px solid #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            color: #1d4ed8;
+            overflow: hidden;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #eff6ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-label {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .form-control {
+            min-height: 45px;
+            padding: 11px 13px;
+            border-radius: 9px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        .form-control:disabled {
+            background: #f8fafc;
+            color: #1e293b;
+            opacity: 1;
+            cursor: default;
+        }
+
+        .info-note {
+            padding: 14px 16px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+        .profile-footer {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            margin: 22px 0;
+        }
+
+        @media (max-width: 576px) {
+            .profile-container {
+                margin: 15px auto;
+                padding: 12px;
+            }
+
+            .profile-header,
+            .profile-card {
+                padding: 18px;
+            }
+
+            .profile-header {
+                align-items: flex-start;
+                gap: 14px;
+            }
+
+            .profile-photo {
+                width: 75px;
+                height: 75px;
+                min-width: 75px;
+                font-size: 30px;
+            }
+
+            .profile-name {
+                font-size: 20px;
+            }
+
+            .section-title {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container profile-container">
+
+    <!-- Back Button -->
+    <a th:href="@{/student-portal/dashboard}"
+       class="btn btn-outline-secondary mb-3">
+        &larr; Back to Dashboard
+    </a>
+
+    <!-- Profile Header -->
+    <div class="profile-header mb-4">
+
+        <div class="profile-photo">
+        <img src="https://placehold.co/105x105/DBEAFE/1D4ED8?text=Photo"
+            alt="Student Profile Photo">
+        </div>
+
+        <div>
+            <span class="badge text-bg-primary mb-2">
+                Student Portal
+            </span>
+
+            <h2 class="profile-name">Student Name</h2>
+
+            <p class="text-secondary mb-2">
+                Student Profile Information
+            </p>
+
+            <span class="badge text-bg-success">
+                <span aria-hidden="true">●</span> Profile View Only
+            </span>
+        </div>
+
+    </div>
+
+    <!-- Personal Information -->
+    <div class="profile-card mb-4">
+
+        <h5 class="section-title">
+            <span class="section-icon">👤</span>
+            Personal Information
+        </h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label class="form-label" for="firstName">
+                    First Name
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="firstName"
+                       value="Student"
+                       disabled>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="middleName">
+                    Middle Name
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="middleName"
+                       value="Middle Name"
+                       disabled>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="lastName">
+                    Last Name
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="lastName"
+                       value="Last Name"
+                       disabled>
+            </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="enrollmentNo">
+                    Enrollment Number
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="enrollmentNo"
+                       value="SS-DEMO-001"
+                       disabled>
+            </div> 
+            
+            <div class="col-md-4">
+                <label class="form-label" for="gender">
+                    Gender
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="gender"
+                       value="Not specified"
+                       disabled>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="profile-card mb-4">
+
+        <h5 class="section-title">
+            <span class="section-icon">📞</span>
+            Contact Information
+        </h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label" for="mobile">
+                    Mobile Number
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="mobile"
+                       value="Not available"
+                       disabled>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label" for="email">
+                    Email Address
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="email"
+                       value="student@example.com"
+                       disabled>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Academic Information -->
+    <div class="profile-card mb-4">
+
+        <h5 class="section-title">
+            <span class="section-icon">🎓</span>
+            Academic Information
+        </h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label class="form-label" for="course">
+                    Course Name
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="course"
+                       value="MCA"
+                       disabled>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="department">
+                    Department Name
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="department"
+                       value="Computer Applications"
+                       disabled>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="semester">
+                    Semester Name
+                </label>
+                <input type="text"
+                       class="form-control"
+                       id="semester"
+                       value="Semester 2"
+                       disabled>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Information Notice -->
+    <div class="info-note">
+        <strong>Note:</strong>
+        This profile currently displays sample information for UI testing.
+        All fields are read-only. Database integration will be implemented
+        later. Password information is not displayed on this page.
+    </div>
+
+    <div class="profile-footer">
+        SurakshaSetu — Smart Campus Guardian
+    </div>
+
+</div>
+
+</body>
+</html>
