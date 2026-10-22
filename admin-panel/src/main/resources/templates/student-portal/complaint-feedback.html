@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Feedback | SurakshaSetu</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/student-portal.css}">
+
+    <style>
+        .feedback-card {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 0;
+            border-radius: 20px;
+            box-shadow: 0 8px 28px rgba(20, 45, 90, .07);
+        }
+
+        .rating-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .rating-option {
+            flex: 1;
+            min-width: 85px;
+        }
+
+        .rating-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .rating-option label {
+            display: block;
+            padding: 16px 8px;
+            text-align: center;
+            border: 1px solid #dbe3ef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .rating-option label:hover {
+            border-color: #2563eb;
+            background: #f8fbff;
+        }
+
+        .rating-option input:checked + label {
+            border: 2px solid #2563eb;
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .rating-emoji {
+            display: block;
+            font-size: 27px;
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+
+<body class="student-dashboard-page">
+
+<div class="student-layout">
+
+    <aside class="student-sidebar">
+        <a class="student-brand" th:href="@{/student-portal/dashboard}">
+            <span class="student-brand-icon">SS</span>
+            <span><strong>SurakshaSetu</strong><small>STUDENT PORTAL</small></span>
+        </a>
+
+        <div class="sidebar-label">MENU</div>
+
+        <nav class="student-nav">
+            <a th:href="@{/student-portal/dashboard}"><span>▦</span> Dashboard</a>
+            <a class="active" th:href="@{/student-portal/complaints}"><span>▤</span> My Complaints</a>
+            <a th:href="@{/student-portal/new-complaint}"><span>＋</span> New Complaint</a>
+            <a th:href="@{/student-portal/sos}"><span>⚠</span> SOS Emergency</a>
+            <a th:href="@{/student-portal/lost-found}"><span>⌕</span> Lost &amp; Found</a>
+            <a th:href="@{/student-portal/profile}"><span>♙</span> My Profile</a>
+            <a th:href="@{/student-portal/help}"><span>?</span> Help &amp; Support</a>
+        </nav>
+
+        <div class="sidebar-safety-card">
+            <span class="safety-shield">✓</span>
+            <strong>Your safety matters</strong>
+            <p>Stay alert. Stay connected. Keep your campus safe.</p>
+        </div>
+
+        <a class="student-logout" th:href="@{/logout}">↪ Logout</a>
+    </aside>
+
+    <main class="student-main">
+
+        <header class="student-topbar">
+            <div class="mobile-brand">
+                <span class="student-brand-icon">SS</span>
+                <strong>SurakshaSetu</strong>
+            </div>
+
+            <div class="topbar-context">
+                <span class="status-dot"></span> Campus Student Portal
+            </div>
+
+            <div class="topbar-user">
+                <div class="user-avatar">S</div>
+                <div><strong>Student</strong><small>Student Account</small></div>
+            </div>
+        </header>
+
+        <section class="student-content">
+
+            <div class="dashboard-welcome">
+                <div>
+                    <span class="eyebrow">COMPLAINT MANAGEMENT</span>
+                    <h1>Share Your Feedback</h1>
+                    <p>Tell us about your experience with complaint resolution.</p>
+                </div>
+            </div>
+
+            <div class="card feedback-card">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="mb-4">
+                        <div class="text-secondary small">Complaint Reference</div>
+                        <h2 class="h5 fw-bold mt-1" id="feedbackComplaintId">SS-001</h2>
+                        <span class="badge text-bg-success">Sample resolved complaint</span>
+                    </div>
+
+                    <hr class="mb-4">
+
+                    <form id="feedbackForm">
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                How satisfied are you with the resolution?
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <div class="rating-options">
+
+                                <div class="rating-option">
+                                    <input type="radio" id="rating1"
+                                           name="rating" value="1" required>
+                                    <label for="rating1">
+                                        <span class="rating-emoji">😞</span>
+                                        <small>Poor</small>
+                                    </label>
+                                </div>
+
+                                <div class="rating-option">
+                                    <input type="radio" id="rating2"
+                                           name="rating" value="2">
+                                    <label for="rating2">
+                                        <span class="rating-emoji">🙁</span>
+                                        <small>Fair</small>
+                                    </label>
+                                </div>
+
+                                <div class="rating-option">
+                                    <input type="radio" id="rating3"
+                                           name="rating" value="3">
+                                    <label for="rating3">
+                                        <span class="rating-emoji">😐</span>
+                                        <small>Average</small>
+                                    </label>
+                                </div>
+
+                                <div class="rating-option">
+                                    <input type="radio" id="rating4"
+                                           name="rating" value="4">
+                                    <label for="rating4">
+                                        <span class="rating-emoji">🙂</span>
+                                        <small>Good</small>
+                                    </label>
+                                </div>
+
+                                <div class="rating-option">
+                                    <input type="radio" id="rating5"
+                                           name="rating" value="5">
+                                    <label for="rating5">
+                                        <span class="rating-emoji">🤩</span>
+                                        <small>Excellent</small>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="feedbackText" class="form-label fw-semibold">
+                                Additional Comments
+                            </label>
+
+                            <textarea id="feedbackText"
+                                      class="form-control"
+                                      rows="5"
+                                      maxlength="1000"
+                                      placeholder="What went well? What could be improved?"></textarea>
+
+                            <div class="form-text">
+                                Optional · Maximum 1000 characters.
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="confirmFeedback"
+                                   required>
+                            <label class="form-check-label" for="confirmFeedback">
+                                My feedback is honest and based on my experience.
+                            </label>
+                        </div>
+
+                        <div class="alert alert-info border-0 rounded-3">
+                            <strong>Demo mode</strong>
+                            <p class="mb-0 mt-1">
+                                Feedback will be stored in this browser session only.
+                                It will not be saved to the server or database.
+                            </p>
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-between gap-3 mt-4">
+                            <a th:href="@{/student-portal/complaints}"
+                               class="btn btn-outline-secondary px-4">
+                                ← Back to Complaints
+                            </a>
+
+                            <button type="submit" class="btn btn-primary px-4">
+                                Submit Feedback →
+                            </button>
+                        </div>
+
+                        <div id="feedbackMessage"
+                             class="mt-4"
+                             role="status"></div>
+
+                    </form>
+                </div>
+            </div>
+
+            <footer class="student-footer mt-4">
+                <span>© SurakshaSetu · Student Portal</span>
+                <span>Smart Campus Guardian</span>
+            </footer>
+
+        </section>
+    </main>
+</div>
+
+<script>
+    const parts = window.location.pathname.split("/");
+    const complaintId = parts[parts.length - 2] || "SS-001";
+
+    document.getElementById("feedbackComplaintId").textContent = complaintId;
+
+    document.getElementById("feedbackForm")
+        .addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const rating = document.querySelector(
+                'input[name="rating"]:checked'
+            );
+
+            if (!rating) return;
+
+            const feedback = {
+                complaintId: complaintId,
+                rating: Number(rating.value),
+                comments: document.getElementById("feedbackText").value.trim(),
+                submittedAt: new Date().toISOString()
+            };
+
+            sessionStorage.setItem(
+                "demoFeedback-" + complaintId,
+                JSON.stringify(feedback)
+            );
+
+            document.getElementById("feedbackMessage").innerHTML =
+                '<div class="alert alert-success">' +
+                '<strong>Thank you for your feedback!</strong>' +
+                '<p class="mb-0 mt-1">Your demo feedback has been stored in this browser session.</p>' +
+                '</div>';
+
+            this.querySelector('button[type="submit"]').disabled = true;
+        });
+</script>
+
+</body>
+</html>
