@@ -1,3 +1,4 @@
+
 package com.surakshasetu.admin.security;
 
 import org.springframework.context.annotation.Bean;
@@ -14,13 +15,12 @@ public class SecurityConfig {
             HttpSecurity http) throws Exception {
 
         http
-                // CSRF
                 .csrf(csrf -> csrf.disable())
 
-                // Authorization
+                
                 .authorizeHttpRequests(auth -> auth
 
-                        // Login pages and static files
+                        // Admin Login
                         .requestMatchers(
                                 "/login",
                                 "/css/**",
@@ -28,23 +28,27 @@ public class SecurityConfig {
                                 "/images/**"
                         ).permitAll()
 
-                        // Student Login API
+                        // Student Portal: UI Testing Only
                         .requestMatchers(
-                                "/api/student/login"
+                                "/student-portal/**"
                         ).permitAll()
 
-                        // All other pages require login
+                        // Student Login API
+                        .requestMatchers("/api/student/login").permitAll()
+                        .requestMatchers("/student-portal/**").permitAll()
+
+                        // All other pages require authentication
                         .anyRequest().authenticated()
                 )
 
-                // Admin Form Login
+
+                // Existing Admin Login
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/dashboard", true)
                         .permitAll()
                 )
 
-                // Logout
                 .logout(Customizer.withDefaults());
 
         return http.build();
