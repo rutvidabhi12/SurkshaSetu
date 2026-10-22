@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found | SurakshaSetu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/student-portal.css}">
+
+    <style>
+        body {
+            background: #f4f7fb;
+            color: #1e293b;
+            font-family: Arial, sans-serif;
+        }
+
+        .page-container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 16px;
+        }
+
+        .page-header {
+            background: #fff;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, .06);
+        }
+
+        .item-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 22px;
+            height: 100%;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
+        }
+
+        .item-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            background: #eaf2ff;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-control, .form-select {
+            padding: 11px 12px;
+            border-radius: 9px;
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            background: #fff;
+            border-radius: 12px;
+            padding: 35px;
+            color: #64748b;
+        }
+
+        @media (max-width: 576px) {
+            .page-container {
+                margin: 15px auto;
+                padding: 12px;
+            }
+
+            .page-header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container page-container">
+
+    <a th:href="@{/student-portal/dashboard}"
+       class="btn btn-outline-secondary mb-3">
+        &larr; Back to Dashboard
+    </a>
+
+    <div class="page-header mb-4">
+        <span class="badge text-bg-primary mb-2">Campus Community</span>
+        <h2 class="fw-bold">Lost & Found</h2>
+        <p class="text-secondary mb-0">
+            Lost something on campus or found an item?
+            Check the sample listings below.
+        </p>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-4">
+            <div class="stat-card">
+                <div class="text-secondary small">Sample Lost Items</div>
+                <h3 class="fw-bold mb-0">2</h3>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-4">
+            <div class="stat-card">
+                <div class="text-secondary small">Sample Found Items</div>
+                <h3 class="fw-bold mb-0">2</h3>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="stat-card">
+                <div class="text-secondary small">Portal Status</div>
+                <h5 class="fw-bold text-warning mb-0">Demo Mode</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-4 p-3 p-md-4 mb-4 border">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="searchInput" class="form-label fw-semibold">
+                    Search items
+                </label>
+                <input type="search"
+                       id="searchInput"
+                       class="form-control"
+                       placeholder="Search by item or location...">
+            </div>
+
+            <div class="col-md-3">
+                <label for="typeFilter" class="form-label fw-semibold">
+                    Item Type
+                </label>
+                <select id="typeFilter" class="form-select">
+                    <option value="all">All Items</option>
+                    <option value="lost">Lost</option>
+                    <option value="found">Found</option>
+                </select>
+            </div>
+
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="button"
+                        class="btn btn-primary w-100"
+                        data-bs-toggle="modal"
+                        data-bs-target="#reportModal">
+                    + Report an Item
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3" id="itemsContainer">
+
+        <div class="col-md-6 item-column"
+             data-type="lost"
+             data-search="black wallet library student id">
+            <div class="item-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="item-icon">👛</div>
+                    <span class="badge text-bg-danger">Lost</span>
+                </div>
+                <h5 class="fw-bold">Black Wallet</h5>
+                <p class="text-secondary small">
+                    A black wallet with personal cards inside.
+                </p>
+                <p class="small mb-2">
+                    <strong>Last seen:</strong> Library
+                </p>
+                <p class="small mb-3">
+                    <strong>Date:</strong> Sample listing
+                </p>
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm"
+                        onclick="showDemoMessage()">
+                    I Found This
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-6 item-column"
+             data-type="found"
+             data-search="blue water bottle classroom">
+            <div class="item-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="item-icon">🧴</div>
+                    <span class="badge text-bg-success">Found</span>
+                </div>
+                <h5 class="fw-bold">Blue Water Bottle</h5>
+                <p class="text-secondary small">
+                    A blue water bottle was found in a classroom.
+                </p>
+                <p class="small mb-2">
+                    <strong>Found at:</strong> Classroom Block
+                </p>
+                <p class="small mb-3">
+                    <strong>Date:</strong> Sample listing
+                </p>
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm"
+                        onclick="showDemoMessage()">
+                    This Is Mine
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-6 item-column"
+             data-type="lost"
+             data-search="student id card canteen">
+            <div class="item-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="item-icon">🪪</div>
+                    <span class="badge text-bg-danger">Lost</span>
+                </div>
+                <h5 class="fw-bold">Student ID Card</h5>
+                <p class="text-secondary small">
+                    A student ID card may have been misplaced.
+                </p>
+                <p class="small mb-2">
+                    <strong>Last seen:</strong> Canteen
+                </p>
+                <p class="small mb-3">
+                    <strong>Date:</strong> Sample listing
+                </p>
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm"
+                        onclick="showDemoMessage()">
+                    I Found This
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-6 item-column"
+             data-type="found"
+             data-search="notebook auditorium">
+            <div class="item-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="item-icon">📓</div>
+                    <span class="badge text-bg-success">Found</span>
+                </div>
+                <h5 class="fw-bold">Notebook</h5>
+                <p class="text-secondary small">
+                    A notebook was found near the auditorium.
+                </p>
+                <p class="small mb-2">
+                    <strong>Found at:</strong> Auditorium
+                </p>
+                <p class="small mb-3">
+                    <strong>Date:</strong> Sample listing
+                </p>
+                <button type="button"
+                        class="btn btn-outline-primary btn-sm"
+                        onclick="showDemoMessage()">
+                    This Is Mine
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="emptyState" class="empty-state mt-3">
+        <h5>No matching items found</h5>
+        <p class="mb-0">Try a different search term or filter.</p>
+    </div>
+
+    <div id="demoAlert"
+         class="alert alert-info mt-4 d-none"
+         role="alert">
+        Demo mode: no report or claim has been submitted.
+        The items shown on this page are sample data.
+    </div>
+
+    <div class="alert alert-warning mt-4 small">
+        <strong>Privacy tip:</strong>
+        Do not publish passwords, financial details, private identity
+        numbers, or other sensitive information in a lost-item report.
+    </div>
+
+</div>
+
+<!-- Report Item Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1"
+     aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="reportModalLabel">
+                    Report a Lost or Found Item
+                </h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <form id="reportForm">
+                <div class="modal-body">
+
+                    <div class="alert alert-info small">
+                        This form is for UI demonstration only.
+                        Your report will not be saved or published.
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="itemType" class="form-label">
+                            Report Type
+                        </label>
+                        <select id="itemType" class="form-select" required>
+                            <option value="">Select type</option>
+                            <option value="Lost">I lost an item</option>
+                            <option value="Found">I found an item</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="itemName" class="form-label">
+                            Item Name
+                        </label>
+                        <input type="text"
+                               id="itemName"
+                               class="form-control"
+                               maxlength="80"
+                               placeholder="e.g. Water bottle"
+                               required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="itemLocation" class="form-label">
+                            Location
+                        </label>
+                        <input type="text"
+                               id="itemLocation"
+                               class="form-control"
+                               maxlength="100"
+                               placeholder="e.g. Library"
+                               required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="itemDescription" class="form-label">
+                            Description
+                        </label>
+                        <textarea id="itemDescription"
+                                  class="form-control"
+                                  rows="3"
+                                  maxlength="500"
+                                  placeholder="Describe the item without sensitive details."
+                                  required></textarea>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Preview Demo
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const typeFilter = document.getElementById("typeFilter");
+    const itemColumns = document.querySelectorAll(".item-column");
+    const emptyState = document.getElementById("emptyState");
+
+    function filterItems() {
+        const searchText = searchInput.value.trim().toLowerCase();
+        const selectedType = typeFilter.value;
+        let visibleCount = 0;
+
+        itemColumns.forEach(function (item) {
+            const itemType = item.dataset.type;
+            const searchTextForItem = item.dataset.search;
+            const matchesSearch = searchTextForItem.includes(searchText);
+            const matchesType =
+                selectedType === "all" || itemType === selectedType;
+
+            if (matchesSearch && matchesType) {
+                item.style.display = "";
+                visibleCount++;
+            } else {
+                item.style.display = "none";
+            }
+        });
+
+        emptyState.style.display = visibleCount === 0 ? "block" : "none";
+    }
+
+    searchInput.addEventListener("input", filterItems);
+    typeFilter.addEventListener("change", filterItems);
+
+    function showDemoMessage() {
+        document.getElementById("demoAlert").classList.remove("d-none");
+        document.getElementById("demoAlert").scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+    }
+
+    document.getElementById("reportForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const type = document.getElementById("itemType").value;
+        const name = document.getElementById("itemName").value.trim();
+        const location = document.getElementById("itemLocation").value.trim();
+        const description = document.getElementById("itemDescription").value.trim();
+
+        if (!type || !name || !location || !description) {
+            return;
+        }
+
+        const modalElement = document.getElementById("reportModal");
+        bootstrap.Modal.getOrCreateInstance(modalElement).hide();
+
+        document.getElementById("demoAlert").textContent =
+            "Demo preview: " + type + " item — " + name +
+            ", location: " + location +
+            ". No report has been saved or published.";
+
+        document.getElementById("demoAlert").classList.remove("d-none");
+        document.getElementById("demoAlert").scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+        this.reset();
+    });
+</script>
+
+</body>
+</html>
