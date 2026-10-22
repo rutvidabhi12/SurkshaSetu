@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS Emergency | SurakshaSetu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/student-portal.css}">
+
+    <style>
+        body {
+            background: #f4f7fb;
+            font-family: Arial, sans-serif;
+            color: #1e293b;
+        }
+
+        .sos-container {
+            max-width: 850px;
+            margin: 45px auto;
+            padding: 20px;
+        }
+
+        .sos-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+            text-align: center;
+        }
+
+        .sos-icon {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            background: #fee2e2;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            margin: 0 auto 20px;
+        }
+
+        .sos-button {
+            width: 155px;
+            height: 155px;
+            border-radius: 50%;
+            border: 8px solid #fecaca;
+            background: #dc2626;
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.25);
+            transition: 0.2s;
+        }
+
+        .sos-button:hover {
+            background: #b91c1c;
+            transform: scale(1.04);
+        }
+
+        .info-card {
+            height: 100%;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .info-icon {
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        .notice {
+            background: #fff7ed;
+            color: #9a3412;
+            border: 1px solid #fed7aa;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 576px) {
+            .sos-container {
+                margin: 15px auto;
+                padding: 12px;
+            }
+
+            .sos-card {
+                padding: 22px 16px;
+            }
+
+            .sos-button {
+                width: 130px;
+                height: 130px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container sos-container">
+
+    <div class="mb-3">
+        <a th:href="@{/student-portal/dashboard}"
+           class="btn btn-outline-secondary">
+            &larr; Back to Dashboard
+        </a>
+    </div>
+
+    <div class="sos-card">
+
+        <div class="sos-icon">🆘</div>
+
+        <h2 class="fw-bold mb-2">SOS Emergency</h2>
+
+        <p class="text-secondary mb-4">
+            If you are in danger, seek help immediately.
+            Use the emergency contact information below.
+        </p>
+
+        <button type="button"
+                class="sos-button mb-3"
+                onclick="showEmergencyNotice()">
+            SOS
+        </button>
+
+        <p class="text-secondary small">
+            Demo button — does not send an alert.
+        </p>
+
+        <div id="demoNotice"
+             class="alert alert-warning mt-3 d-none"
+             role="alert">
+            <strong>Demo mode:</strong>
+            No emergency alert has been sent. If you are in immediate danger
+            in India, call <strong>112</strong> directly.
+        </div>
+
+        <hr class="my-4">
+
+        <h5 class="fw-bold mb-3">Emergency Help</h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="info-icon">📞</div>
+                    <h6 class="fw-bold">Emergency Helpline</h6>
+                    <p class="text-secondary small">
+                        For immediate emergency assistance in India.
+                    </p>
+                    <a href="tel:112"
+                       class="btn btn-danger">
+                        Call 112
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="info-icon">👮</div>
+                    <h6 class="fw-bold">Campus Security</h6>
+                    <p class="text-secondary small">
+                        Contact your campus security team using the
+                        official number provided by your institution.
+                    </p>
+                    <span class="badge text-bg-secondary">
+                        Contact details not configured
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="info-icon">🏥</div>
+                    <h6 class="fw-bold">Medical Emergency</h6>
+                    <p class="text-secondary small">
+                        For urgent medical help, contact emergency
+                        services or your nearest hospital.
+                    </p>
+                    <a href="tel:112"
+                       class="btn btn-outline-danger">
+                        Call 112
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="info-icon">🤝</div>
+                    <h6 class="fw-bold">Trusted Person</h6>
+                    <p class="text-secondary small">
+                        Contact a trusted friend, faculty member,
+                        or family member for assistance.
+                    </p>
+                    <span class="badge text-bg-secondary">
+                        Contact details not configured
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="notice mt-4 text-start">
+            <strong>Important:</strong> The SOS button is only a UI demo.
+            It does not share your location, contact campus security,
+            or send an alert. Use the direct call option when you need
+            emergency assistance.
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function showEmergencyNotice() {
+        document.getElementById("demoNotice")
+            .classList.remove("d-none");
+    }
+</script>
+
+</body>
+</html>
