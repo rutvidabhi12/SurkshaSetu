@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Submitted | SurakshaSetu</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/student-portal.css}">
+
+    <style>
+        .success-card {
+            max-width: 680px;
+            margin: 40px auto;
+            padding: 45px 28px;
+            text-align: center;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 10px 35px rgba(20, 45, 90, 0.08);
+        }
+
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .success-id {
+            margin: 25px 0;
+            padding: 18px;
+            background: #f1f5f9;
+            border: 1px dashed #94a3b8;
+            border-radius: 12px;
+        }
+
+        .success-id strong {
+            display: block;
+            margin-top: 8px;
+            color: #1d4ed8;
+            font-size: 22px;
+            overflow-wrap: anywhere;
+        }
+
+        .success-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 28px;
+        }
+    </style>
+</head>
+
+<body class="student-dashboard-page">
+
+<div class="student-layout">
+
+    <aside class="student-sidebar">
+        <a class="student-brand" th:href="@{/student-portal/dashboard}">
+            <span class="student-brand-icon">SS</span>
+            <span>
+                <strong>SurakshaSetu</strong>
+                <small>STUDENT PORTAL</small>
+            </span>
+        </a>
+
+        <div class="sidebar-label">MENU</div>
+
+        <nav class="student-nav">
+            <a th:href="@{/student-portal/dashboard}"><span>▦</span> Dashboard</a>
+            <a th:href="@{/student-portal/complaints}"><span>▤</span> My Complaints</a>
+            <a class="active" th:href="@{/student-portal/new-complaint}"><span>＋</span> New Complaint</a>
+            <a th:href="@{/student-portal/sos}"><span>⚠</span> SOS Emergency</a>
+            <a th:href="@{/student-portal/lost-found}"><span>⌕</span> Lost &amp; Found</a>
+            <a th:href="@{/student-portal/profile}"><span>♙</span> My Profile</a>
+            <a th:href="@{/student-portal/help}"><span>?</span> Help &amp; Support</a>
+        </nav>
+
+        <div class="sidebar-safety-card">
+            <span class="safety-shield">✓</span>
+            <strong>Your safety matters</strong>
+            <p>Stay alert. Stay connected. Keep your campus safe.</p>
+        </div>
+
+        <a class="student-logout" th:href="@{/logout}">↪ Logout</a>
+    </aside>
+
+    <main class="student-main">
+
+        <header class="student-topbar">
+            <div class="mobile-brand">
+                <span class="student-brand-icon">SS</span>
+                <strong>SurakshaSetu</strong>
+            </div>
+
+            <div class="topbar-context">
+                <span class="status-dot"></span>
+                Campus Student Portal
+            </div>
+
+            <div class="topbar-user">
+                <div class="user-avatar">S</div>
+                <div>
+                    <strong>Student</strong>
+                    <small>Student Account</small>
+                </div>
+            </div>
+        </header>
+
+        <section class="student-content">
+
+            <div class="success-card">
+
+                <div class="success-icon">✓</div>
+
+                <span class="eyebrow">COMPLAINT REGISTRATION</span>
+
+                <h1 class="fw-bold mt-3">Thank You!</h1>
+
+                <h2 class="h5 mt-3">Your complaint has been submitted.</h2>
+
+                <p class="text-secondary mt-3">
+                    Your complaint details have been received by this demo interface.
+                    You can keep the demo reference below for testing.
+                </p>
+
+                <div class="success-id">
+                    <span class="text-secondary">Demo Reference ID</span>
+                    <strong id="complaintId">SS-DEMO</strong>
+                </div>
+
+                <div class="alert alert-info text-start border-0">
+                    <strong>What's next?</strong>
+                    <p class="mb-0 mt-2">
+                        In the completed system, the campus team will review the
+                        complaint and update its status. Database submission and
+                        real notifications have not been implemented yet.
+                    </p>
+                </div>
+
+                <div class="success-actions">
+                    <a th:href="@{/student-portal/complaints}"
+                       class="btn btn-primary px-4">
+                        My Complaints
+                    </a>
+
+                    <a th:href="@{/student-portal/new-complaint}"
+                       class="btn btn-outline-primary px-4">
+                        Submit Another
+                    </a>
+
+                    <a th:href="@{/student-portal/dashboard}"
+                       class="btn btn-outline-secondary px-4">
+                        Dashboard
+                    </a>
+                </div>
+
+            </div>
+
+            <footer class="student-footer mt-4">
+                <span>© SurakshaSetu · Student Portal</span>
+                <span>Smart Campus Guardian</span>
+            </footer>
+
+        </section>
+    </main>
+</div>
+
+<script>
+    const demoId = sessionStorage.getItem("demoComplaintId");
+
+    document.getElementById("complaintId").textContent =
+        demoId || "Not available — please complete the demo flow first";
+</script>
+
+</body>
+</html>
