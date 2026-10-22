@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint History | SurakshaSetu</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/student-portal.css}">
+
+    <style>
+        .history-card {
+            border: 0;
+            border-radius: 18px;
+            box-shadow: 0 5px 22px rgba(20,45,90,.06);
+        }
+
+        .history-timeline {
+            position: relative;
+            padding-left: 38px;
+        }
+
+        .history-item {
+            position: relative;
+            padding: 0 0 32px 24px;
+            border-left: 2px solid #dbeafe;
+        }
+
+        .history-item:last-child {
+            border-left-color: transparent;
+            padding-bottom: 0;
+        }
+
+        .history-dot {
+            position: absolute;
+            left: -10px;
+            top: 0;
+            width: 18px;
+            height: 18px;
+            background: #2563eb;
+            border: 4px solid #dbeafe;
+            border-radius: 50%;
+        }
+
+        .history-item.completed .history-dot {
+            background: #16a34a;
+            border-color: #dcfce7;
+        }
+
+        .history-date {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .history-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 30px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body class="student-dashboard-page">
+
+<div class="student-layout">
+
+    <aside class="student-sidebar">
+        <a class="student-brand" th:href="@{/student-portal/dashboard}">
+            <span class="student-brand-icon">SS</span>
+            <span><strong>SurakshaSetu</strong><small>STUDENT PORTAL</small></span>
+        </a>
+
+        <div class="sidebar-label">MENU</div>
+
+        <nav class="student-nav">
+            <a th:href="@{/student-portal/dashboard}"><span>▦</span> Dashboard</a>
+            <a class="active" th:href="@{/student-portal/complaints}"><span>▤</span> My Complaints</a>
+            <a th:href="@{/student-portal/new-complaint}"><span>＋</span> New Complaint</a>
+            <a th:href="@{/student-portal/sos}"><span>⚠</span> SOS Emergency</a>
+            <a th:href="@{/student-portal/lost-found}"><span>⌕</span> Lost &amp; Found</a>
+            <a th:href="@{/student-portal/profile}"><span>♙</span> My Profile</a>
+            <a th:href="@{/student-portal/help}"><span>?</span> Help &amp; Support</a>
+        </nav>
+
+        <div class="sidebar-safety-card">
+            <span class="safety-shield">✓</span>
+            <strong>Your safety matters</strong>
+            <p>Stay alert. Stay connected. Keep your campus safe.</p>
+        </div>
+
+        <a class="student-logout" th:href="@{/logout}">↪ Logout</a>
+    </aside>
+
+    <main class="student-main">
+
+        <header class="student-topbar">
+            <div class="mobile-brand">
+                <span class="student-brand-icon">SS</span>
+                <strong>SurakshaSetu</strong>
+            </div>
+
+            <div class="topbar-context">
+                <span class="status-dot"></span> Campus Student Portal
+            </div>
+
+            <div class="topbar-user">
+                <div class="user-avatar">S</div>
+                <div><strong>Student</strong><small>Student Account</small></div>
+            </div>
+        </header>
+
+        <section class="student-content">
+
+            <div class="dashboard-welcome">
+                <div>
+                    <span class="eyebrow">COMPLAINT MANAGEMENT</span>
+                    <h1>Complaint History</h1>
+                    <p>Follow the status updates for your complaint.</p>
+                </div>
+
+                <a th:href="@{/student-portal/complaints}"
+                   class="btn btn-outline-primary">
+                    ← Back to Complaints
+                </a>
+            </div>
+
+            <div class="card history-card mb-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="d-flex flex-wrap justify-content-between
+                                align-items-start gap-3 mb-4">
+                        <div>
+                            <div class="text-secondary small">Complaint Reference</div>
+                            <h2 class="h4 fw-bold mt-1" id="historyComplaintId">SS-001</h2>
+                            <h3 class="h6 mt-2" id="historyComplaintTitle">
+                                Classroom Fan Not Working
+                            </h3>
+                        </div>
+
+                        <span class="history-status" id="currentStatus">Pending</span>
+                    </div>
+
+                    <hr class="mb-4">
+
+                    <h3 class="h5 fw-bold mb-4">Activity Timeline</h3>
+
+                    <div class="history-timeline">
+
+                        <div class="history-item completed">
+                            <span class="history-dot"></span>
+                            <div class="history-date">20 Oct 2026 · Submitted</div>
+                            <h4 class="h6 fw-bold mt-2">Complaint Registered</h4>
+                            <p class="text-secondary mb-0">
+                                Your complaint was submitted through the Student Portal.
+                            </p>
+                        </div>
+
+                        <div class="history-item" id="reviewEvent">
+                            <span class="history-dot"></span>
+                            <div class="history-date">Awaiting update</div>
+                            <h4 class="h6 fw-bold mt-2">Department Review</h4>
+                            <p class="text-secondary mb-0">
+                                The department review status will be updated when available.
+                            </p>
+                        </div>
+
+                        <div class="history-item" id="resolutionEvent">
+                            <span class="history-dot"></span>
+                            <div class="history-date">Awaiting update</div>
+                            <h4 class="h6 fw-bold mt-2">Resolution</h4>
+                            <p class="text-secondary mb-0">
+                                Resolution information will appear here when available.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-info border-0 rounded-3 mt-4 mb-0">
+                        <strong>Demo timeline</strong>
+                        <p class="mb-0 mt-1">
+                            These are sample events for UI testing. Live status history
+                            will require database integration.
+                        </p>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <a id="detailsLink"
+                           href="/student-portal/complaints/SS-001"
+                           class="btn btn-primary">
+                            View Complaint Details
+                        </a>
+
+                        <a th:href="@{/student-portal/complaints}"
+                           class="btn btn-outline-secondary">
+                            All Complaints
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <footer class="student-footer mt-4">
+                <span>© SurakshaSetu · Student Portal</span>
+                <span>Smart Campus Guardian</span>
+            </footer>
+
+        </section>
+    </main>
+</div>
+
+<script>
+    const parts = window.location.pathname.split("/");
+    const complaintId = parts[parts.length - 2] || "SS-001";
+
+    const demoData = {
+        "SS-001": {
+            title: "Classroom Fan Not Working",
+            status: "Pending"
+        },
+        "SS-002": {
+            title: "Library Access Issue",
+            status: "In Progress"
+        },
+        "SS-003": {
+            title: "Water Cooler Maintenance",
+            status: "Resolved"
+        }
+    };
+
+    const complaint = demoData[complaintId] || demoData["SS-001"];
+
+    document.getElementById("historyComplaintId").textContent = complaintId;
+    document.getElementById("historyComplaintTitle").textContent = complaint.title;
+    document.getElementById("currentStatus").textContent = complaint.status;
+
+    document.getElementById("detailsLink").href =
+        "/student-portal/complaints/" + encodeURIComponent(complaintId);
+
+    if (complaint.status === "In Progress") {
+        document.querySelector("#reviewEvent .history-date").textContent =
+            "In progress · Demo status";
+        document.querySelector("#reviewEvent .history-dot").style.background = "#2563eb";
+    }
+
+    if (complaint.status === "Resolved") {
+        document.querySelector("#reviewEvent .history-date").textContent =
+            "Review completed · Demo status";
+        document.querySelector("#resolutionEvent .history-date").textContent =
+            "Resolved · Demo status";
+
+        document.querySelectorAll(".history-item").forEach(item => {
+            item.classList.add("completed");
+        });
+    }
+</script>
+
+</body>
+</html>
