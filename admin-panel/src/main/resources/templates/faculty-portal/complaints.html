@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Complaints | SurakshaSetu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0866dc;
+            --background: #f4f7fc;
+            --text: #172b4d;
+            --muted: #718096;
+            --border: #e7edf5;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        a { text-decoration: none; }
+
+        .topbar {
+            position: fixed;
+            inset: 0 0 auto;
+            height: 65px;
+            background: linear-gradient(100deg, #0756c9, #0877ed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            z-index: 1000;
+            box-shadow: 0 3px 12px rgba(0, 65, 150, .15);
+        }
+
+        .topbar-left, .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-button, .notification-button {
+            border: 0;
+            background: transparent;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: 750;
+            margin: 0;
+        }
+
+        .brand-subtitle {
+            display: block;
+            font-size: 11px;
+            opacity: .85;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 65px;
+            bottom: 0;
+            left: 0;
+            width: 245px;
+            background: white;
+            border-right: 1px solid var(--border);
+            padding: 22px 15px;
+            overflow-y: auto;
+            z-index: 900;
+            transition: transform .25s;
+        }
+
+        .faculty-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 9px 23px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #e8eef7;
+            color: #61758f;
+            display: grid;
+            place-items: center;
+            font-size: 27px;
+        }
+
+        .faculty-profile strong { display: block; font-size: 13px; }
+        .faculty-profile small { color: var(--muted); font-size: 11px; }
+
+        .menu-heading {
+            color: #a0aec0;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            padding: 8px 12px;
+        }
+
+        .nav-item-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 12px 13px;
+            border-radius: 10px;
+            margin: 5px 0;
+            color: #586a83;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .nav-item-link i { font-size: 19px; }
+
+        .nav-item-link:hover, .nav-item-link.active {
+            background: #eaf2ff;
+            color: var(--primary);
+        }
+
+        .nav-item-link.active { box-shadow: inset 3px 0 var(--primary); }
+
+        .nav-arrow { margin-left: auto; font-size: 14px !important; }
+
+        .logout-link {
+            margin-top: 20px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .main-content {
+            margin-left: 245px;
+            padding: 91px 28px 25px;
+            min-height: 100vh;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .page-heading h1 {
+            font-size: 23px;
+            font-weight: 750;
+            margin: 0;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 6px 0 0;
+        }
+
+        .primary-button {
+            border: 0;
+            background: var(--primary);
+            color: white;
+            border-radius: 9px;
+            padding: 11px 15px;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .primary-button:hover { background: #0755bd; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 15px;
+            margin-bottom: 23px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            font-size: 20px;
+        }
+
+        .blue { background: #e5efff; color: #1767d8; }
+        .orange { background: #fff0d7; color: #e58a00; }
+        .green { background: #dff8ec; color: #16985c; }
+        .red { background: #ffe5e8; color: #dc3545; }
+
+        .stat-number { font-size: 27px; font-weight: 800; }
+        .stat-label { font-size: 12px; color: var(--muted); }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-button {
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: white;
+            padding: 9px 14px;
+            font-size: 12px;
+            font-weight: 650;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .filter-button.active,
+        .filter-button:hover {
+            color: var(--primary);
+            border-color: #b8d0ff;
+            background: #edf4ff;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 13px;
+            top: 11px;
+            color: #94a3b8;
+        }
+
+        .search-box input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 10px 12px 10px 37px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .search-box input:focus { border-color: #8db5ff; }
+
+        .table-responsive { overflow-x: auto; }
+
+        .complaints-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .complaints-table th {
+            background: #f7f9fd;
+            color: #718096;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 14px 12px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .complaints-table td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #edf1f7;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .complaints-table tr:last-child td { border-bottom: 0; }
+
+        .complaint-title {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .complaint-id {
+            display: block;
+            color: #94a3b8;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        .student-name { font-weight: 650; }
+        .muted-small { color: var(--muted); font-size: 10px; margin-top: 4px; }
+
+        .status {
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 750;
+            white-space: nowrap;
+        }
+
+        .status-assigned { background: #eee7ff; color: #6841c6; }
+        .status-progress { background: #e1efff; color: #1261c9; }
+        .status-resolved { background: #dcf8e9; color: #16834c; }
+        .status-rejected { background: #ffe4e7; color: #cb2938; }
+
+        .priority {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .priority-high { color: #dc3545; }
+        .priority-medium { color: #e58a00; }
+        .priority-low { color: #16985c; }
+
+        .details-button {
+            border: 1px solid #cbdcff;
+            color: var(--primary);
+            background: #f5f8ff;
+            padding: 7px 10px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .details-button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .empty-state {
+            display: none;
+            padding: 35px 10px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .pagination-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .pagination-button {
+            border: 1px solid var(--border);
+            background: white;
+            color: #64748b;
+            padding: 7px 11px;
+            border-radius: 7px;
+            font-size: 11px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 10px;
+            padding: 22px 0 5px;
+        }
+
+        .sidebar-overlay { display: none; }
+
+        @media (max-width: 1100px) {
+            .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 800px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+
+            .sidebar-overlay.show {
+                display: block;
+                position: fixed;
+                inset: 65px 0 0;
+                background: rgba(15, 23, 42, .35);
+                z-index: 850;
+            }
+
+            .main-content { margin-left: 0; padding: 88px 18px 22px; }
+        }
+
+        @media (max-width: 480px) {
+            .topbar { height: 60px; padding: 0 14px; }
+            .sidebar { top: 60px; }
+            .sidebar-overlay.show { inset: 60px 0 0; }
+            .brand-name { font-size: 16px; }
+            .main-content { padding: 78px 12px 18px; }
+            .page-heading h1 { font-size: 20px; }
+            .page-heading { align-items: flex-start; }
+            .page-heading .primary-button { padding: 9px; font-size: 10px; }
+            .stats-grid { gap: 9px; }
+            .stat-card { padding: 13px; }
+            .stat-number { font-size: 24px; }
+            .stat-label { font-size: 11px; }
+            .panel { padding: 13px; }
+            .filters { gap: 7px; }
+            .filter-button { padding: 8px 10px; font-size: 11px; }
+            .pagination-row { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="topbar-left">
+        <button class="menu-button" id="menuToggle" type="button"
+                aria-label="Open navigation">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <div>
+            <h1 class="brand-name">SurakshaSetu</h1>
+            <span class="brand-subtitle">Faculty Portal</span>
+        </div>
+    </div>
+
+    <button class="notification-button" id="notificationButton"
+            type="button" aria-label="Notifications">
+        <i class="bi bi-bell-fill"></i>
+    </button>
+</header>
+
+<aside class="sidebar" id="sidebar">
+    <div class="faculty-profile">
+        <div class="profile-avatar"><i class="bi bi-person-fill"></i></div>
+        <div>
+            <strong>Faculty Member</strong>
+            <small>Faculty Department</small>
+        </div>
+    </div>
+
+    <div class="menu-heading">MAIN MENU</div>
+
+    <a href="/faculty-portal/dashboard" class="nav-item-link">
+        <i class="bi bi-grid-1x2-fill"></i> Dashboard
+    </a>
+
+    <a href="/faculty-portal/complaints" class="nav-item-link active">
+        <i class="bi bi-file-earmark-text"></i>
+        My Complaints
+        <i class="bi bi-chevron-right nav-arrow"></i>
+    </a>
+
+    <a href="/faculty-portal/profile" class="nav-item-link">
+        <i class="bi bi-person-circle"></i>
+        My Profile
+        <i class="bi bi-chevron-right nav-arrow"></i>
+    </a>
+
+    <a href="/faculty-portal/lost-found" class="nav-item-link">
+        <i class="bi bi-search"></i>
+        Lost &amp; Found
+        <i class="bi bi-chevron-right nav-arrow"></i>
+    </a>
+
+    <div class="menu-heading mt-3">ACCOUNT</div>
+
+    <a href="/logout" class="nav-item-link logout-link">
+        <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
+</aside>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<main class="main-content">
+
+    <div class="page-heading">
+        <div>
+            <h1>My Complaints</h1>
+            <p>View and manage complaints assigned to you.</p>
+        </div>
+
+        <button type="button" class="primary-button" id="refreshButton">
+            <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+        </button>
+    </div>
+
+    <!-- DEMO STATISTICS -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon blue"><i class="bi bi-files"></i></div>
+            </div>
+            <div class="stat-number" id="allCount">5</div>
+            <div class="stat-label">All Complaints</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon orange"><i class="bi bi-clock-history"></i></div>
+            </div>
+            <div class="stat-number" id="progressCount">2</div>
+            <div class="stat-label">In Progress</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon green"><i class="bi bi-check-circle"></i></div>
+            </div>
+            <div class="stat-number" id="resolvedCount">1</div>
+            <div class="stat-label">Resolved</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon red"><i class="bi bi-x-circle"></i></div>
+            </div>
+            <div class="stat-number" id="rejectedCount">1</div>
+            <div class="stat-label">Rejected</div>
+        </div>
+    </section>
+
+    <!-- COMPLAINT LIST -->
+    <section class="panel">
+
+        <div class="filters">
+            <button class="filter-button active" data-filter="all">All</button>
+            <button class="filter-button" data-filter="assigned">Assigned</button>
+            <button class="filter-button" data-filter="progress">In Progress</button>
+            <button class="filter-button" data-filter="resolved">Resolved</button>
+            <button class="filter-button" data-filter="rejected">Rejected</button>
+
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="search" id="searchInput"
+                       placeholder="Search complaint, ID or student...">
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="complaints-table">
+                <thead>
+                <tr>
+                    <th>Complaint</th>
+                    <th>Student</th>
+                    <th>Date</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody id="complaintsTable">
+
+                <tr data-status="progress">
+                    <td>
+                        <span class="complaint-title">Classroom AC Not Working</span>
+                        <span class="complaint-id">COM-007</span>
+                    </td>
+                    <td>
+                        <span class="student-name">Rahul Patel</span>
+                        <div class="muted-small">MCA · Semester 2</div>
+                    </td>
+                    <td>16 Oct 2026</td>
+                    <td><span class="priority priority-high">● High</span></td>
+                    <td><span class="status status-progress">In Progress</span></td>
+                    <td><button class="details-button" data-id="COM-007">View Details</button></td>
+                </tr>
+
+                <tr data-status="assigned">
+                    <td>
+                        <span class="complaint-title">Projector Issue</span>
+                        <span class="complaint-id">COM-003</span>
+                    </td>
+                    <td>
+                        <span class="student-name">Amit Shah</span>
+                        <div class="muted-small">BCA · Semester 5</div>
+                    </td>
+                    <td>15 Oct 2026</td>
+                    <td><span class="priority priority-medium">● Medium</span></td>
+                    <td><span class="status status-assigned">Assigned</span></td>
+                    <td><button class="details-button" data-id="COM-003">View Details</button></td>
+                </tr>
+
+                <tr data-status="resolved">
+                    <td>
+                        <span class="complaint-title">Wi-Fi Connectivity Problem</span>
+                        <span class="complaint-id">COM-005</span>
+                    </td>
+                    <td>
+                        <span class="student-name">Jay Patel</span>
+                        <div class="muted-small">MCA · Semester 2</div>
+                    </td>
+                    <td>14 Oct 2026</td>
+                    <td><span class="priority priority-low">● Low</span></td>
+                    <td><span class="status status-resolved">Resolved</span></td>
+                    <td><button class="details-button" data-id="COM-005">View Details</button></td>
+                </tr>
+
+                <tr data-status="rejected">
+                    <td>
+                        <span class="complaint-title">Library System Issue</span>
+                        <span class="complaint-id">COM-004</span>
+                    </td>
+                    <td>
+                        <span class="student-name">Neha Desai</span>
+                        <div class="muted-small">BCA · Semester 3</div>
+                    </td>
+                    <td>13 Oct 2026</td>
+                    <td><span class="priority priority-medium">● Medium</span></td>
+                    <td><span class="status status-rejected">Rejected</span></td>
+                    <td><button class="details-button" data-id="COM-004">View Details</button></td>
+                </tr>
+
+                <tr data-status="progress">
+                    <td>
+                        <span class="complaint-title">Classroom Light Issue</span>
+                        <span class="complaint-id">COM-008</span>
+                    </td>
+                    <td>
+                        <span class="student-name">Priya Shah</span>
+                        <div class="muted-small">MCA · Semester 1</div>
+                    </td>
+                    <td>12 Oct 2026</td>
+                    <td><span class="priority priority-high">● High</span></td>
+                    <td><span class="status status-progress">In Progress</span></td>
+                    <td><button class="details-button" data-id="COM-008">View Details</button></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+            <i class="bi bi-search fs-3 d-block mb-2"></i>
+            No complaints found for your search.
+        </div>
+
+        <div class="pagination-row">
+            <span id="resultsCount">Showing 5 demo complaints</span>
+            <div class="d-flex gap-2">
+                <button class="pagination-button" type="button" disabled>Previous</button>
+                <button class="pagination-button" type="button" disabled>Next</button>
+            </div>
+        </div>
+
+        <p class="text-secondary mt-3 mb-0" style="font-size:10px;">
+            Demo data only. Real complaint records will be loaded from the backend later.
+        </p>
+
+    </section>
+
+    <footer class="footer">
+        © 2026 SurakshaSetu · Faculty Portal
+    </footer>
+
+</main>
+
+<script>
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+
+    document.getElementById("menuToggle").addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("show");
+    });
+
+    overlay.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+    });
+
+    let currentFilter = "all";
+
+    const rows = Array.from(document.querySelectorAll("#complaintsTable tr"));
+    const searchInput = document.getElementById("searchInput");
+    const emptyState = document.getElementById("emptyState");
+    const resultsCount = document.getElementById("resultsCount");
+
+    function applyFilters() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visible = 0;
+
+        rows.forEach(row => {
+            const status = row.dataset.status;
+            const matchesStatus = currentFilter === "all" || status === currentFilter;
+            const matchesSearch = row.innerText.toLowerCase().includes(query);
+            const show = matchesStatus && matchesSearch;
+
+            row.style.display = show ? "" : "none";
+
+            if (show) visible++;
+        });
+
+        emptyState.style.display = visible === 0 ? "block" : "none";
+        resultsCount.textContent = "Showing " + visible + " demo complaints";
+    }
+
+    document.querySelectorAll(".filter-button").forEach(button => {
+        button.addEventListener("click", () => {
+            document.querySelectorAll(".filter-button").forEach(item => {
+                item.classList.remove("active");
+            });
+
+            button.classList.add("active");
+            currentFilter = button.dataset.filter;
+            applyFilters();
+        });
+    });
+
+    searchInput.addEventListener("input", applyFilters);
+
+    document.getElementById("refreshButton").addEventListener("click", () => {
+        searchInput.value = "";
+        currentFilter = "all";
+
+        document.querySelectorAll(".filter-button").forEach(button => {
+            button.classList.toggle("active", button.dataset.filter === "all");
+        });
+
+        applyFilters();
+    });
+
+    document.getElementById("notificationButton").addEventListener("click", () => {
+        alert("Notifications are not connected yet.");
+    });
+
+    document.querySelectorAll(".details-button").forEach(button => {
+        button.addEventListener("click", () => {
+            const complaintId = button.dataset.id;
+            window.location.href =
+                "/faculty-portal/complaint-details?id=" +
+                encodeURIComponent(complaintId);
+        });
+    });
+
+    // Initial counts for the current demo records
+    document.getElementById("allCount").textContent = rows.length;
+    document.getElementById("progressCount").textContent =
+        rows.filter(row => row.dataset.status === "progress").length;
+    document.getElementById("resolvedCount").textContent =
+        rows.filter(row => row.dataset.status === "resolved").length;
+    document.getElementById("rejectedCount").textContent =
+        rows.filter(row => row.dataset.status === "rejected").length;
+
+    applyFilters();
+</script>
+
+</body>
+</html>

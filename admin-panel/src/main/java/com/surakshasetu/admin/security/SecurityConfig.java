@@ -37,6 +37,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/student/login").permitAll()
                         .requestMatchers("/student-portal/**").permitAll()
 
+                        // Faculty Portal: UI Testing Only
+                        .requestMatchers("/faculty-portal/**").permitAll()
+
                         // All other pages require authentication
                         .anyRequest().authenticated()
                 )

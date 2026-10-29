@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Complaint | SurakshaSetu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --background: #f4f7fb;
+            --text: #1e293b;
+            --muted: #64748b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
+
+        .main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .topbar h2 {
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .muted { color: var(--muted); }
+
+        .profile-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #dbeafe;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 22px;
+            border: 1px solid #e8edf5;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.03);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 22px;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .summary-value {
+            font-size: 15px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 45px;
+            border-color: #dbe3ef;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        textarea.form-control {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #fef3c7;
+            color: #92400e;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            padding: 10px 18px;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        @media (max-width: 576px) {
+            .main { padding: 18px 13px; }
+
+            .topbar h2 { font-size: 21px; }
+
+            .card-box { padding: 18px; }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<main class="main">
+
+    <!-- Header -->
+    <div class="topbar">
+        <div>
+            <h2>Update Complaint</h2>
+            <div class="muted">Review the complaint and update its status.</div>
+        </div>
+
+        <div class="profile-icon">
+            <i class="bi bi-person-fill"></i>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a id="backButton"
+           href="/faculty-portal/complaint-details?id=CMP-1001"
+           class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Back to Complaint Details
+        </a>
+    </div>
+
+    <!-- Complaint Summary -->
+    <section class="card-box">
+        <h5 class="section-title">
+            <i class="bi bi-file-earmark-text text-primary me-2"></i>
+            Complaint Summary
+        </h5>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="summary-label">Complaint ID</div>
+                <div class="summary-value" id="complaintId">CMP-1001</div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="summary-label">Current Status</div>
+                <span class="status-badge" id="currentStatus">In Progress</span>
+            </div>
+
+            <div class="col-12">
+                <div class="summary-label">Complaint Title</div>
+                <div class="summary-value" id="complaintTitle">
+                    Classroom Projector Not Working
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="summary-label">Student Name</div>
+                <div class="summary-value" id="studentName">Rahul Patel</div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="summary-label">Category</div>
+                <div class="summary-value" id="category">Classroom Equipment</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Update Form -->
+    <section class="card-box">
+        <h5 class="section-title">
+            <i class="bi bi-pencil-square text-primary me-2"></i>
+            Update Complaint Information
+        </h5>
+
+        <form id="updateForm">
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <label for="status" class="form-label">
+                        Complaint Status <span class="text-danger">*</span>
+                    </label>
+
+                    <select id="status" class="form-select" required>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="priority" class="form-label">
+                        Priority <span class="text-danger">*</span>
+                    </label>
+
+                    <select id="priority" class="form-select" required>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label for="remarks" class="form-label">
+                        Faculty Remarks <span class="text-danger">*</span>
+                    </label>
+
+                    <textarea id="remarks"
+                              class="form-control"
+                              placeholder="Enter the action taken, current progress, or reason for the status..."
+                              maxlength="1000"
+                              required></textarea>
+
+                    <div class="help-text">
+                        Provide a clear update for this complaint (maximum 1000 characters).
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="my-4">
+
+            <div class="form-actions d-flex flex-wrap gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-1"></i> Save Changes
+                </button>
+
+                <a id="cancelButton"
+                   href="/faculty-portal/complaint-details?id=CMP-1001"
+                   class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+    </section>
+
+    <div class="alert alert-info small">
+        <i class="bi bi-info-circle me-1"></i>
+        Demo mode: changes are saved in this browser only. They are not saved to the database.
+    </div>
+
+</main>
+
+<script>
+    // Sample data for UI testing only.
+    const complaints = {
+        "CMP-1001": {
+            title: "Classroom Projector Not Working",
+            student: "Rahul Patel",
+            category: "Classroom Equipment",
+            status: "In Progress",
+            priority: "High",
+            remarks: ""
+        },
+        "CMP-1002": {
+            title: "Library Wi-Fi Connectivity Issue",
+            student: "Priya Shah",
+            category: "Network",
+            status: "Pending",
+            priority: "Medium",
+            remarks: ""
+        },
+        "CMP-1003": {
+            title: "Water Cooler Needs Repair",
+            student: "Amit Joshi",
+            category: "Maintenance",
+            status: "Resolved",
+            priority: "Low",
+            remarks: ""
+        }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id") || "CMP-1001";
+    const complaint = complaints[id];
+
+    const statusSelect = document.getElementById("status");
+    const prioritySelect = document.getElementById("priority");
+    const remarksInput = document.getElementById("remarks");
+    const form = document.getElementById("updateForm");
+
+    function setNavigationLinks() {
+        const detailsUrl =
+            "/faculty-portal/complaint-details?id=" + encodeURIComponent(id);
+
+        document.getElementById("backButton").href = detailsUrl;
+        document.getElementById("cancelButton").href = detailsUrl;
+    }
+
+    function loadSavedDemoUpdate() {
+        try {
+            const saved = JSON.parse(
+                localStorage.getItem("facultyComplaintUpdates") || "{}"
+            );
+
+            if (saved[id]) {
+                complaint.status = saved[id].status;
+                complaint.priority = saved[id].priority;
+                complaint.remarks = saved[id].remarks;
+            }
+        } catch (error) {
+            console.warn("Could not load demo updates.", error);
+        }
+    }
+
+    if (!complaint) {
+        document.querySelector(".main").innerHTML = `
+            <div class="alert alert-warning">
+                <h4>Complaint not found</h4>
+                <p>This complaint ID is not available in the demo data.</p>
+                <a href="/faculty-portal/complaints" class="btn btn-primary">
+                    Back to My Complaints
+                </a>
+            </div>`;
+    } else {
+        loadSavedDemoUpdate();
+
+        document.getElementById("complaintId").textContent = id;
+        document.getElementById("complaintTitle").textContent = complaint.title;
+        document.getElementById("studentName").textContent = complaint.student;
+        document.getElementById("category").textContent = complaint.category;
+        document.getElementById("currentStatus").textContent = complaint.status;
+
+        statusSelect.value = complaint.status;
+        prioritySelect.value = complaint.priority;
+        remarksInput.value = complaint.remarks || "";
+
+        setNavigationLinks();
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const updated = {
+                status: statusSelect.value,
+                priority: prioritySelect.value,
+                remarks: remarksInput.value.trim()
+            };
+
+            if (!updated.remarks) {
+                remarksInput.focus();
+                alert("Please enter Faculty Remarks.");
+                return;
+            }
+
+            try {
+                const saved = JSON.parse(
+                    localStorage.getItem("facultyComplaintUpdates") || "{}"
+                );
+
+                saved[id] = updated;
+                localStorage.setItem(
+                    "facultyComplaintUpdates",
+                    JSON.stringify(saved)
+                );
+
+                alert("Demo update saved in this browser.");
+
+                window.location.href =
+                    "/faculty-portal/complaint-details?id=" +
+                    encodeURIComponent(id);
+
+            } catch (error) {
+                alert("Could not save the demo update in this browser.");
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

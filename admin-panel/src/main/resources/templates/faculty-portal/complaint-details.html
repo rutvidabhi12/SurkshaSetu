@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Details | SurakshaSetu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --background: #f4f7fb;
+            --text: #1e293b;
+            --muted: #64748b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .topbar h2 {
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .muted { color: var(--muted); }
+
+        .profile-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #dbeafe;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #e8edf5;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.03);
+        }
+
+        .complaint-title {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .complaint-title h3 {
+            font-size: 21px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .badge-status,
+        .priority {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .badge-status {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .priority {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .detail-label {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .description {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 18px;
+            border-radius: 10px;
+            line-height: 1.8;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 13px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-icon {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #dbeafe;
+            color: var(--primary);
+        }
+
+        .timeline-item p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+        @media (max-width: 576px) {
+            .main { padding: 18px 13px; }
+
+            .topbar h2 { font-size: 21px; }
+
+            .card-box { padding: 18px; }
+
+            .complaint-title h3 { font-size: 19px; }
+
+            .complaint-actions .btn { width: 100%; }
+
+            .description { padding: 13px; }
+        }
+    </style>
+</head>
+
+<body>
+<main class="main">
+
+    <!-- Page Header -->
+    <div class="topbar">
+        <div>
+            <h2>Complaint Details</h2>
+            <div class="muted">View complete information about this complaint.</div>
+        </div>
+
+        <div class="profile-icon">
+            <i class="bi bi-person-fill"></i>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <a href="/faculty-portal/complaints"
+           class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Back to My Complaints
+        </a>
+    </div>
+
+    <!-- Complaint Summary -->
+    <section class="card-box">
+        <div class="complaint-title">
+            <div>
+                <div class="muted small">
+                    COMPLAINT ID: <strong id="complaintId">CMP-1001</strong>
+                </div>
+
+                <h3 id="complaintTitle">Classroom Projector Not Working</h3>
+
+                <div class="muted small">
+                    <i class="bi bi-calendar3"></i>
+                    Submitted on <span id="submittedDate">25 October 2026</span>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="priority" id="priorityBadge">High Priority</span>
+                <span class="badge-status" id="statusBadge">In Progress</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Information -->
+    <section class="card-box">
+        <h5 class="section-title">
+            <i class="bi bi-person-lines-fill text-primary me-2"></i>
+            Student Information
+        </h5>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="detail-label">Student Name</div>
+                <div class="detail-value" id="studentName">Rahul Patel</div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-label">Student ID</div>
+                <div class="detail-value" id="studentId">STU-2024-001</div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-label">Department</div>
+                <div class="detail-value" id="department">Computer Applications</div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-label">Course / Semester</div>
+                <div class="detail-value" id="course">MCA / Semester 2</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Complaint Information -->
+    <section class="card-box">
+        <h5 class="section-title">
+            <i class="bi bi-file-text text-primary me-2"></i>
+            Complaint Information
+        </h5>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <div class="detail-label">Category</div>
+                <div class="detail-value" id="category">Classroom Equipment</div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-label">Location</div>
+                <div class="detail-value" id="location">Computer Lab - Block A</div>
+            </div>
+        </div>
+
+        <div class="detail-label">Description</div>
+        <div class="description" id="description">
+            The projector in our classroom is not working properly.
+            Kindly arrange an inspection and repair as soon as possible.
+        </div>
+    </section>
+
+    <!-- Complaint Activity -->
+    <section class="card-box">
+        <h5 class="section-title">
+            <i class="bi bi-clock-history text-primary me-2"></i>
+            Complaint Activity
+        </h5>
+
+        <div class="timeline-item">
+            <div class="timeline-icon">
+                <i class="bi bi-plus-circle"></i>
+            </div>
+            <div>
+                <strong class="small">Complaint Submitted</strong>
+                <p id="activityDate">25 October 2026 · 10:30 AM</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-icon">
+                <i class="bi bi-person-check"></i>
+            </div>
+            <div>
+                <strong class="small">Assigned to Faculty</strong>
+                <p>Complaint assigned for review.</p>
+            </div>
+        </div>
+
+        <div class="timeline-item mb-0">
+            <div class="timeline-icon">
+                <i class="bi bi-arrow-repeat"></i>
+            </div>
+            <div>
+                <strong class="small" id="activityStatus">Current Status: In Progress</strong>
+                <p>This activity is sample data for UI testing.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Actions -->
+    <div class="complaint-actions d-flex flex-wrap gap-2 mb-4">
+        <a id="updateButton"
+           href="/faculty-portal/update-complaint?id=CMP-1001"
+           class="btn btn-primary">
+            <i class="bi bi-pencil-square me-1"></i> Update Complaint
+        </a>
+
+        <a href="/faculty-portal/complaints"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Complaints
+        </a>
+    </div>
+
+    <div class="alert alert-info small">
+        <i class="bi bi-info-circle me-1"></i>
+        This page currently displays sample data and is not connected to the database.
+    </div>
+
+</main>
+
+<script>
+    const complaints = {
+        "CMP-1001": {
+            title: "Classroom Projector Not Working",
+            date: "25 October 2026",
+            student: "Rahul Patel",
+            studentId: "STU-2024-001",
+            department: "Computer Applications",
+            course: "MCA / Semester 2",
+            category: "Classroom Equipment",
+            location: "Computer Lab - Block A",
+            priority: "High",
+            status: "In Progress",
+            description: "The projector in our classroom is not working properly. The screen remains blank during lectures, making it difficult for students to follow presentations. Kindly arrange an inspection and repair as soon as possible."
+        },
+        "CMP-1002": {
+            title: "Library Wi-Fi Connectivity Issue",
+            date: "24 October 2026",
+            student: "Priya Shah",
+            studentId: "STU-2024-014",
+            department: "Computer Applications",
+            course: "MCA / Semester 2",
+            category: "Network",
+            location: "Central Library",
+            priority: "Medium",
+            status: "Pending",
+            description: "The Wi-Fi connection in the central library disconnects frequently. Students are unable to access online learning resources consistently."
+        },
+        "CMP-1003": {
+            title: "Water Cooler Needs Repair",
+            date: "23 October 2026",
+            student: "Amit Joshi",
+            studentId: "STU-2024-028",
+            department: "Computer Applications",
+            course: "MCA / Semester 2",
+            category: "Maintenance",
+            location: "Block B - Ground Floor",
+            priority: "Low",
+            status: "Resolved",
+            description: "The water cooler on the ground floor was not cooling water properly. Please inspect and maintain the equipment."
+        }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedId = params.get("id") || "CMP-1001";
+    const complaint = complaints[requestedId];
+
+    if (complaint) {
+        document.getElementById("complaintId").textContent = requestedId;
+        document.getElementById("complaintTitle").textContent = complaint.title;
+        document.getElementById("submittedDate").textContent = complaint.date;
+        document.getElementById("studentName").textContent = complaint.student;
+        document.getElementById("studentId").textContent = complaint.studentId;
+        document.getElementById("department").textContent = complaint.department;
+        document.getElementById("course").textContent = complaint.course;
+        document.getElementById("category").textContent = complaint.category;
+        document.getElementById("location").textContent = complaint.location;
+        document.getElementById("description").textContent = complaint.description;
+
+        const priorityBadge = document.getElementById("priorityBadge");
+        priorityBadge.textContent = complaint.priority + " Priority";
+
+        const statusBadge = document.getElementById("statusBadge");
+        statusBadge.textContent = complaint.status;
+        document.getElementById("activityStatus").textContent =
+            "Current Status: " + complaint.status;
+
+        if (complaint.status === "Resolved") {
+            statusBadge.style.background = "#dcfce7";
+            statusBadge.style.color = "#166534";
+        } else if (complaint.status === "Pending") {
+            statusBadge.style.background = "#dbeafe";
+            statusBadge.style.color = "#1d4ed8";
+        }
+
+        if (complaint.priority === "Low") {
+            priorityBadge.style.background = "#dcfce7";
+            priorityBadge.style.color = "#166534";
+        } else if (complaint.priority === "Medium") {
+            priorityBadge.style.background = "#fef3c7";
+            priorityBadge.style.color = "#92400e";
+        }
+
+        document.getElementById("activityDate").textContent =
+            complaint.date + " · Sample activity";
+
+        document.getElementById("updateButton").href =
+            "/faculty-portal/update-complaint?id=" + encodeURIComponent(requestedId);
+    } else {
+        document.querySelector(".main").innerHTML = `
+            <div class="alert alert-warning">
+                <h4>Complaint not found</h4>
+                <p>This complaint ID is not available in the demo data.</p>
+                <a href="/faculty-portal/complaints" class="btn btn-primary">
+                    Back to My Complaints
+                </a>
+            </div>`;
+    }
+</script>
+
+</body>
+</html>

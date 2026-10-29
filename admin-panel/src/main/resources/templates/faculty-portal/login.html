@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Login | SurakshaSetu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f2f6fc;
+            color: #17345c;
+        }
+
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 15px;
+        }
+
+        .login-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            max-width: 950px;
+            min-height: 550px;
+            overflow: hidden;
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 15px 45px rgba(25, 63, 112, 0.12);
+        }
+
+        .welcome-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 48px;
+            color: #fff;
+            background: linear-gradient(145deg, #123f82, #2476d2);
+        }
+
+        .brand-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 65px;
+            height: 65px;
+            margin-bottom: 28px;
+            border: 1px solid rgba(255,255,255,.35);
+            border-radius: 18px;
+            background: rgba(255,255,255,.14);
+            font-size: 32px;
+        }
+
+        .welcome-panel h1 {
+            font-size: 32px;
+            font-weight: 750;
+            margin-bottom: 15px;
+        }
+
+        .welcome-panel p {
+            color: #e0ecff;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 22px;
+            color: #f0f6ff;
+            font-size: 14px;
+        }
+
+        .feature-item i {
+            font-size: 19px;
+        }
+
+        .form-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 48px;
+        }
+
+        .form-panel h2 {
+            color: #17345c;
+            font-weight: 750;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            margin: 10px 0 30px;
+            color: #718198;
+            font-size: 14px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 650;
+            color: #334d70;
+            margin-bottom: 8px;
+        }
+
+        .input-group {
+            border: 1px solid #dce5f1;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .input-group:focus-within {
+            border-color: #2476d2;
+            box-shadow: 0 0 0 3px rgba(36,118,210,.10);
+        }
+
+        .input-group-text {
+            background: #fff;
+            border: 0;
+            color: #7d91ac;
+            padding-left: 15px;
+        }
+
+        .form-control {
+            min-height: 48px;
+            border: 0;
+            box-shadow: none !important;
+            font-size: 14px;
+        }
+
+        .password-toggle {
+            border: 0;
+            background: #fff;
+            color: #718198;
+            padding: 0 15px;
+        }
+
+        .forgot-link {
+            color: #2169bf;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            min-height: 49px;
+            margin-top: 25px;
+            border: 0;
+            border-radius: 10px;
+            color: #fff;
+            background: #2169bf;
+            font-weight: 650;
+            transition: .2s;
+        }
+
+        .login-btn:hover {
+            background: #174f96;
+            transform: translateY(-1px);
+        }
+
+        .security-note {
+            margin-top: 25px;
+            text-align: center;
+            color: #8391a5;
+            font-size: 12px;
+        }
+
+        .security-note i {
+            color: #21845b;
+            margin-right: 5px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 22px;
+            color: #52708f;
+            text-decoration: none;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .back-link:hover {
+            color: #2169bf;
+        }
+
+        .brand-footer {
+            margin-top: 35px;
+            text-align: center;
+            color: #96a2b3;
+            font-size: 11px;
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                grid-template-columns: 1fr;
+                max-width: 440px;
+                min-height: auto;
+            }
+
+            .welcome-panel {
+                padding: 28px;
+            }
+
+            .brand-icon {
+                width: 52px;
+                height: 52px;
+                font-size: 26px;
+                margin-bottom: 18px;
+            }
+
+            .welcome-panel h1 {
+                font-size: 25px;
+            }
+
+            .welcome-panel p {
+                margin-bottom: 0;
+            }
+
+            .feature-item {
+                display: none;
+            }
+
+            .form-panel {
+                padding: 30px 25px;
+            }
+
+            .form-panel h2 {
+                font-size: 25px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .login-wrapper {
+                padding: 12px;
+            }
+
+            .welcome-panel,
+            .form-panel {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-wrapper">
+    <main class="login-card">
+
+        <!-- Left Welcome Panel -->
+        <section class="welcome-panel">
+            <div class="brand-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <h1>Faculty Portal</h1>
+
+            <p>
+                Welcome to SurakshaSetu. Access your faculty workspace
+                to manage academic activities and support campus safety.
+            </p>
+
+            <div class="feature-item">
+                <i class="bi bi-shield-check"></i>
+                <span>Secure faculty access</span>
+            </div>
+
+            <div class="feature-item">
+                <i class="bi bi-journal-check"></i>
+                <span>Academic management workspace</span>
+            </div>
+
+            <div class="feature-item">
+                <i class="bi bi-buildings"></i>
+                <span>Connected campus community</span>
+            </div>
+        </section>
+
+        <!-- Right Login Form -->
+        <section class="form-panel">
+            <h2>Welcome Back!</h2>
+
+            <p class="subtitle">
+                Sign in to continue to your faculty account.
+            </p>
+
+            <form th:action="@{/faculty-portal/login}" method="post">
+
+                <div class="mb-4">
+                    <label for="email" class="form-label">
+                        Faculty Email
+                    </label>
+
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+
+                        <input type="email"
+                               id="email"
+                               name="username"
+                               class="form-control"
+                               placeholder="Enter your faculty email"
+                               autocomplete="username"
+                               required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        Password
+                    </label>
+
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock"></i>
+                        </span>
+
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               class="form-control"
+                               placeholder="Enter your password"
+                               autocomplete="current-password"
+                               required>
+
+                        <button type="button"
+                                class="password-toggle"
+                                id="togglePassword"
+                                aria-label="Show password">
+                            <i class="bi bi-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               id="rememberMe"
+                               name="remember-me">
+
+                        <label class="form-check-label text-secondary"
+                               for="rememberMe"
+                               style="font-size: 13px;">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <a th:href="@{/faculty-portal/forgot-password}"
+                    style="color: #2563eb; text-decoration: none;">
+                        Forgot Password?
+                    </a>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    Sign In
+                    <i class="bi bi-arrow-right ms-2"></i>
+                </button>
+            </form>
+
+            <div class="security-note">
+                <i class="bi bi-shield-lock-fill"></i>
+                Your account is protected by secure authentication.
+            </div>
+
+            <a href="/login" class="back-link">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to Main Login
+            </a>
+
+            <div class="brand-footer">
+                © 2026 SurakshaSetu · Faculty Portal
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+    const eyeIcon = document.getElementById("eyeIcon");
+
+    togglePassword.addEventListener("click", function () {
+        const isPassword = password.type === "password";
+
+        password.type = isPassword ? "text" : "password";
+        eyeIcon.className = isPassword ? "bi bi-eye-slash" : "bi bi-eye";
+
+        togglePassword.setAttribute(
+            "aria-label",
+            isPassword ? "Hide password" : "Show password"
+        );
+    });
+</script>
+
+</body>
+</html>
