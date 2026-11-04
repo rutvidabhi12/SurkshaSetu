@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Lost & Found | SurakshaSetu</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
+
     <link rel="stylesheet" th:href="@{/css/student-portal.css}">
 
     <style>
@@ -33,8 +36,8 @@
             background: #fff;
             border: 1px solid #e2e8f0;
             border-radius: 14px;
-            padding: 22px;
             height: 100%;
+            overflow: hidden;
             transition: transform .2s, box-shadow .2s;
         }
 
@@ -43,16 +46,43 @@
             box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
         }
 
+        .item-photo {
+            width: 100%;
+            height: 210px;
+            display: block;
+            object-fit: cover;
+            background: #edf1f7;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 210px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #64748b;
+            background: #edf1f7;
+        }
+
+        .photo-placeholder span:first-child {
+            font-size: 35px;
+        }
+
+        .item-card-content {
+            padding: 20px;
+        }
+
         .item-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 12px;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 27px;
+            font-size: 24px;
             background: #eaf2ff;
-            margin-bottom: 16px;
         }
 
         .stat-card {
@@ -60,9 +90,11 @@
             border-radius: 12px;
             padding: 18px;
             border: 1px solid #e2e8f0;
+            height: 100%;
         }
 
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             padding: 11px 12px;
             border-radius: 9px;
         }
@@ -76,6 +108,25 @@
             color: #64748b;
         }
 
+        .image-upload-box {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        .image-preview {
+            display: none;
+            width: 100%;
+            max-height: 240px;
+            object-fit: contain;
+            margin-top: 14px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+        }
+
         @media (max-width: 576px) {
             .page-container {
                 margin: 15px auto;
@@ -85,39 +136,53 @@
             .page-header {
                 padding: 20px;
             }
+
+            .item-photo,
+            .photo-placeholder {
+                height: 200px;
+            }
         }
     </style>
 </head>
 
 <body>
+
 <div class="container page-container">
 
+    <!-- Back Button -->
     <a th:href="@{/student-portal/dashboard}"
        class="btn btn-outline-secondary mb-3">
         &larr; Back to Dashboard
     </a>
 
+    <!-- Page Header -->
     <div class="page-header mb-4">
-        <span class="badge text-bg-primary mb-2">Campus Community</span>
+        <span class="badge text-bg-primary mb-2">
+            Campus Community
+        </span>
+
         <h2 class="fw-bold">Lost & Found</h2>
+
         <p class="text-secondary mb-0">
             Lost something on campus or found an item?
-            Check the sample listings below.
+            Check the listings below.
         </p>
     </div>
 
+    <!-- Statistics -->
     <div class="row g-3 mb-4">
+
         <div class="col-6 col-md-4">
             <div class="stat-card">
                 <div class="text-secondary small">Sample Lost Items</div>
-                <h3 class="fw-bold mb-0">2</h3>
+                <h3 class="fw-bold mb-0" id="lostCount">2</h3>
             </div>
         </div>
 
         <div class="col-6 col-md-4">
             <div class="stat-card">
                 <div class="text-secondary small">Sample Found Items</div>
-                <h3 class="fw-bold mb-0">2</h3>
+                <h3 class="fw-bold mb-0" id="foundCount">2</h3>
             </div>
         </div>
 
@@ -127,14 +192,19 @@
                 <h5 class="fw-bold text-warning mb-0">Demo Mode</h5>
             </div>
         </div>
+
     </div>
 
+    <!-- Search and Filter -->
     <div class="bg-white rounded-4 p-3 p-md-4 mb-4 border">
+
         <div class="row g-3">
+
             <div class="col-md-6">
                 <label for="searchInput" class="form-label fw-semibold">
-                    Search items
+                    Search Items
                 </label>
+
                 <input type="search"
                        id="searchInput"
                        class="form-control"
@@ -145,6 +215,7 @@
                 <label for="typeFilter" class="form-label fw-semibold">
                     Item Type
                 </label>
+
                 <select id="typeFilter" class="form-select">
                     <option value="all">All Items</option>
                     <option value="lost">Lost</option>
@@ -160,154 +231,258 @@
                     + Report an Item
                 </button>
             </div>
+
         </div>
     </div>
 
+    <!-- Item Cards -->
     <div class="row g-3" id="itemsContainer">
 
+        <!-- Black Wallet -->
         <div class="col-md-6 item-column"
              data-type="lost"
-             data-search="black wallet library student id">
+             data-search="black wallet library">
+
             <div class="item-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="item-icon">👛</div>
-                    <span class="badge text-bg-danger">Lost</span>
+
+                <img class="item-photo"
+                     src="https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80"
+                     alt="Black Wallet"
+                     loading="lazy"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');">
+
+                <div class="photo-placeholder d-none">
+                    <span>📷</span>
+                    <span>Photo unavailable</span>
                 </div>
-                <h5 class="fw-bold">Black Wallet</h5>
-                <p class="text-secondary small">
-                    A black wallet with personal cards inside.
-                </p>
-                <p class="small mb-2">
-                    <strong>Last seen:</strong> Library
-                </p>
-                <p class="small mb-3">
-                    <strong>Date:</strong> Sample listing
-                </p>
-                <button type="button"
-                        class="btn btn-outline-primary btn-sm"
-                        onclick="showDemoMessage()">
-                    I Found This
-                </button>
+
+                <div class="item-card-content">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="item-icon">👛</div>
+                        <span class="badge text-bg-danger">Lost</span>
+                    </div>
+
+                    <h5 class="fw-bold">Black Wallet</h5>
+
+                    <p class="text-secondary small">
+                        A black wallet with personal cards inside.
+                    </p>
+
+                    <p class="small mb-2">
+                        <strong>Last seen:</strong> Library
+                    </p>
+
+                    <p class="small mb-3">
+                        <strong>Date:</strong> Sample listing
+                    </p>
+
+                    <button type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            onclick="showDemoMessage()">
+                        I Found This
+                    </button>
+
+                </div>
             </div>
         </div>
 
+        <!-- Blue Water Bottle -->
         <div class="col-md-6 item-column"
              data-type="found"
              data-search="blue water bottle classroom">
+
             <div class="item-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="item-icon">🧴</div>
-                    <span class="badge text-bg-success">Found</span>
+
+                <img class="item-photo"
+                     src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
+                     alt="Blue Water Bottle"
+                     loading="lazy"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');">
+
+                <div class="photo-placeholder d-none">
+                    <span>📷</span>
+                    <span>Photo unavailable</span>
                 </div>
-                <h5 class="fw-bold">Blue Water Bottle</h5>
-                <p class="text-secondary small">
-                    A blue water bottle was found in a classroom.
-                </p>
-                <p class="small mb-2">
-                    <strong>Found at:</strong> Classroom Block
-                </p>
-                <p class="small mb-3">
-                    <strong>Date:</strong> Sample listing
-                </p>
-                <button type="button"
-                        class="btn btn-outline-primary btn-sm"
-                        onclick="showDemoMessage()">
-                    This Is Mine
-                </button>
+
+                <div class="item-card-content">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="item-icon">🧴</div>
+                        <span class="badge text-bg-success">Found</span>
+                    </div>
+
+                    <h5 class="fw-bold">Blue Water Bottle</h5>
+
+                    <p class="text-secondary small">
+                        A blue water bottle was found in a classroom.
+                    </p>
+
+                    <p class="small mb-2">
+                        <strong>Found at:</strong> Classroom Block
+                    </p>
+
+                    <p class="small mb-3">
+                        <strong>Date:</strong> Sample listing
+                    </p>
+
+                    <button type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            onclick="showDemoMessage()">
+                        This Is Mine
+                    </button>
+
+                </div>
             </div>
         </div>
 
+        <!-- Student ID Card -->
         <div class="col-md-6 item-column"
              data-type="lost"
              data-search="student id card canteen">
+
             <div class="item-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="item-icon">🪪</div>
-                    <span class="badge text-bg-danger">Lost</span>
+
+                <img class="item-photo"
+                     src="https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=800&q=80"
+                     alt="Student ID Card"
+                     loading="lazy"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');">
+
+                <div class="photo-placeholder d-none">
+                    <span>📷</span>
+                    <span>Photo unavailable</span>
                 </div>
-                <h5 class="fw-bold">Student ID Card</h5>
-                <p class="text-secondary small">
-                    A student ID card may have been misplaced.
-                </p>
-                <p class="small mb-2">
-                    <strong>Last seen:</strong> Canteen
-                </p>
-                <p class="small mb-3">
-                    <strong>Date:</strong> Sample listing
-                </p>
-                <button type="button"
-                        class="btn btn-outline-primary btn-sm"
-                        onclick="showDemoMessage()">
-                    I Found This
-                </button>
+
+                <div class="item-card-content">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="item-icon">🪪</div>
+                        <span class="badge text-bg-danger">Lost</span>
+                    </div>
+
+                    <h5 class="fw-bold">Student ID Card</h5>
+
+                    <p class="text-secondary small">
+                        A student ID card may have been misplaced.
+                    </p>
+
+                    <p class="small mb-2">
+                        <strong>Last seen:</strong> Canteen
+                    </p>
+
+                    <p class="small mb-3">
+                        <strong>Date:</strong> Sample listing
+                    </p>
+
+                    <button type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            onclick="showDemoMessage()">
+                        I Found This
+                    </button>
+
+                </div>
             </div>
         </div>
 
+        <!-- Notebook -->
         <div class="col-md-6 item-column"
              data-type="found"
              data-search="notebook auditorium">
+
             <div class="item-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="item-icon">📓</div>
-                    <span class="badge text-bg-success">Found</span>
+
+                <img class="item-photo"
+                     src="https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=800&q=80"
+                     alt="Notebook"
+                     loading="lazy"
+                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');">
+
+                <div class="photo-placeholder d-none">
+                    <span>📷</span>
+                    <span>Photo unavailable</span>
                 </div>
-                <h5 class="fw-bold">Notebook</h5>
-                <p class="text-secondary small">
-                    A notebook was found near the auditorium.
-                </p>
-                <p class="small mb-2">
-                    <strong>Found at:</strong> Auditorium
-                </p>
-                <p class="small mb-3">
-                    <strong>Date:</strong> Sample listing
-                </p>
-                <button type="button"
-                        class="btn btn-outline-primary btn-sm"
-                        onclick="showDemoMessage()">
-                    This Is Mine
-                </button>
+
+                <div class="item-card-content">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="item-icon">📓</div>
+                        <span class="badge text-bg-success">Found</span>
+                    </div>
+
+                    <h5 class="fw-bold">Notebook</h5>
+
+                    <p class="text-secondary small">
+                        A notebook was found near the auditorium.
+                    </p>
+
+                    <p class="small mb-2">
+                        <strong>Found at:</strong> Auditorium
+                    </p>
+
+                    <p class="small mb-3">
+                        <strong>Date:</strong> Sample listing
+                    </p>
+
+                    <button type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            onclick="showDemoMessage()">
+                        This Is Mine
+                    </button>
+
+                </div>
             </div>
         </div>
 
     </div>
 
+    <!-- No Results -->
     <div id="emptyState" class="empty-state mt-3">
         <h5>No matching items found</h5>
         <p class="mb-0">Try a different search term or filter.</p>
     </div>
 
+    <!-- Demo Message -->
     <div id="demoAlert"
          class="alert alert-info mt-4 d-none"
          role="alert">
         Demo mode: no report or claim has been submitted.
-        The items shown on this page are sample data.
     </div>
 
     <div class="alert alert-warning mt-4 small">
         <strong>Privacy tip:</strong>
-        Do not publish passwords, financial details, private identity
-        numbers, or other sensitive information in a lost-item report.
+        Do not publish passwords, financial details, or sensitive identity
+        information in a lost-item report.
     </div>
 
 </div>
 
 <!-- Report Item Modal -->
-<div class="modal fade" id="reportModal" tabindex="-1"
-     aria-labelledby="reportModalLabel" aria-hidden="true">
+<div class="modal fade"
+     id="reportModal"
+     tabindex="-1"
+     aria-labelledby="reportModalLabel"
+     aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
+
                 <h5 class="modal-title fw-bold" id="reportModalLabel">
                     Report a Lost or Found Item
                 </h5>
+
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                        aria-label="Close">
+                </button>
+
             </div>
 
             <form id="reportForm">
+
                 <div class="modal-body">
 
                     <div class="alert alert-info small">
@@ -315,65 +490,130 @@
                         Your report will not be saved or published.
                     </div>
 
+                    <!-- Report Type -->
                     <div class="mb-3">
+
                         <label for="itemType" class="form-label">
                             Report Type
                         </label>
-                        <select id="itemType" class="form-select" required>
+
+                        <select id="itemType"
+                                class="form-select"
+                                required>
+
                             <option value="">Select type</option>
                             <option value="Lost">I lost an item</option>
                             <option value="Found">I found an item</option>
+
                         </select>
+
                     </div>
 
+                    <!-- Item Name -->
                     <div class="mb-3">
+
                         <label for="itemName" class="form-label">
                             Item Name
                         </label>
+
                         <input type="text"
                                id="itemName"
                                class="form-control"
                                maxlength="80"
                                placeholder="e.g. Water bottle"
                                required>
+
                     </div>
 
+                    <!-- Location -->
                     <div class="mb-3">
+
                         <label for="itemLocation" class="form-label">
                             Location
                         </label>
+
                         <input type="text"
                                id="itemLocation"
                                class="form-control"
                                maxlength="100"
                                placeholder="e.g. Library"
                                required>
+
                     </div>
 
+                    <!-- Description -->
                     <div class="mb-3">
+
                         <label for="itemDescription" class="form-label">
                             Description
                         </label>
+
                         <textarea id="itemDescription"
                                   class="form-control"
                                   rows="3"
                                   maxlength="500"
-                                  placeholder="Describe the item without sensitive details."
+                                  placeholder="Describe the item."
                                   required></textarea>
+
+                    </div>
+
+                    <!-- Photo Upload -->
+                    <div class="mb-3">
+
+                        <label for="itemPhoto" class="form-label fw-semibold">
+                            Item Photo
+                            <span class="text-secondary">(optional)</span>
+                        </label>
+
+                        <div class="image-upload-box">
+
+                            <div class="mb-2 fs-2">📷</div>
+
+                            <p class="small text-secondary mb-3">
+                                Choose a photo of the lost or found item.
+                                JPG, PNG, or WEBP; maximum 5 MB.
+                            </p>
+
+                            <input type="file"
+                                   id="itemPhoto"
+                                   class="form-control"
+                                   accept="image/jpeg,image/png,image/webp">
+
+                            <img id="imagePreview"
+                                 class="image-preview"
+                                 alt="Selected item photo preview">
+
+                            <button type="button"
+                                    id="removePhotoBtn"
+                                    class="btn btn-outline-danger btn-sm mt-2 d-none">
+                                Remove Photo
+                            </button>
+
+                        </div>
+
+                        <div id="photoError"
+                             class="text-danger small mt-2 d-none"
+                             role="alert">
+                        </div>
+
                     </div>
 
                 </div>
 
                 <div class="modal-footer">
+
                     <button type="button"
                             class="btn btn-light"
                             data-bs-dismiss="modal">
                         Cancel
                     </button>
+
                     <button type="submit" class="btn btn-primary">
                         Preview Demo
                     </button>
+
                 </div>
+
             </form>
 
         </div>
@@ -383,6 +623,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    // Search and filter
     const searchInput = document.getElementById("searchInput");
     const typeFilter = document.getElementById("typeFilter");
     const itemColumns = document.querySelectorAll(".item-column");
@@ -396,7 +637,9 @@
         itemColumns.forEach(function (item) {
             const itemType = item.dataset.type;
             const searchTextForItem = item.dataset.search;
+
             const matchesSearch = searchTextForItem.includes(searchText);
+
             const matchesType =
                 selectedType === "all" || itemType === selectedType;
 
@@ -408,48 +651,156 @@
             }
         });
 
-        emptyState.style.display = visibleCount === 0 ? "block" : "none";
+        emptyState.style.display =
+            visibleCount === 0 ? "block" : "none";
     }
 
     searchInput.addEventListener("input", filterItems);
     typeFilter.addEventListener("change", filterItems);
 
+
+    // Demo claim message
     function showDemoMessage() {
-        document.getElementById("demoAlert").classList.remove("d-none");
-        document.getElementById("demoAlert").scrollIntoView({
+        const alertBox = document.getElementById("demoAlert");
+
+        alertBox.textContent =
+            "Demo mode: no report or claim has been submitted.";
+
+        alertBox.classList.remove("d-none");
+
+        alertBox.scrollIntoView({
             behavior: "smooth",
             block: "center"
         });
     }
 
-    document.getElementById("reportForm").addEventListener("submit", function (event) {
-        event.preventDefault();
 
-        const type = document.getElementById("itemType").value;
-        const name = document.getElementById("itemName").value.trim();
-        const location = document.getElementById("itemLocation").value.trim();
-        const description = document.getElementById("itemDescription").value.trim();
+    // Photo upload and preview
+    const itemPhoto = document.getElementById("itemPhoto");
+    const imagePreview = document.getElementById("imagePreview");
+    const removePhotoBtn = document.getElementById("removePhotoBtn");
+    const photoError = document.getElementById("photoError");
 
-        if (!type || !name || !location || !description) {
+    let selectedPhotoUrl = null;
+
+    function clearSelectedPhoto() {
+        itemPhoto.value = "";
+
+        imagePreview.removeAttribute("src");
+        imagePreview.style.display = "none";
+
+        removePhotoBtn.classList.add("d-none");
+
+        photoError.textContent = "";
+        photoError.classList.add("d-none");
+
+        if (selectedPhotoUrl) {
+            URL.revokeObjectURL(selectedPhotoUrl);
+            selectedPhotoUrl = null;
+        }
+    }
+
+    itemPhoto.addEventListener("change", function () {
+        photoError.textContent = "";
+        photoError.classList.add("d-none");
+
+        const file = this.files && this.files[0];
+
+        if (!file) {
+            clearSelectedPhoto();
             return;
         }
 
-        const modalElement = document.getElementById("reportModal");
-        bootstrap.Modal.getOrCreateInstance(modalElement).hide();
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
 
-        document.getElementById("demoAlert").textContent =
-            "Demo preview: " + type + " item — " + name +
-            ", location: " + location +
-            ". No report has been saved or published.";
+        const maxSize = 5 * 1024 * 1024;
 
-        document.getElementById("demoAlert").classList.remove("d-none");
-        document.getElementById("demoAlert").scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
+        if (!allowedTypes.includes(file.type)) {
+            clearSelectedPhoto();
 
-        this.reset();
+            photoError.textContent =
+                "Please select a JPG, PNG, or WEBP image.";
+
+            photoError.classList.remove("d-none");
+            return;
+        }
+
+        if (file.size > maxSize) {
+            clearSelectedPhoto();
+
+            photoError.textContent =
+                "Photo size must be 5 MB or less.";
+
+            photoError.classList.remove("d-none");
+            return;
+        }
+
+        if (selectedPhotoUrl) {
+            URL.revokeObjectURL(selectedPhotoUrl);
+        }
+
+        selectedPhotoUrl = URL.createObjectURL(file);
+
+        imagePreview.src = selectedPhotoUrl;
+        imagePreview.style.display = "block";
+
+        removePhotoBtn.classList.remove("d-none");
     });
+
+    removePhotoBtn.addEventListener("click", clearSelectedPhoto);
+
+
+    // Report form demo
+    document.getElementById("reportForm")
+        .addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const type =
+                document.getElementById("itemType").value;
+
+            const name =
+                document.getElementById("itemName").value.trim();
+
+            const location =
+                document.getElementById("itemLocation").value.trim();
+
+            const description =
+                document.getElementById("itemDescription").value.trim();
+
+            if (!type || !name || !location || !description) {
+                return;
+            }
+
+            const modalElement =
+                document.getElementById("reportModal");
+
+            bootstrap.Modal
+                .getOrCreateInstance(modalElement)
+                .hide();
+
+            const alertBox =
+                document.getElementById("demoAlert");
+
+            alertBox.textContent =
+                "Demo preview: " + type + " item — " + name +
+                ", location: " + location +
+                ". No report has been saved or published.";
+
+            alertBox.classList.remove("d-none");
+
+            alertBox.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            this.reset();
+            clearSelectedPhoto();
+        });
 </script>
 
 </body>
