@@ -1,0 +1,149 @@
+
+<!-- Item Details Modal Fragment -->
+<div th:fragment="itemDetailsModal">
+
+    <div class="modal fade" id="itemDetailsModal"
+         tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <div class="modal-content"
+                 style="border:0; border-radius:16px; overflow:hidden;">
+
+                <!-- Header -->
+                <div class="modal-header"
+                     style="background:#5F473B;color:white;">
+
+                    <h5 class="modal-title">
+                        <i class="bi bi-box-seam me-2"></i>
+                        Item Details
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body p-4">
+
+                    <div class="row g-4">
+
+                        <!-- Item Photo -->
+                        <div class="col-md-5">
+                            <img id="detailPhoto"
+                                 src="https://placehold.co/500x400?text=Item+Photo"
+                                 alt="Item Photo"
+                                 class="img-fluid w-100 rounded-3"
+                                 style="height:260px;object-fit:contain;">
+                        </div>
+
+                        <!-- Item Information -->
+                        <div class="col-md-7">
+
+                            <h4 class="fw-bold"
+                                id="detailItemName"
+                                style="color:#5F473B;">
+                                Item Name
+                            </h4>
+
+                            <span class="badge bg-warning text-dark"
+                                  id="detailType">
+                                LOST
+                            </span>
+
+                            <hr>
+
+                            <p><strong>Student ID:</strong>
+                                <span id="detailStudentId">--</span>
+                            </p>
+
+                            <p><strong>Category:</strong>
+                                <span id="detailCategory">--</span>
+                            </p>
+
+                            <p><strong>Location:</strong>
+                                <span id="detailLocation">--</span>
+                            </p>
+
+                            <p><strong>Status:</strong>
+                                <span id="detailStatus">--</span>
+                            </p>
+
+                            <p><strong>Description:</strong></p>
+
+                            <p class="text-muted"
+                               id="detailDescription">
+                                Item description
+                            </p>
+
+                            <p><strong>Reported Date:</strong>
+                                <span id="detailDate">--</span>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Close
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Data Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const modal = document.getElementById("itemDetailsModal");
+
+            if (!modal) return;
+
+            modal.addEventListener("show.bs.modal", function (event) {
+
+                const button = event.relatedTarget;
+
+                document.getElementById("detailItemName").textContent =
+                    button.dataset.name || "--";
+
+                document.getElementById("detailStudentId").textContent =
+                    button.dataset.student || "--";
+
+                document.getElementById("detailCategory").textContent =
+                    button.dataset.category || "--";
+
+                document.getElementById("detailLocation").textContent =
+                    button.dataset.location || "--";
+
+                document.getElementById("detailType").textContent =
+                    button.dataset.type || "--";
+
+                document.getElementById("detailStatus").textContent =
+                    button.dataset.status || "--";
+
+                document.getElementById("detailDescription").textContent =
+                    button.dataset.description || "--";
+
+                document.getElementById("detailDate").textContent =
+                    button.dataset.date || "--";
+
+                document.getElementById("detailPhoto").src =
+                    button.dataset.photo || "https://placehold.co/500x400?text=Item+Photo";
+
+            });
+        });
+    </script>
+
+</div>
