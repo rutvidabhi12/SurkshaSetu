@@ -173,7 +173,12 @@
     <div class="profile-header mb-4">
 
         <div class="profile-photo">
-        <img src="https://placehold.co/105x105/DBEAFE/1D4ED8?text=Photo"
+        <img th:if="${student.photo != null and !student.photo.isEmpty()}"
+            th:src="@{${student.photo}}"
+            alt="Student Profile Photo">
+
+        <img th:unless="${student.photo != null and !student.photo.isEmpty()}"
+            src="https://placehold.co/105x105/DBEAFE/1D4ED8?text=Photo"
             alt="Student Profile Photo">
         </div>
 
@@ -182,7 +187,10 @@
                 Student Portal
             </span>
 
-            <h2 class="profile-name">Student Name</h2>
+            <h2 class="profile-name"
+                th:text="${student.firstName + ' ' + (student.middleName != null ? student.middleName + ' ' : '') + student.lastName}">
+                Student Name
+            </h2>
 
             <p class="text-secondary mb-2">
                 Student Profile Information
@@ -212,7 +220,7 @@
                 <input type="text"
                        class="form-control"
                        id="firstName"
-                       value="Student"
+                       th:value="${student.firstName}"
                        disabled>
             </div>
 
@@ -223,7 +231,7 @@
                 <input type="text"
                        class="form-control"
                        id="middleName"
-                       value="Middle Name"
+                       th:value="${student.middleName}"
                        disabled>
             </div>
 
@@ -234,7 +242,7 @@
                 <input type="text"
                        class="form-control"
                        id="lastName"
-                       value="Last Name"
+                       th:value="${student.lastName}"
                        disabled>
             </div>
 
@@ -245,7 +253,7 @@
                 <input type="text"
                        class="form-control"
                        id="enrollmentNo"
-                       value="SS-DEMO-001"
+                       th:value="${student.enrollmentNo}"
                        disabled>
             </div> 
             
@@ -256,7 +264,7 @@
                 <input type="text"
                        class="form-control"
                        id="gender"
-                       value="Not specified"
+                       th:value="${student.gender}"
                        disabled>
             </div>
 
@@ -280,7 +288,7 @@
                 <input type="text"
                        class="form-control"
                        id="mobile"
-                       value="Not available"
+                       th:value="${student.mobile}"
                        disabled>
             </div>
 
@@ -291,7 +299,7 @@
                 <input type="text"
                        class="form-control"
                        id="email"
-                       value="student@example.com"
+                       th:value="${student.email}"
                        disabled>
             </div>
 
@@ -315,7 +323,7 @@
                 <input type="text"
                        class="form-control"
                        id="course"
-                       value="MCA"
+                       th:value="${student.course != null ? student.course.courseName : ''}"
                        disabled>
             </div>
 
@@ -326,7 +334,7 @@
                 <input type="text"
                        class="form-control"
                        id="department"
-                       value="Computer Applications"
+                       th:value="${student.department != null ? student.department.departmentName : ''}"
                        disabled>
             </div>
 
@@ -337,7 +345,7 @@
                 <input type="text"
                        class="form-control"
                        id="semester"
-                       value="Semester 2"
+                       th:value="${student.semester != null ? student.semester.semesterName : ''}"
                        disabled>
             </div>
 
@@ -345,12 +353,6 @@
     </div>
 
     <!-- Information Notice -->
-    <div class="info-note">
-        <strong>Note:</strong>
-        This profile currently displays sample information for UI testing.
-        All fields are read-only. Database integration will be implemented
-        later. Password information is not displayed on this page.
-    </div>
 
     <div class="profile-footer">
         SurakshaSetu — Smart Campus Guardian

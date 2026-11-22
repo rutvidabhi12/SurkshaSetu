@@ -4,14 +4,33 @@ package com.surakshasetu.admin.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import jakarta.servlet.http.HttpSession;
+import com.surakshasetu.admin.entity.Student;
+import com.surakshasetu.admin.repository.StudentRepository;
+import org.springframework.ui.Model;
 
 @Controller
 public class StudentPortalController {
+
+    private final StudentRepository studentRepository;
+
+    public StudentPortalController(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     // Student Login
     @GetMapping("/student-portal/login")
     public String studentLogin() {
         return "student-portal/login";
+    }
+
+    // Student Logout
+    @GetMapping("/student-portal/logout")
+    public String studentLogout(HttpSession session) {
+
+        session.invalidate();
+
+        return "redirect:/student-portal/login";
     }
 
     // Student Dashboard
@@ -84,7 +103,24 @@ public class StudentPortalController {
     }
 
     @GetMapping("/student-portal/profile")
-    public String studentProfile() {
+    public String studentProfile(HttpSession session, Model model) {
+
+        Long studentId = (Long) session.getAttribute("STUDENT_ID");
+
+        if (studentId == null) {
+            return "redirect:/student-portal/login";
+        }
+
+        Student student = studentRepository.findById(studentId)
+                .orElse(null);
+
+        if (student == null) {
+            session.invalidate();
+            return "redirect:/student-portal/login";
+        }
+
+        model.addAttribute("student", student);
+
         return "student-portal/profile";
     }
 

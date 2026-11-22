@@ -1,0 +1,7 @@
+com\surakshasetu\faculty\repository\FacultyRepository.class
+com\surakshasetu\faculty\service\FacultyService.class
+com\surakshasetu\faculty\FacultyServiceApplication.class
+com\surakshasetu\faculty\service\impl\FacultyServiceImpl.class
+com\surakshasetu\faculty\config\WebConfig.class
+com\surakshasetu\faculty\controller\FacultyApiController.class
+com\surakshasetu\faculty\entity\Faculty.class
