@@ -306,6 +306,12 @@
 
             <form th:action="@{/faculty-portal/login}" method="post">
 
+                <div th:if="${loginError}"
+                    class="alert alert-danger"
+                    role="alert"
+                    th:text="${loginError}">
+                </div>
+                
                 <div class="mb-4">
                     <label for="email" class="form-label">
                         Faculty Email
@@ -318,7 +324,7 @@
 
                         <input type="email"
                                id="email"
-                               name="username"
+                               name="email"
                                class="form-control"
                                placeholder="Enter your faculty email"
                                autocomplete="username"

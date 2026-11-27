@@ -194,7 +194,7 @@
                 <i class="bi bi-person-fill"></i>
             </div>
 
-            <h4>Faculty Name</h4>
+            <h4 th:text="${facultyName}">Faculty Name</h4>
             <p>Faculty Member</p>
         </div>
 
@@ -210,7 +210,7 @@
                     <div class="info-label">
                         <i class="bi bi-person"></i> Full Name
                     </div>
-                    <div class="info-value">Faculty Name</div>
+                    <div class="info-value" th:text="${facultyName}">Faculty Name</div>
                 </div>
             </div>
 
@@ -219,7 +219,7 @@
                     <div class="info-label">
                         <i class="bi bi-card-text"></i> Faculty ID
                     </div>
-                    <div class="info-value">FAC-1001</div>
+                    <div class="info-value" th:text="${facultyCode}">FAC-1001</div>
                 </div>
             </div>
 
@@ -228,7 +228,7 @@
                     <div class="info-label">
                         <i class="bi bi-envelope"></i> Email Address
                     </div>
-                    <div class="info-value">faculty@example.com</div>
+                    <div class="info-value" th:text="${facultyEmail}">faculty@example.com</div>
                 </div>
             </div>
 
@@ -237,7 +237,7 @@
                     <div class="info-label">
                         <i class="bi bi-telephone"></i> Contact Number
                     </div>
-                    <div class="info-value">+91 00000 00000</div>
+                    <div class="info-value" th:text="${facultyMobile}">+91 00000 00000</div>
                 </div>
             </div>
 
@@ -246,7 +246,7 @@
                     <div class="info-label">
                         <i class="bi bi-building"></i> Department
                     </div>
-                    <div class="info-value">Computer Science</div>
+                    <div class="info-value" th:text="${facultyDepartment}">Computer Science</div>
                 </div>
             </div>
 
@@ -255,16 +255,10 @@
                     <div class="info-label">
                         <i class="bi bi-briefcase"></i> Designation
                     </div>
-                    <div class="info-value">Assistant Professor</div>
+                    <div class="info-value" th:text="${facultyDesignation}">Assistant Professor</div>
                 </div>
             </div>
 
-        </div>
-
-        <div class="alert alert-info mt-4 mb-0">
-            <i class="bi bi-info-circle-fill"></i>
-            This profile currently displays demo information.
-            Real faculty details can be connected to the database later.
         </div>
 
     </section>

@@ -564,71 +564,41 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
+<script th:inline="javascript">
 
-/*
- * DEMO DATA ONLY
- *
- * These sample records demonstrate the UI.
- * They are not actual student submissions.
- * Later, replace this array with data returned by the backend API.
- */
+const rawItems = /*[[${lostFoundItems}]]*/ [];
 
-const studentReports = [
+const studentReports = rawItems.map(item => {
 
-    {
-        id: "LF-1001",
-        name: "Black Wallet",
-        type: "Lost",
-        student: "Rahul Patel",
-        studentId: "STU-1001",
-        location: "College Library",
-        date: "2026-10-27",
-        description: "Black wallet containing an ID card.",
-        photo: "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80",
-        claimed: false
-    },
+    const status = String(item.status || "ACTIVE").toUpperCase();
+    const type = String(item.type || "").toUpperCase();
 
-    {
-        id: "LF-1002",
-        name: "Blue Water Bottle",
-        type: "Found",
-        student: "Priya Shah",
-        studentId: "STU-1002",
-        location: "Block A, Room 204",
-        date: "2026-10-26",
-        description: "Blue water bottle found after a lecture.",
-        photo: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80",
-        claimed: false
-    },
+    return {
+        id: String(item.id ?? ""),
+        name: item.itemName || "Unnamed Item",
 
-    {
-        id: "LF-1003",
-        name: "Student ID Card",
-        type: "Lost",
-        student: "Amit Desai",
-        studentId: "STU-1003",
-        location: "Main Corridor",
-        date: "2026-10-25",
-        description: "Student ID card reported missing.",
-        photo: "https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=800&q=80",
-        claimed: true
-    },
+        type: type === "LOST" ? "Lost" : "Found",
 
-    {
-        id: "LF-1004",
-        name: "Black Backpack",
-        type: "Found",
-        student: "Neha Joshi",
-        studentId: "STU-1004",
-        location: "College Canteen",
-        date: "2026-10-24",
-        description: "Backpack found on a canteen chair.",
-        photo: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
-        claimed: false
-    }
+        student: item.studentName || "Student",
+        studentId: String(item.studentId ?? ""),
 
-];
+        location: item.location || "Not specified",
+
+        date: item.createdAt
+            ? String(item.createdAt).substring(0, 10)
+            : "Not available",
+
+        description: item.description || "No description available.",
+
+        photo: item.photoUrl || "",
+
+        claimed: status === "CLAIMED",
+
+        status: status,
+        category: item.category || "Not specified"
+    };
+
+});
 
 
 /* HTML escaping */
@@ -660,25 +630,25 @@ const searchInput = document.getElementById("searchInput");
 const filterType = document.getElementById("filterType");
 
 
-/* Statistics */
+
 
 function updateCounts() {
 
     document.getElementById("lostCount").textContent =
         studentReports.filter(item =>
-            item.type === "Lost" && !item.claimed
+            item.type === "Lost" && item.status === "ACTIVE"
         ).length;
 
     document.getElementById("foundCount").textContent =
         studentReports.filter(item =>
-            item.type === "Found" && !item.claimed
+            item.type === "Found" && item.status === "ACTIVE"
         ).length;
 
     document.getElementById("claimedCount").textContent =
-        studentReports.filter(item => item.claimed).length;
-
+        studentReports.filter(item =>
+            item.status === "CLAIMED"
+        ).length;
 }
-
 
 /* Render item cards */
 
@@ -692,15 +662,15 @@ function renderItems() {
         let matchesFilter = true;
 
         if (filter === "Lost") {
-            matchesFilter = item.type === "Lost" && !item.claimed;
+            matchesFilter = item.type === "Lost";
         }
 
         if (filter === "Found") {
-            matchesFilter = item.type === "Found" && !item.claimed;
+            matchesFilter = item.type === "Found";
         }
 
         if (filter === "Claimed") {
-            matchesFilter = item.claimed;
+            matchesFilter = item.status === "CLAIMED";
         }
 
         const searchableText = [
@@ -740,15 +710,13 @@ function renderItems() {
 
     filteredItems.forEach(item => {
 
-        const badgeClass = item.claimed
-            ? "badge-claimed"
-            : item.type === "Lost"
-                ? "badge-lost"
-                : "badge-found";
+        const badgeClass = item.status === "ACTIVE"
+            ? (item.type === "Lost" ? "badge-lost" : "badge-found")
+            : "badge-claimed";
 
-        const statusText = item.claimed
-            ? "Claimed"
-            : item.type;
+        const statusText = item.status === "ACTIVE"
+            ? item.type
+            : item.status.charAt(0) + item.status.slice(1).toLowerCase();
 
         const icon = item.type === "Lost"
             ? "bi-question-circle"
@@ -849,6 +817,7 @@ function renderItems() {
 
 /* Show item details */
 
+
 function showItemDetails(id) {
 
     const item = studentReports.find(report => report.id === id);
@@ -880,10 +849,8 @@ function showItemDetails(id) {
             </div>
           `;
 
-
     document.getElementById("itemDetailsTitle").textContent =
         item.name;
-
 
     modalBody.innerHTML = `
 
@@ -891,7 +858,7 @@ function showItemDetails(id) {
 
         <div class="row g-3">
 
-            <div class="col-12 col-sm-6">
+            <div class="col-md-6">
                 <div class="detail-row">
                     <div class="detail-label">Report ID</div>
                     <div class="detail-value">
@@ -900,7 +867,7 @@ function showItemDetails(id) {
                 </div>
             </div>
 
-            <div class="col-12 col-sm-6">
+            <div class="col-md-6">
                 <div class="detail-row">
                     <div class="detail-label">Report Type</div>
                     <div class="detail-value">
@@ -909,7 +876,7 @@ function showItemDetails(id) {
                 </div>
             </div>
 
-            <div class="col-12 col-sm-6">
+            <div class="col-md-6">
                 <div class="detail-row">
                     <div class="detail-label">Student Name</div>
                     <div class="detail-value">
@@ -918,7 +885,7 @@ function showItemDetails(id) {
                 </div>
             </div>
 
-            <div class="col-12 col-sm-6">
+            <div class="col-md-6">
                 <div class="detail-row">
                     <div class="detail-label">Student ID</div>
                     <div class="detail-value">
@@ -927,7 +894,16 @@ function showItemDetails(id) {
                 </div>
             </div>
 
-            <div class="col-12 col-sm-6">
+            <div class="col-md-6">
+                <div class="detail-row">
+                    <div class="detail-label">Category</div>
+                    <div class="detail-value">
+                        ${escapeHTML(item.category)}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
                 <div class="detail-row">
                     <div class="detail-label">Location</div>
                     <div class="detail-value">
@@ -936,7 +912,7 @@ function showItemDetails(id) {
                 </div>
             </div>
 
-            <div class="col-12 col-sm-6">
+            <div class="col-md-6">
                 <div class="detail-row">
                     <div class="detail-label">Date</div>
                     <div class="detail-value">
@@ -945,20 +921,20 @@ function showItemDetails(id) {
                 </div>
             </div>
 
-            <div class="col-12">
+            <div class="col-md-6">
                 <div class="detail-row">
-                    <div class="detail-label">Description</div>
+                    <div class="detail-label">Current Status</div>
                     <div class="detail-value">
-                        ${escapeHTML(item.description || "No description provided.")}
+                        ${escapeHTML(item.status)}
                     </div>
                 </div>
             </div>
 
             <div class="col-12">
                 <div class="detail-row">
-                    <div class="detail-label">Claim Status</div>
+                    <div class="detail-label">Description</div>
                     <div class="detail-value">
-                        ${item.claimed ? "Claimed" : "Not Claimed"}
+                        ${escapeHTML(item.description)}
                     </div>
                 </div>
             </div>
@@ -967,12 +943,12 @@ function showItemDetails(id) {
 
     `;
 
-
     bootstrap.Modal.getOrCreateInstance(
         document.getElementById("itemDetailsModal")
     ).show();
 
 }
+
 
 
 /* Search and filter */
