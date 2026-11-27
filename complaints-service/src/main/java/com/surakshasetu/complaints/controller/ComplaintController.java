@@ -6,6 +6,7 @@ import com.surakshasetu.complaints.enums.ComplaintStatus;
 import com.surakshasetu.complaints.service.ComplaintService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import com.surakshasetu.complaints.entity.ComplaintHistory;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -146,5 +147,12 @@ public Page<Complaint> searchComplaints(
     );
 }
 
+    // Get complaint status history
+    @GetMapping("/{id}/history")
+    public List<ComplaintHistory> getComplaintHistory(
+            @PathVariable Long id) {
+
+        return complaintService.getComplaintHistory(id);
+    }
 
 }
