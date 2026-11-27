@@ -26,21 +26,70 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.surakshasetu.faculty.entity.Faculty;
 import com.surakshasetu.faculty.service.FacultyService;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
 @RequestMapping("/api/faculty")
 public class FacultyApiController {
 
     private final FacultyService facultyService;
+        private final PasswordEncoder passwordEncoder;
 
-
-    public FacultyApiController(
-            FacultyService facultyService) {
+        public FacultyApiController(
+                FacultyService facultyService,
+                PasswordEncoder passwordEncoder) {
 
         this.facultyService = facultyService;
-    }
+        this.passwordEncoder = passwordEncoder;
+        }
 
 
+        // =====================================================
+        // FACULTY LOGIN
+        // =====================================================
+
+        @PostMapping("/login")
+        public ResponseEntity<?> facultyLogin(
+                @RequestBody Map<String, String> loginData) {
+
+        String email = loginData.get("email");
+        String password = loginData.get("password");
+
+        if (email == null || email.isBlank()
+                || password == null || password.isBlank()) {
+
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message", "Email and password are required"));
+        }
+
+        Optional<Faculty> optionalFaculty =
+                facultyService.getFacultyByEmail(email);
+
+        if (optionalFaculty.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("message", "Invalid email or password"));
+        }
+
+        Faculty faculty = optionalFaculty.get();
+
+        if (!faculty.isActive()
+                || faculty.getPassword() == null
+                || !passwordEncoder.matches(password, faculty.getPassword())) {
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("message", "Invalid email or password"));
+        }
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "message", "Login successful",
+                        "faculty", faculty
+                )
+        );
+        }
     // =====================================================
     // GET ALL FACULTY
     // =====================================================

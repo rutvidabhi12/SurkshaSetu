@@ -8,17 +8,21 @@ import org.springframework.stereotype.Service;
 import com.surakshasetu.faculty.entity.Faculty;
 import com.surakshasetu.faculty.repository.FacultyRepository;
 import com.surakshasetu.faculty.service.FacultyService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
     private final FacultyRepository facultyRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     public FacultyServiceImpl(
-            FacultyRepository facultyRepository) {
+            FacultyRepository facultyRepository,
+            PasswordEncoder passwordEncoder) {
 
         this.facultyRepository = facultyRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -75,13 +79,28 @@ public class FacultyServiceImpl implements FacultyService {
     // SAVE FACULTY
     // =====================================================
 
-    @Override
-    public Faculty saveFaculty(
-            Faculty faculty) {
+        @Override
+        public Faculty saveFaculty(Faculty faculty) {
+
+        // New Faculty Creation
+        if (faculty.getId() == null) {
+
+                if (faculty.getPassword() == null ||
+                        faculty.getPassword().isBlank()) {
+
+                faculty.setPassword(
+                        passwordEncoder.encode("Faculty@2026")
+                );
+
+                } else {
+                faculty.setPassword(
+                        passwordEncoder.encode(faculty.getPassword())
+                );
+                }
+        }
 
         return facultyRepository.save(faculty);
-    }
-
+        }
 
     // =====================================================
     // UPDATE FACULTY

@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "faculty")
@@ -48,6 +50,9 @@ public class Faculty {
     @Column(name = "active", nullable = false)
     private boolean active = true;
 
+    @JsonProperty(access = Access.WRITE_ONLY)
+    @Column(name = "password")
+    private String password;
 
     // Default Constructor
     public Faculty() {
@@ -150,5 +155,13 @@ public class Faculty {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getPassword() {
+    return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
