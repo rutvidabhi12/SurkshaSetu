@@ -136,8 +136,8 @@
                     <div class="alert alert-warning border-0 rounded-3 mt-4">
                         <strong>Before submitting</strong>
                         <p class="mb-0 mt-1">
-                            Please ensure the details are accurate. This is a UI demo;
-                            the complaint will not yet be saved to the database.
+                            Please ensure the details are accurate. Your complaint will be submitted to the concerned department
+                                    and assigned to its designated faculty member.
                         </p>
                     </div>
 
@@ -168,38 +168,115 @@
 </div>
 
 <script>
-    function showValue(elementId, storageKey) {
-        const value = sessionStorage.getItem(storageKey);
-        document.getElementById(elementId).textContent =
-            value && value.trim() ? value : "Not provided";
+function showValue(elementId, storageKey) {
+    const value = sessionStorage.getItem(storageKey);
+
+    document.getElementById(elementId).textContent =
+        value && value.trim() ? value : "Not provided";
+}
+
+showValue("reviewDepartment", "complaintDepartment");
+showValue("reviewCategory", "complaintCategory");
+showValue("reviewPriority", "complaintPriority");
+showValue("reviewLocation", "complaintLocation");
+showValue("reviewTitle", "complaintTitle");
+showValue("reviewDescription", "complaintDescription");
+
+document.getElementById("submitComplaint").addEventListener("click", async function () {
+
+    const button = this;
+    const message = document.getElementById("reviewMessage");
+
+    const department = sessionStorage.getItem("complaintDepartment");
+    const category = sessionStorage.getItem("complaintCategory");
+    const priority = sessionStorage.getItem("complaintPriority");
+    const title = sessionStorage.getItem("complaintTitle");
+    const description = sessionStorage.getItem("complaintDescription");
+
+    if (!department || !category || !priority || !title || !description) {
+        message.innerHTML =
+            '<div class="alert alert-danger">Complaint details are missing. Please complete the previous steps.</div>';
+        return;
     }
 
-    showValue("reviewDepartment", "complaintDepartment");
-    showValue("reviewCategory", "complaintCategory");
-    showValue("reviewPriority", "complaintPriority");
-    showValue("reviewLocation", "complaintLocation");
-    showValue("reviewTitle", "complaintTitle");
-    showValue("reviewDescription", "complaintDescription");
+    button.disabled = true;
+    button.textContent = "Submitting...";
+    message.innerHTML = "";
 
-    document.getElementById("submitComplaint").addEventListener("click", function () {
-        const department = sessionStorage.getItem("complaintDepartment");
-        const category = sessionStorage.getItem("complaintCategory");
-        const priority = sessionStorage.getItem("complaintPriority");
-        const title = sessionStorage.getItem("complaintTitle");
-        const description = sessionStorage.getItem("complaintDescription");
+    try {
+        const response = await fetch("/student-portal/new-complaint/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "same-origin",
+            body: JSON.stringify({
+                department: department,
+                category: category,
+                priority: priority,
+                title: title,
+                description: description
+            })
+        });
 
-        if (!department || !category || !priority || !title || !description) {
-            document.getElementById("reviewMessage").innerHTML =
-                '<div class="alert alert-danger">Complaint details are missing. Please complete the previous steps first.</div>';
-            return;
+        if (!response.ok) {
+            let errorMessage = "Unable to submit complaint.";
+
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.detail || errorData.message || errorMessage;
+            } catch (e) {
+                errorMessage = response.status === 403
+                    ? "Request blocked. Please check CSRF security."
+                    : errorMessage;
+            }
+
+            throw new Error(errorMessage);
         }
 
-        // UI demo only: no database submission occurs.
-        const demoId = "SS-DEMO-" + Date.now().toString().slice(-6);
-        sessionStorage.setItem("demoComplaintId", demoId);
+        const responseText = await response.text();
 
-        window.location.href = "/student-portal/complaint-success";
-    });
+console.log("Response Status:", response.status);
+console.log("Response URL:", response.url);
+console.log("Response:", responseText);
+
+let result;
+
+try {
+    result = JSON.parse(responseText);
+} catch (error) {
+    throw new Error(
+        "Server returned HTML instead of JSON. Check Console for details."
+    );
+}
+
+if (!response.ok) {
+    throw new Error(result.message || result.detail || "Unable to submit complaint.");
+}
+
+        sessionStorage.setItem("submittedComplaintId", result.id);
+
+        sessionStorage.removeItem("complaintDepartment");
+        sessionStorage.removeItem("complaintCategory");
+        sessionStorage.removeItem("complaintPriority");
+        sessionStorage.removeItem("complaintTitle");
+        sessionStorage.removeItem("complaintDescription");
+        sessionStorage.removeItem("complaintLocation");
+
+        window.location.href =
+            "/student-portal/complaint-success?id=" + result.id;
+
+    } catch (error) {
+
+        message.innerHTML =
+            '<div class="alert alert-danger">' +
+            error.message +
+            '</div>';
+
+        button.disabled = false;
+        button.textContent = "Submit Complaint →";
+    }
+});
 </script>
 
 </body>

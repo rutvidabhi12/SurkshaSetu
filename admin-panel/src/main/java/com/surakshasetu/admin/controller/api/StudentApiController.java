@@ -84,6 +84,9 @@ public class StudentApiController {
         session.setAttribute("STUDENT_NAME", studentName);
         session.setAttribute("STUDENT_ENROLLMENT", student.getEnrollmentNo());
 
+        System.out.println("Student Session Created: " + session.getId()
+        + " | Student ID: " + session.getAttribute("STUDENT_ID"));
+
         return ResponseEntity.ok(
                 new StudentLoginResponse(
                         true,

@@ -16,13 +16,15 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "department_name", nullable = false, unique = true)
     private String departmentName;
 
     @Column(nullable = false, unique = true)
     private String departmentCode;
 
-    @Column(nullable = false)
+    @Column(name = "active", nullable = false)
     private boolean active;
 
+    @Column(name = "fixed_faculty_id")
+    private Long fixedFacultyId;
 }

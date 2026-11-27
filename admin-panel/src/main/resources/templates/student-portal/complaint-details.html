@@ -140,60 +140,74 @@
                                 align-items-start gap-3 mb-4">
                         <div>
                             <div class="detail-label">Complaint Reference</div>
-                            <h2 class="h4 fw-bold mb-1" id="complaintId">SS-001</h2>
+                            <h2 class="h4 fw-bold mb-1"
+                                th:text="${'SS-' + complaint['id']}">SS-001</h2>
+
                             <div class="text-secondary small">
-                                Submitted on <span id="complaintDate">20 Oct 2026</span>
+                                Submitted on
+                                <span th:text="${complaint['createdAt']}">Date</span>
                             </div>
                         </div>
 
-                        <span class="status-pill" id="complaintStatus">Pending</span>
-                    </div>
+                        <span class="status-pill"
+                            th:text="${complaint['status']}">PENDING</span>
 
-                    <hr>
-
-                    <h3 class="h5 fw-bold mb-4" id="complaintTitle">
-                        Classroom Fan Not Working
-                    </h3>
+                        <h3 class="h5 fw-bold mb-4"
+                            th:text="${complaint['title']}">
+                            Complaint Title
+                        </h3>
 
                     <div class="row g-4">
 
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="detail-label">Department</div>
-                            <div class="detail-value" id="department">Facility</div>
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="detail-label">Department ID</div>
+                                <div class="detail-value"
+                                    th:text="${complaint['departmentId'] != null ? complaint['departmentId'] : 'Not Assigned'}">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="detail-label">Category</div>
+                                <div class="detail-value"
+                                    th:text="${complaint['category']}"></div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="detail-label">Priority</div>
+                                <div class="detail-value"
+                                    th:text="${complaint['priority']}"></div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="detail-label">Assigned Faculty ID</div>
+                                <div class="detail-value"
+                                    th:text="${complaint['assignedFacultyId'] != null ? complaint['assignedFacultyId'] : 'Not Assigned'}">
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="detail-label">Description</div>
+                                <p class="detail-value mb-0"
+                                style="white-space: pre-wrap;"
+                                th:text="${complaint['description']}">
+                                </p>
+                            </div>
+
+                            <div class="col-12"
+                                th:if="${complaint['resolutionNote'] != null}">
+                                <div class="detail-label">Resolution Note</div>
+                                <p class="detail-value"
+                                th:text="${complaint['resolutionNote']}"></p>
+                            </div>
+
+                            <div class="col-12"
+                                th:if="${complaint['rejectionReason'] != null}">
+                                <div class="detail-label">Rejection Reason</div>
+                                <p class="detail-value"
+                                th:text="${complaint['rejectionReason']}"></p>
+                            </div>
+
                         </div>
-
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="detail-label">Category</div>
-                            <div class="detail-value" id="category">Facility</div>
-                        </div>
-
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="detail-label">Priority</div>
-                            <div class="detail-value" id="priority">Medium</div>
-                        </div>
-
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="detail-label">Campus Location</div>
-                            <div class="detail-value" id="location">Block A, Room 204</div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="detail-label">Description</div>
-                            <p class="detail-value mb-0" id="description">
-                                The classroom fan is not working properly.
-                                Please arrange maintenance.
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <div class="alert alert-info border-0 rounded-3 mt-4 mb-0">
-                        <strong>Demo information</strong>
-                        <p class="mb-0 mt-1">
-                            This page currently displays sample complaint information.
-                            Live complaint data will be connected later.
-                        </p>
-                    </div>
 
                 </div>
             </div>
@@ -206,36 +220,57 @@
                             <h3 class="h5 fw-bold mb-4">Status Overview</h3>
 
                             <div class="timeline">
+
                                 <div class="timeline-item">
                                     <span class="timeline-dot"></span>
                                     <strong>Complaint Submitted</strong>
                                     <p class="text-secondary small mb-0">
-                                        The complaint was registered in the demo.
+                                        Submitted on
+                                        <span th:text="${complaint['createdAt']}"></span>
                                     </p>
                                 </div>
 
                                 <div class="timeline-item">
                                     <span class="timeline-dot"></span>
-                                    <strong>Department Review</strong>
-                                    <p class="text-secondary small mb-0">
-                                        The campus team will review the issue.
+                                    <strong>Current Status</strong>
+
+                                    <p class="text-secondary small mb-0"
+                                    th:switch="${complaint['status']}">
+
+                                        <span th:case="'PENDING'">
+                                            Your complaint is waiting for review.
+                                        </span>
+
+                                        <span th:case="'ASSIGNED'">
+                                            Your complaint has been assigned to the concerned faculty.
+                                        </span>
+
+                                        <span th:case="'IN_PROGRESS'">
+                                            The department is working on your complaint.
+                                        </span>
+
+                                        <span th:case="'RESOLVED'">
+                                            Your complaint has been resolved.
+                                        </span>
+
+                                        <span th:case="'REJECTED'">
+                                            Your complaint has been rejected.
+                                        </span>
+
+                                        <span th:case="*">
+                                            Status information is unavailable.
+                                        </span>
                                     </p>
                                 </div>
 
-                                <div class="timeline-item">
-                                    <span class="timeline-dot"></span>
-                                    <strong>Resolution</strong>
-                                    <p class="text-secondary small mb-0">
-                                        Resolution updates will appear here when implemented.
-                                    </p>
-                                </div>
                             </div>
 
-                            <a id="historyLink"
-                               href="/student-portal/complaints/SS-001/history"
-                               class="btn btn-outline-primary mt-4">
+                            
+                            <a th:href="@{/student-portal/complaints/{id}/history(id=${complaint['id']})}"
+                            class="btn btn-outline-primary mt-4">
                                 View Full History →
                             </a>
+
                         </div>
                     </div>
                 </div>
@@ -279,63 +314,6 @@
         </section>
     </main>
 </div>
-
-<script>
-    const params = new URLSearchParams(window.location.search);
-    const pathParts = window.location.pathname.split("/");
-    const complaintId = pathParts[pathParts.length - 1] || "SS-001";
-
-    const demoComplaints = {
-        "SS-001": {
-            title: "Classroom Fan Not Working",
-            date: "20 Oct 2026",
-            status: "Pending",
-            department: "Facility",
-            category: "Facility",
-            priority: "Medium",
-            location: "Block A, Room 204",
-            description: "The classroom fan is not working properly. Please arrange maintenance."
-        },
-        "SS-002": {
-            title: "Library Access Issue",
-            date: "18 Oct 2026",
-            status: "In Progress",
-            department: "Academic",
-            category: "Academic",
-            priority: "High",
-            location: "Central Library",
-            description: "Unable to access the library service. Please investigate this issue."
-        },
-        "SS-003": {
-            title: "Water Cooler Maintenance",
-            date: "15 Oct 2026",
-            status: "Resolved",
-            department: "Facility",
-            category: "Facility",
-            priority: "Low",
-            location: "Block B",
-            description: "The water cooler required maintenance. This is a sample resolved record."
-        }
-    };
-
-    const complaint = demoComplaints[complaintId] || demoComplaints["SS-001"];
-
-    document.getElementById("complaintId").textContent = complaintId;
-    document.getElementById("complaintDate").textContent = complaint.date;
-    document.getElementById("complaintStatus").textContent = complaint.status;
-    document.getElementById("complaintTitle").textContent = complaint.title;
-    document.getElementById("department").textContent = complaint.department;
-    document.getElementById("category").textContent = complaint.category;
-    document.getElementById("priority").textContent = complaint.priority;
-    document.getElementById("location").textContent = complaint.location;
-    document.getElementById("description").textContent = complaint.description;
-
-    document.getElementById("historyLink").href =
-        "/student-portal/complaints/" + encodeURIComponent(complaintId) + "/history";
-
-    document.getElementById("feedbackLink").href =
-        "/student-portal/complaints/" + encodeURIComponent(complaintId) + "/feedback";
-</script>
 
 </body>
 </html>

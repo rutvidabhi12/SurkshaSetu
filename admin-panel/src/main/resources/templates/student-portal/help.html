@@ -1,13 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Help & Support | SurakshaSetu</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
     <link rel="stylesheet" th:href="@{/css/student-portal.css}">
 
@@ -20,7 +22,7 @@
 
         .help-container {
             max-width: 1050px;
-            margin: 35px auto;
+            margin: 25px auto;
             padding: 16px;
         }
 
@@ -107,6 +109,16 @@
             border-color: #bfdbfe;
         }
 
+        .accordion-body a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .accordion-body a:hover {
+            text-decoration: underline;
+        }
+
         .notice {
             background: #fff7ed;
             color: #9a3412;
@@ -133,291 +145,430 @@
     </style>
 </head>
 
-<body>
+<body class="student-dashboard-page">
 
-<div class="container help-container">
+<div class="student-layout">
 
-    <!-- Back to Dashboard -->
-    <a th:href="@{/student-portal/dashboard}"
-       class="btn btn-outline-secondary mb-3">
-        &larr; Back to Dashboard
-    </a>
+    <!-- SIDEBAR -->
+    <aside class="student-sidebar">
 
-    <!-- Hero Section -->
-    <div class="hero-card mb-4">
-        <div class="hero-icon">🎧</div>
+        <a class="student-brand" th:href="@{/student-portal/dashboard}">
+            <span class="student-brand-icon">SS</span>
+            <span>
+                <strong>SurakshaSetu</strong>
+                <small>STUDENT PORTAL</small>
+            </span>
+        </a>
 
-        <h2 class="fw-bold">Help & Support</h2>
+        <div class="sidebar-label">MENU</div>
 
-        <p class="mb-0">
-            Need assistance with SurakshaSetu?
-            Find answers to common questions and learn how to get help.
-        </p>
-    </div>
+        <nav class="student-nav">
 
-    <!-- Support Categories -->
-    <div class="row g-3 mb-4">
+            <a th:href="@{/student-portal/dashboard}">
+                <span>▦</span> Dashboard
+            </a>
 
-        <div class="col-md-4">
-            <div class="support-card">
-                <div class="support-icon">📋</div>
+            <a th:href="@{/student-portal/complaints}">
+                <span>▤</span> My Complaints
+            </a>
 
-                <h5 class="fw-bold">Complaints</h5>
+            <a th:href="@{/student-portal/new-complaint}">
+                <span>＋</span> New Complaint
+            </a>
 
-                <p class="text-secondary small">
-                    Learn how to submit a complaint and check its status.
-                </p>
+            <a th:href="@{/student-portal/sos}">
+                <span>⚠</span> SOS Emergency
+            </a>
 
-                <a th:href="@{/student-portal/complaints}"
-                   class="btn btn-outline-primary btn-sm">
-                    View Complaints
+            <a th:href="@{/student-portal/lost-found}">
+                <span>⌕</span> Lost &amp; Found
+            </a>
+
+            <a th:href="@{/student-portal/profile}">
+                <span>♙</span> My Profile
+            </a>
+
+            <a class="active" th:href="@{/student-portal/help}">
+                <span>?</span> Help &amp; Support
+            </a>
+
+        </nav>
+
+        <div class="sidebar-safety-card">
+            <span class="safety-shield">✓</span>
+            <strong>Your safety matters</strong>
+            <p>Stay alert. Stay connected. Keep your campus safe.</p>
+        </div>
+
+        <a class="student-logout" th:href="@{/student-portal/logout}">
+            <span>↪</span> Logout
+        </a>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="student-main">
+
+        <!-- TOPBAR -->
+        <header class="student-topbar">
+
+            <div class="mobile-brand">
+                <span class="student-brand-icon">SS</span>
+                <strong>SurakshaSetu</strong>
+            </div>
+
+            <div class="topbar-context">
+                <span class="status-dot"></span>
+                Campus Student Portal
+            </div>
+
+            <div class="topbar-user">
+                <div class="user-avatar">S</div>
+                <div>
+                    <strong>Student</strong>
+                    <small>Student Account</small>
+                </div>
+            </div>
+
+        </header>
+
+        <!-- HELP CONTENT -->
+        <section class="student-content">
+
+            <div class="container help-container">
+
+                <!-- BACK TO DASHBOARD -->
+                <a th:href="@{/student-portal/dashboard}"
+                   class="btn btn-outline-secondary mb-3">
+                    &larr; Back to Dashboard
                 </a>
-            </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="support-card">
-                <div class="support-icon">🆘</div>
+                <!-- HERO SECTION -->
+                <div class="hero-card mb-4">
 
-                <h5 class="fw-bold">Emergency Help</h5>
+                    <div class="hero-icon">🎧</div>
 
-                <p class="text-secondary small">
-                    Find emergency assistance information.
-                </p>
+                    <h2 class="fw-bold">Help &amp; Support</h2>
 
-                <a th:href="@{/student-portal/sos}"
-                   class="btn btn-outline-danger btn-sm">
-                    Emergency Page
-                </a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="support-card">
-                <div class="support-icon">🔎</div>
-
-                <h5 class="fw-bold">Lost & Found</h5>
-
-                <p class="text-secondary small">
-                    Find information about lost or found campus items.
-                </p>
-
-                <a th:href="@{/student-portal/lost-found}"
-                   class="btn btn-outline-primary btn-sm">
-                    Open Lost & Found
-                </a>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Frequently Asked Questions -->
-    <div class="section-card mb-4">
-
-        <h4 class="section-title">
-            Frequently Asked Questions
-        </h4>
-
-        <div class="accordion" id="faqAccordion">
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#faqOne"
-                            aria-expanded="true"
-                            aria-controls="faqOne">
-                        1. How can I submit a complaint?
-                    </button>
-                </h2>
-
-                <div id="faqOne"
-                     class="accordion-collapse collapse show"
-                     data-bs-parent="#faqAccordion">
-                    <div class="accordion-body text-secondary">
-                        Open the New Complaint page, select the relevant
-                        department and category, enter the complaint details,
-                        review the information and submit it.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#faqTwo"
-                            aria-expanded="false"
-                            aria-controls="faqTwo">
-                        2. How can I check complaint status?
-                    </button>
-                </h2>
-
-                <div id="faqTwo"
-                     class="accordion-collapse collapse"
-                     data-bs-parent="#faqAccordion">
-                    <div class="accordion-body text-secondary">
-                        Open My Complaints and select a complaint to view
-                        its details and status. The current portal uses
-                        sample complaint data.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#faqThree"
-                            aria-expanded="false"
-                            aria-controls="faqThree">
-                        3. What should I do in an emergency?
-                    </button>
-                </h2>
-
-                <div id="faqThree"
-                     class="accordion-collapse collapse"
-                     data-bs-parent="#faqAccordion">
-                    <div class="accordion-body text-secondary">
-                        If you are in immediate danger in India, call 112
-                        directly. The current portal SOS button is a demo
-                        and does not send an emergency alert.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#faqFour"
-                            aria-expanded="false"
-                            aria-controls="faqFour">
-                        4. How can I report a lost item?
-                    </button>
-                </h2>
-
-                <div id="faqFour"
-                     class="accordion-collapse collapse"
-                     data-bs-parent="#faqAccordion">
-                    <div class="accordion-body text-secondary">
-                        Open Lost & Found and use Report an Item to preview
-                        the report form. The current form is for demonstration
-                        and does not save or publish reports.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#faqFive"
-                            aria-expanded="false"
-                            aria-controls="faqFive">
-                        5. Can I edit my profile?
-                    </button>
-                </h2>
-
-                <div id="faqFive"
-                     class="accordion-collapse collapse"
-                     data-bs-parent="#faqAccordion">
-                    <div class="accordion-body text-secondary">
-                        The current My Profile page is read-only.
-                        Profile editing and database integration can
-                        be implemented later.
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#faqSix"
-                            aria-expanded="false"
-                            aria-controls="faqSix">
-                        6. What if a page does not open?
-                    </button>
-                </h2>
-
-                <div id="faqSix"
-                     class="accordion-collapse collapse"
-                     data-bs-parent="#faqAccordion">
-                    <div class="accordion-body text-secondary">
-                        Check that the application is running, verify the
-                        URL and internet connection, and contact your
-                        institution's authorized technical support team
-                        if the issue continues.
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Contact Support -->
-    <div class="section-card mb-4">
-
-        <h4 class="section-title">Contact Support</h4>
-
-        <div class="row g-3">
-
-            <div class="col-md-6">
-                <div class="support-card">
-                    <div class="support-icon">🏫</div>
-
-                    <h6 class="fw-bold">Campus Administration</h6>
-
-                    <p class="text-secondary small mb-2">
-                        For student records, campus facilities or
-                        complaint-related assistance.
+                    <p class="mb-0">
+                        Need assistance with SurakshaSetu?
+                        Find answers to common questions and learn how to get help.
                     </p>
 
-                    <span class="badge text-bg-secondary">
-                        Contact details not configured
-                    </span>
                 </div>
+
+                <!-- SUPPORT CATEGORIES -->
+                <div class="row g-3 mb-4">
+
+                    <div class="col-md-4">
+                        <div class="support-card">
+
+                            <div class="support-icon">📋</div>
+
+                            <h5 class="fw-bold">Complaints</h5>
+
+                            <p class="text-secondary small">
+                                Submit a complaint and track your complaint status.
+                            </p>
+
+                            <a th:href="@{/student-portal/complaints}"
+                               class="btn btn-outline-primary btn-sm">
+                                View Complaints
+                            </t>
+
+                            <a th:href="@{/student-portal/new-complaint}"
+                               class="btn btn-primary btn-sm ms-1">
+                                New Complaint
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="support-card">
+
+                            <div class="support-icon">🆘</div>
+
+                            <h5 class="fw-bold">Emergency Help</h5>
+
+                            <p class="text-secondary small">
+                                Access the SOS Emergency section when you need help.
+                            </p>
+
+                            <a th:href="@{/student-portal/sos}"
+                               class="btn btn-outline-danger btn-sm">
+                                Open SOS
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="support-card">
+
+                            <div class="support-icon">🔎</div>
+
+                            <h5 class="fw-bold">Lost &amp; Found</h5>
+
+                            <p class="text-secondary small">
+                                Find reported items or submit details about a lost item.
+                            </p>
+
+                            <a th:href="@{/student-portal/lost-found}"
+                               class="btn btn-outline-primary btn-sm">
+                                Open Lost &amp; Found
+                            </a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- FAQ SECTION -->
+                <div class="section-card mb-4">
+
+                    <h4 class="section-title">
+                        Frequently Asked Questions
+                    </h4>
+
+                    <div class="accordion" id="faqAccordion">
+
+                        <!-- FAQ 1 -->
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+                                <button class="accordion-button"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqOne"
+                                        aria-expanded="true">
+                                    1. How can I submit a complaint?
+                                </button>
+                            </h2>
+
+                            <div id="faqOne"
+                                 class="accordion-collapse collapse show"
+                                 data-bs-parent="#faqAccordion">
+
+                                <div class="accordion-body text-secondary">
+                                    To submit a complaint, visit
+                                    <a th:href="@{/student-portal/new-complaint}">
+                                        New Complaint
+                                    </a>,
+                                    fill in the required details and submit your complaint.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- FAQ 2 -->
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqTwo"
+                                        aria-expanded="false">
+                                    2. How can I check my complaint status?
+                                </button>
+                            </h2>
+
+                            <div id="faqTwo"
+                                 class="accordion-collapse collapse"
+                                 data-bs-parent="#faqAccordion">
+
+                                <div class="accordion-body text-secondary">
+                                    Visit
+                                    <a th:href="@{/student-portal/complaints}">
+                                        My Complaints
+                                    </a>
+                                    to view your submitted complaints and track their status.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- FAQ 3 -->
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqThree"
+                                        aria-expanded="false">
+                                    3. What should I do in an emergency?
+                                </button>
+                            </h2>
+
+                            <div id="faqThree"
+                                 class="accordion-collapse collapse"
+                                 data-bs-parent="#faqAccordion">
+
+                                <div class="accordion-body text-secondary">
+                                    If you are in immediate danger in India, call
+                                    <a href="tel:112">112</a> directly.
+                                    You can also visit
+                                    <a th:href="@{/student-portal/sos}">
+                                        SOS Emergency
+                                    </a>
+                                    in the Student Portal.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- FAQ 4 -->
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqFour"
+                                        aria-expanded="false">
+                                    4. How can I report a lost or found item?
+                                </button>
+                            </h2>
+
+                            <div id="faqFour"
+                                 class="accordion-collapse collapse"
+                                 data-bs-parent="#faqAccordion">
+
+                                <div class="accordion-body text-secondary">
+                                    Open
+                                    <a th:href="@{/student-portal/lost-found}">
+                                        Lost &amp; Found
+                                    </a>
+                                    to view reported items or submit item details.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- FAQ 5 -->
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqFive"
+                                        aria-expanded="false">
+                                    5. How can I view my profile?
+                                </button>
+                            </h2>
+
+                            <div id="faqFive"
+                                 class="accordion-collapse collapse"
+                                 data-bs-parent="#faqAccordion">
+
+                                <div class="accordion-body text-secondary">
+                                    Visit
+                                    <a th:href="@{/student-portal/profile}">
+                                        My Profile
+                                    </a>
+                                    to view your personal, contact and academic information.
+                                    The current Profile page is view-only.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- FAQ 6 -->
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqSix"
+                                        aria-expanded="false">
+                                    6. What should I do if a page does not open?
+                                </button>
+                            </h2>
+
+                            <div id="faqSix"
+                                 class="accordion-collapse collapse"
+                                 data-bs-parent="#faqAccordion">
+
+                                <div class="accordion-body text-secondary">
+                                    Return to the
+                                    <a th:href="@{/student-portal/dashboard}">
+                                        Student Dashboard
+                                    </a>
+                                    and try opening the page again.
+                                    If the issue continues, contact your campus administration.
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- CONTACT SUPPORT -->
+                <div class="section-card mb-4">
+
+                    <h4 class="section-title">Contact Support</h4>
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <div class="support-card">
+
+                                <div class="support-icon">🏫</div>
+
+                                <h6 class="fw-bold">Campus Administration</h6>
+
+                                <p class="text-secondary small mb-0">
+                                    For student records, campus facilities and
+                                    complaint-related assistance, contact your
+                                    campus administration.
+                                </p>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="support-card">
+
+                                <div class="support-icon">💻</div>
+
+                                <h6 class="fw-bold">Technical Support</h6>
+
+                                <p class="text-secondary small mb-0">
+                                    For login problems, page loading errors or
+                                    other technical issues, contact your
+                                    institution's technical support team.
+                                </p>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- EMERGENCY NOTICE -->
+                <div class="notice">
+                    <strong>Emergency Notice:</strong>
+                    If you are in immediate danger, contact emergency services
+                    directly by calling <a href="tel:112">112</a> in India.
+                    Do not depend only on the portal for emergency assistance.
+                </div>
+
+                <!-- FOOTER -->
+                <div class="text-center text-secondary small my-4">
+                    © SurakshaSetu - Smart Campus Guardian
+                </div>
+
             </div>
 
-            <div class="col-md-6">
-                <div class="support-card">
-                    <div class="support-icon">💻</div>
+        </section>
 
-                    <h6 class="fw-bold">Technical Support</h6>
-
-                    <p class="text-secondary small mb-2">
-                        For login problems, loading errors or other
-                        technical issues.
-                    </p>
-
-                    <span class="badge text-bg-secondary">
-                        Contact details not configured
-                    </span>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Notice -->
-    <div class="notice">
-        <strong>Note:</strong>
-        This Help & Support page is currently a UI demonstration.
-        Contact information and support request submission have not
-        been connected to a backend service.
-    </div>
-
-    <div class="text-center text-secondary small my-4">
-        SurakshaSetu — Smart Campus Guardian
-    </div>
+    </main>
 
 </div>
 

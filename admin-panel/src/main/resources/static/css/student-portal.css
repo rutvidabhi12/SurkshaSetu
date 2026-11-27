@@ -453,8 +453,8 @@ body.student-login-page {
     transition: background .2s, color .2s;
 }
 
-.student-nav a > span,
-.student-logout > span {
+.student-nav a>span,
+.student-logout>span {
     width: 20px;
     font-size: 19px;
     text-align: center;
@@ -920,24 +920,63 @@ body.student-login-page {
         gap: 7px;
     }
 
-  .form-options {
+    .form-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .form-options .forgot-password-link {
+        color: #1d4ed8;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .form-options .forgot-password-link:hover {
+        text-decoration: underline;
+    }
+
+    .sos-back-wrapper {
+        width: 100%;
+        margin-bottom: 12px;
+    }
+
+    /* SOS Back to Dashboard Button */
+
+.sos-page-header {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.sos-back-btn {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.form-options .forgot-password-link {
-    color: #1d4ed8;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
+    justify-content: center;
+    min-height: 30px;
+    padding: 5px 12px;
+    border: 1px solid #aeb8c4;
+    border-radius: 5px;
+    background: #f5f8fc;
+    color: #64748b;
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
     white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
-.form-options .forgot-password-link:hover {
-    text-decoration: underline;
+.sos-back-btn:hover {
+    background: #e8eef6;
+    color: #244b75;
+    border-color: #8295aa;
+    text-decoration: none;
 }
-
 }

@@ -63,6 +63,31 @@
             font-size: 12px;
             font-weight: 700;
         }
+
+        .status-change {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .history-remarks {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-top: 12px;
+            color: #475569;
+        }
     </style>
 </head>
 
@@ -73,7 +98,10 @@
     <aside class="student-sidebar">
         <a class="student-brand" th:href="@{/student-portal/dashboard}">
             <span class="student-brand-icon">SS</span>
-            <span><strong>SurakshaSetu</strong><small>STUDENT PORTAL</small></span>
+            <span>
+                <strong>SurakshaSetu</strong>
+                <small>STUDENT PORTAL</small>
+            </span>
         </a>
 
         <div class="sidebar-label">MENU</div>
@@ -111,7 +139,10 @@
 
             <div class="topbar-user">
                 <div class="user-avatar">S</div>
-                <div><strong>Student</strong><small>Student Account</small></div>
+                <div>
+                    <strong>Student</strong>
+                    <small>Student Account</small>
+                </div>
             </div>
         </header>
 
@@ -133,65 +164,102 @@
             <div class="card history-card mb-4">
                 <div class="card-body p-4 p-md-5">
 
+                    <!-- Complaint Information -->
                     <div class="d-flex flex-wrap justify-content-between
                                 align-items-start gap-3 mb-4">
+
                         <div>
-                            <div class="text-secondary small">Complaint Reference</div>
-                            <h2 class="h4 fw-bold mt-1" id="historyComplaintId">SS-001</h2>
-                            <h3 class="h6 mt-2" id="historyComplaintTitle">
-                                Classroom Fan Not Working
+                            <div class="text-secondary small">
+                                Complaint Reference
+                            </div>
+
+                            <h2 class="h4 fw-bold mt-1"
+                                th:text="'SS-' + ${complaint.id}">
+                                SS-001
+                            </h2>
+
+                            <h3 class="h6 mt-2"
+                                th:text="${complaint.title}">
+                                Complaint Title
                             </h3>
                         </div>
 
-                        <span class="history-status" id="currentStatus">Pending</span>
+                        <span class="history-status"
+                              th:text="${complaint.status}">
+                            PENDING
+                        </span>
                     </div>
 
                     <hr class="mb-4">
 
-                    <h3 class="h5 fw-bold mb-4">Activity Timeline</h3>
+                    <h3 class="h5 fw-bold mb-4">
+                        Activity Timeline
+                    </h3>
 
+                    <!-- Dynamic History Timeline -->
                     <div class="history-timeline">
 
-                        <div class="history-item completed">
-                            <span class="history-dot"></span>
-                            <div class="history-date">20 Oct 2026 · Submitted</div>
-                            <h4 class="h6 fw-bold mt-2">Complaint Registered</h4>
-                            <p class="text-secondary mb-0">
-                                Your complaint was submitted through the Student Portal.
-                            </p>
+                        <div th:if="${#lists.isEmpty(history)}"
+                             class="alert alert-info border-0 rounded-3">
+                            No status history is available for this complaint yet.
                         </div>
 
-                        <div class="history-item" id="reviewEvent">
-                            <span class="history-dot"></span>
-                            <div class="history-date">Awaiting update</div>
-                            <h4 class="h6 fw-bold mt-2">Department Review</h4>
-                            <p class="text-secondary mb-0">
-                                The department review status will be updated when available.
-                            </p>
-                        </div>
+                        <div th:each="event, iterStat : ${history}"
+                             class="history-item"
+                             th:classappend="${iterStat.last} ? ' completed' : ''">
 
-                        <div class="history-item" id="resolutionEvent">
                             <span class="history-dot"></span>
-                            <div class="history-date">Awaiting update</div>
-                            <h4 class="h6 fw-bold mt-2">Resolution</h4>
-                            <p class="text-secondary mb-0">
-                                Resolution information will appear here when available.
-                            </p>
+
+                            <div class="history-date"
+                                th:text="${event.changedAtFormatted}">
+                                20 Oct 2026
+                            </div>
+
+                            <h4 class="h6 fw-bold mt-2"
+                                th:text="${event.previousStatus == null ? 'Complaint Registered' : 'Status Updated'}">
+                                Complaint Registered
+                            </h4>
+
+                            <!-- Previous and New Status -->
+                            <div class="status-change">
+
+                                <span th:if="${event.previousStatus != null}"
+                                      class="status-badge"
+                                      th:text="${event.previousStatus}">
+                                    PENDING
+                                </span>
+
+                                <span th:if="${event.previousStatus != null}">
+                                    →
+                                </span>
+
+                                <span class="status-badge"
+                                      th:text="${event.newStatus}">
+                                    IN_PROGRESS
+                                </span>
+
+                            </div>
+
+                            <!-- Remarks -->
+                            <div class="history-remarks"
+                                 th:if="${event.remarks != null and !#strings.isEmpty(event.remarks)}">
+
+                                <strong class="small">Remarks</strong>
+
+                                <p class="mb-0 mt-1"
+                                   th:text="${event.remarks}">
+                                    Complaint status updated.
+                                </p>
+                            </div>
+
                         </div>
 
                     </div>
 
-                    <div class="alert alert-info border-0 rounded-3 mt-4 mb-0">
-                        <strong>Demo timeline</strong>
-                        <p class="mb-0 mt-1">
-                            These are sample events for UI testing. Live status history
-                            will require database integration.
-                        </p>
-                    </div>
-
+                    <!-- Action Buttons -->
                     <div class="d-flex flex-wrap gap-2 mt-4">
-                        <a id="detailsLink"
-                           href="/student-portal/complaints/SS-001"
+
+                        <a th:href="@{/student-portal/complaints/{id}(id=${complaint.id})}"
                            class="btn btn-primary">
                             View Complaint Details
                         </a>
@@ -200,6 +268,7 @@
                            class="btn btn-outline-secondary">
                             All Complaints
                         </a>
+
                     </div>
 
                 </div>
@@ -213,52 +282,6 @@
         </section>
     </main>
 </div>
-
-<script>
-    const parts = window.location.pathname.split("/");
-    const complaintId = parts[parts.length - 2] || "SS-001";
-
-    const demoData = {
-        "SS-001": {
-            title: "Classroom Fan Not Working",
-            status: "Pending"
-        },
-        "SS-002": {
-            title: "Library Access Issue",
-            status: "In Progress"
-        },
-        "SS-003": {
-            title: "Water Cooler Maintenance",
-            status: "Resolved"
-        }
-    };
-
-    const complaint = demoData[complaintId] || demoData["SS-001"];
-
-    document.getElementById("historyComplaintId").textContent = complaintId;
-    document.getElementById("historyComplaintTitle").textContent = complaint.title;
-    document.getElementById("currentStatus").textContent = complaint.status;
-
-    document.getElementById("detailsLink").href =
-        "/student-portal/complaints/" + encodeURIComponent(complaintId);
-
-    if (complaint.status === "In Progress") {
-        document.querySelector("#reviewEvent .history-date").textContent =
-            "In progress · Demo status";
-        document.querySelector("#reviewEvent .history-dot").style.background = "#2563eb";
-    }
-
-    if (complaint.status === "Resolved") {
-        document.querySelector("#reviewEvent .history-date").textContent =
-            "Review completed · Demo status";
-        document.querySelector("#resolutionEvent .history-date").textContent =
-            "Resolved · Demo status";
-
-        document.querySelectorAll(".history-item").forEach(item => {
-            item.classList.add("completed");
-        });
-    }
-</script>
 
 </body>
 </html>

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Complaint Submitted | SurakshaSetu</title>
 
     <link rel="stylesheet"
@@ -127,28 +128,31 @@
 
                 <h1 class="fw-bold mt-3">Thank You!</h1>
 
-                <h2 class="h5 mt-3">Your complaint has been submitted.</h2>
+                <h2 class="h5 mt-3">
+                    Your complaint has been submitted successfully.
+                </h2>
 
                 <p class="text-secondary mt-3">
-                    Your complaint details have been received by this demo interface.
-                    You can keep the demo reference below for testing.
+                    Your complaint has been received by the concerned department.
+                    You can use the reference ID below to track its progress.
                 </p>
 
                 <div class="success-id">
-                    <span class="text-secondary">Demo Reference ID</span>
-                    <strong id="complaintId">SS-DEMO</strong>
+                    <span class="text-secondary">Complaint Reference ID</span>
+                    <strong id="complaintId">Loading...</strong>
                 </div>
 
                 <div class="alert alert-info text-start border-0">
                     <strong>What's next?</strong>
                     <p class="mb-0 mt-2">
-                        In the completed system, the campus team will review the
-                        complaint and update its status. Database submission and
-                        real notifications have not been implemented yet.
+                        The concerned department and designated faculty member
+                        will review your complaint. You can check its status
+                        and updates from the My Complaints section.
                     </p>
                 </div>
 
                 <div class="success-actions">
+
                     <a th:href="@{/student-portal/complaints}"
                        class="btn btn-primary px-4">
                         My Complaints
@@ -163,6 +167,7 @@
                        class="btn btn-outline-secondary px-4">
                         Dashboard
                     </a>
+
                 </div>
 
             </div>
@@ -177,10 +182,11 @@
 </div>
 
 <script>
-    const demoId = sessionStorage.getItem("demoComplaintId");
+    const params = new URLSearchParams(window.location.search);
+    const complaintId = params.get("id");
 
     document.getElementById("complaintId").textContent =
-        demoId || "Not available — please complete the demo flow first";
+        complaintId ? "SS-" + complaintId : "ID not available";
 </script>
 
 </body>
